@@ -1,0 +1,12 @@
+@import "node_modules/ng-zorro-antd/ng-zorro-antd.min.css";
+@import "node_modules/ng-zorro-antd/style/index.min.css";
+/* Import base styles */
+@import "node_modules/ng-zorro-antd/button/style/index.min.css";
+
+
+.centerContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
