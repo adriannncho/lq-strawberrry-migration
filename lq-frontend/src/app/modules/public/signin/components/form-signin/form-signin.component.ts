@@ -22,12 +22,10 @@ export class FormSigninComponent {
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
     } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      this.validateForm.controls.password.markAllAsTouched(); 
+      this.validateForm.controls.password.updateValueAndValidity(); 
+      this.validateForm.controls.userName.markAllAsTouched(); 
+      this.validateForm.controls.userName.updateValueAndValidity(); 
     }
   }
 
