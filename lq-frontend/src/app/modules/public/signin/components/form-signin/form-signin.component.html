@@ -33,7 +33,7 @@
         [nzLg]="20"
         [nzXl]="20"
         [nzXXl]="20">
-            <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+            <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="isValidForm()">
                 <div nz-row class="centerContent">
                     <div nz-col class="centerContent" style="color: aliceblue;">
                       <div nz-row>
@@ -47,39 +47,58 @@
                     </div>
                 </div>
                 <nz-form-item>
-                    <nz-form-control [nzErrorTip]="errorUser">
+                    <nz-form-control nzHasFeedback [nzErrorTip]="errorUser">
                         <nz-input-group nzPrefixIcon="user">
-                        <input type="text" nz-input formControlName="userName" placeholder="Nombre de usuario" autocomplete="current-name" />
+                        <input 
+                        type="text" 
+                        nz-input 
+                        formControlName="numDocument" 
+                        placeholder="Numero de documento" 
+                        autocomplete="current-numDocument"
+                        (focus)="numDocumentTouched = true"
+                        (blur)="markTouched('numDocument')"/>
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-control [nzErrorTip]="errorPassword">
-                        <nz-input-group nzPrefixIcon="lock">
-                        <input type="password" nz-input formControlName="password" placeholder="Contraseña" autocomplete="current-password" />
+                    <nz-form-control nzHasFeedback [nzErrorTip]="errorPassword">
+                        <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixPassword">
+                        <input 
+                        [type]="passwordVisible ? 'text' : 'password' " 
+                        nz-input 
+                        formControlName="password" 
+                        placeholder="Contraseña" 
+                        autocomplete="current-password"
+                        (focus)="passwordTouched = true"
+                        (blur)="markTouched('password')"/>
                         </nz-input-group>
                     </nz-form-control>
                 </nz-form-item>
                 <div nz-row >
-                    <div nz-col [nzSpan]="8">
-                        <label nz-checkbox formControlName="remember">
-                        <span>Recuerdame</span>
-                        </label>
-                    </div>
-                    <div nz-col [nzSpan]="16">
+                    <div nz-col [nzSpan]="24">
                         <a class="login-form-forgot">¿Has olvidado tu contraseña?</a>
                     </div>
                 </div>
-                <button nz-button [nzType]="'primary'">Iniciar sesión</button>
+                <button nz-button class="btn-ingresar" [nzType]="'primary'">Iniciar sesión</button>
             </form>
         </div>
     </div>
   </div>
 </div>
 <ng-template #errorUser>
-    <p>Por favor ingrese su nombre de usuario</p>
+    <p *ngIf="validateForm.controls['numDocument'].hasError('required') && !numDocumentTouched" >Por favor ingrese su número de documento.</p>
+    <p *ngIf="validateForm.controls['numDocument'].hasError('minlength') && !numDocumentTouched">El número de documento debe tener mínimo 7 números.</p>
+    <p *ngIf="validateForm.controls['numDocument'].hasError('maxlength') && !numDocumentTouched">El número de documento no debe tener más de 11 números.</p>
+    <p *ngIf="validateForm.controls['numDocument'].hasError('pattern') && !numDocumentTouched">Por favor ingrese solo números.</p>
 </ng-template>
 <ng-template #errorPassword>
-    <p>Por favor ingrese su contraseña</p>
+    <p *ngIf="this.validateForm.controls['password'].hasError('required') && !passwordTouched">Por favor ingrese su contraseña.</p>
+    <p *ngIf="this.validateForm.controls['password'].hasError('minlength')  && !passwordTouched">La contraseña debe tener minimo 6 caracteres.</p>
+    <p *ngIf="this.validateForm.controls['password'].hasError('maxlength')  && !passwordTouched">La contraseña no debe tener mas de 15 caracteres.</p>
+    <p *ngIf="this.validateForm.controls['password'].hasError('pattern')  && !passwordTouched">La contraseña debe contener minimo un número</p>
+</ng-template>
+<ng-template #suffixPassword>
+    <span *ngIf="!passwordVisible" nz-icon nzType="eye-invisible" nzTheme="outline" (click)="passwordVisible = !passwordVisible" style="cursor: pointer;"></span>
+    <span *ngIf="passwordVisible" nz-icon nzType="eye" nzTheme="outline" (click)="passwordVisible = !passwordVisible" style="cursor: pointer;"></span>
 </ng-template>
 
