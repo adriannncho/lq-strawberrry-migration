@@ -1,9 +1,6 @@
-package org.lq.internal.domain;
+package org.lq.internal.domain.product;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -14,13 +11,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "PRODUCTO")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Product implements Serializable {
 
     @Id
-    @Column(name = "ID_PRODUCTO")
-    @EqualsAndHashCode.Include
-    private String prdLvlNumber;
+    @Column(name = "ID_PRODUCTO", length = 36)
+    private Long prdLvlNumber;
+
+    @Column(name = "ID_TAMANIO", length = 36)
+    private Long size;
 
     @Column(name = "NOMBRE")
     private String name;
@@ -29,5 +27,5 @@ public class Product implements Serializable {
     private String description;
 
     @Column(name = "PRECIO")
-    private long value;
+    private Long value;
 }
