@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { NgZorroModule } from './modules/ng-zorro.module'
 import { IconsProviderModule } from './modules/icons-provider.module'
-import { LayoutModule } from '../core/layout/layout.module'
 
 @NgModule({
   declarations: [],
@@ -12,8 +11,7 @@ import { LayoutModule } from '../core/layout/layout.module'
   ],
   exports: [
     NgZorroModule,
-    IconsProviderModule,
-    LayoutModule
+    IconsProviderModule
   ]
 })
 export class SharedModule { }
