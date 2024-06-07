@@ -92,23 +92,21 @@
             <artifactId>vavr</artifactId>
             <version>0.10.4</version>
         </dependency>
-        <!-- Oracle conection -->
+        <!-- Mysql conection -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-spring-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-oracle</artifactId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-jdbc</artifactId>
-            <version>0.2.15</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-mysql</artifactId>
         </dependency>
-        <!-- End oracle conection -->
+        <!-- End Mysql conection -->
         <!-- End Data -->
-
         <!-- Test -->
         <dependency>
             <groupId>io.quarkus</groupId>
