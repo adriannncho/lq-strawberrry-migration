@@ -1,0 +1,25 @@
+.headerContainer {
+  padding: 0;
+  background-color: var(--color-neutral-white);
+}
+
+.containerelements {
+  width: 100%;
+  justify-content: end;
+}
+
+.btnHeader {
+  border: none;
+}
+
+.btnUser {
+  border: none;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.containerBtnUser {
+  display: flex;
+  align-items: center;
+}
