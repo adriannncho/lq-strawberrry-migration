@@ -225,3 +225,4 @@ TestsResultsCache.xml
 ayda-gui/package-lock.json
 
 ve-tools/DockerCompose/.env
+*.json
