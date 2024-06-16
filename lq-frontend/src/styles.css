@@ -259,3 +259,9 @@ a:hover {
   align-items: center;
   font-size: 16px;
 }
+
+.textEllipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
