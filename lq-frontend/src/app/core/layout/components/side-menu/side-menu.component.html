@@ -1,0 +1,52 @@
+<div [ngClass]="isCollapsed ? 'sideMenuContainer' : 'sideMenuCollapse' ">
+  <button 
+  nz-button 
+  nzType="primary" 
+  (click)="toggleCollapsed()"
+  class="buttonMenu">
+    <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+  </button>
+  <ul 
+  nz-menu 
+  nzMode="inline" 
+  [nzInlineCollapsed]="isCollapsed"
+  class="containerOptions">
+    <li
+      nz-menu-item
+      nzSelected
+    >
+      <span nz-icon nzType="appstore"></span>
+      <span *ngIf="!isCollapsed">Dasboarh</span>
+    </li>
+    <li
+      nz-menu-item
+    >
+      <span nz-icon nzType="coffee" nzTheme="outline"></span>
+      <span *ngIf="!isCollapsed">Productos</span>
+    </li>
+    <li
+      nz-menu-item
+    >
+      <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
+      <span *ngIf="!isCollapsed">Usuarios</span>
+    </li>
+    <li
+      nz-menu-item
+    >
+      <span nz-icon nzType="shop" nzTheme="outline"></span>
+      <span *ngIf="!isCollapsed">Toppings</span>
+    </li>
+    <li
+      nz-menu-item
+    >
+      <span nz-icon nzType="mail"></span>
+      <span *ngIf="!isCollapsed">Historico</span>
+    </li>
+    <li
+      nz-menu-item
+    >
+      <span nz-icon nzType="dollar"></span>
+      <span *ngIf="!isCollapsed">Ventas</span>
+    </li>
+  </ul>
+</div>

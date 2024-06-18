@@ -148,7 +148,8 @@ nz-form-label {
 }
 
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: #16406f44;
+  background-color: var(--color-primary-blue);
+  color: var(--color-neutral-white);
 }
 
 .ant-upload.ant-upload-drag:not(.ant-upload-disabled):hover {

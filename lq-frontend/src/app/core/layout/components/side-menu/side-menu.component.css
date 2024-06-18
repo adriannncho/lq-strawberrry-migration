@@ -1,0 +1,39 @@
+.sideMenuContainer {
+  position: absolute;
+  z-index: 1000;
+  width: 5em;
+  height: 100%;
+  transition: all 0,3s;
+}
+
+.sideMenuCollapse {
+  position: absolute;
+  z-index: 1000;
+  width: 15em;
+  height: 100%;
+  transition: all 0.3s;
+}
+
+.containerOptions {
+  height: 89vh;
+  width: 100%;
+}
+
+.buttonMenu {
+  margin-left: 1.3em;
+  background-color: var(--color-primary-blue);
+  border: var(--color-primary-blue-ash);
+  transition: all 0.3s;
+}
+
+.buttonMenu:hover {
+  width: 35px;
+}
+
+li {
+  color: var(--color-neutral-black);
+}
+
+li:hover {
+  color: var(--color-primary-blue);
+}

@@ -4,10 +4,12 @@ import { RouterModule } from '@angular/router';
 
 import { NgZorroModule } from '../../shared/modules/ng-zorro.module';
 import { BaseComponent } from './components/base/base.component';
+import { SideMenu } from './components/side-menu/side-menu.component';
 
 @NgModule({
   declarations: [
-    BaseComponent
+    BaseComponent,
+    SideMenu
   ],
   imports: [
     CommonModule,
