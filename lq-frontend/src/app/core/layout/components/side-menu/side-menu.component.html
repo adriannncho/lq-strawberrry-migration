@@ -1,52 +1,63 @@
-<div [ngClass]="isCollapsed ? 'sideMenuContainer' : 'sideMenuCollapse' ">
-  <button 
-  nz-button 
-  nzType="primary" 
-  (click)="toggleCollapsed()"
-  class="buttonMenu">
-    <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
-  </button>
-  <ul 
-  nz-menu 
-  nzMode="inline" 
-  [nzInlineCollapsed]="isCollapsed"
-  class="containerOptions">
-    <li
-      nz-menu-item
-      nzSelected
-    >
-      <span nz-icon nzType="appstore"></span>
-      <span *ngIf="!isCollapsed">Dasboarh</span>
-    </li>
-    <li
-      nz-menu-item
-    >
-      <span nz-icon nzType="coffee" nzTheme="outline"></span>
-      <span *ngIf="!isCollapsed">Productos</span>
-    </li>
-    <li
-      nz-menu-item
-    >
-      <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
-      <span *ngIf="!isCollapsed">Usuarios</span>
-    </li>
-    <li
-      nz-menu-item
-    >
-      <span nz-icon nzType="shop" nzTheme="outline"></span>
-      <span *ngIf="!isCollapsed">Toppings</span>
-    </li>
-    <li
-      nz-menu-item
-    >
-      <span nz-icon nzType="mail"></span>
-      <span *ngIf="!isCollapsed">Historico</span>
-    </li>
-    <li
-      nz-menu-item
-    >
-      <span nz-icon nzType="dollar"></span>
-      <span *ngIf="!isCollapsed">Ventas</span>
-    </li>
-  </ul>
+<div *ngIf="isVisible" class="menuBackground" (click)="hideMenu()"></div>
+<div *ngIf="isVisible" class="menuContainerAnimIN centerContent" id="menuContainer">
+  <div nz-row class="containerOptionsMenu">
+    <div nz-col class="containerPhotoProfile">
+      <img 
+      width="100px"
+      height="100px" 
+      src="../../../../../assets/img/logoQfresa.png" 
+      alt="ProfileImage">
+    </div>
+    <div nz-col class="containerInfouser">
+      <span class="infoUser">Nombre de usuario</span>
+      <span class="infoUser">Admin</span>
+    </div>
+    <div 
+    nz-col nzSpan="24">
+      <canvas class="customCanvas"></canvas>
+    </div>
+    <div nz-col class="containerOptionsMenu">
+      <ul 
+      nz-menu 
+      nzMode="inline">
+        <li
+        nz-menu-item
+        nzSelected
+        >
+          <span nz-icon nzType="appstore"></span>
+          <span>Dasboarh</span>
+        </li>
+        <li
+        nz-menu-item
+        >
+          <span nz-icon nzType="coffee" nzTheme="outline"></span>
+          <span>Productos</span>
+        </li>
+        <li
+        nz-menu-item
+        >
+          <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
+          <span >Usuarios</span>
+        </li>
+        <li
+        nz-menu-item
+        >
+          <span nz-icon nzType="shop" nzTheme="outline"></span>
+          <span>Toppings</span>
+        </li>
+        <li
+        nz-menu-item
+        >
+          <span nz-icon nzType="mail"></span>
+          <span>Historico</span>
+        </li>
+        <li
+        nz-menu-item
+        >
+          <span nz-icon nzType="dollar"></span>
+          <span>Ventas</span>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

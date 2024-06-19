@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-side-menu',
@@ -8,7 +8,10 @@ import { Component, HostListener, OnInit } from '@angular/core';
 export class SideMenu {
 
   width = window.innerWidth;
-  isCollapsed = false;
+
+  @Input() isVisible!: boolean;
+
+  @Output() hideSideMenu = new EventEmitter<boolean>();
 
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width
@@ -20,7 +23,12 @@ export class SideMenu {
     }
   }
 
-  toggleCollapsed(): void {
-    this.isCollapsed = !this.isCollapsed;
+  hideMenu(){
+    document.getElementById("menuContainer")?.classList.remove("menuContainerAnimIN");
+    document.getElementById("menuContainer")?.classList.add("menuContainerAnimOUT");
+    setTimeout(() => {
+      this.isVisible = false;
+      this.hideSideMenu.emit(false);
+    }, 600);
   }
 }
