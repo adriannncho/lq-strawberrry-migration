@@ -2,6 +2,7 @@ package org.lq.internal.domain.product;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.lq.internal.domain.size.Size;
 
 import java.io.Serializable;
 
@@ -10,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PRODUCTO")
+@Table(name = "producto")
 public class Product implements Serializable {
 
     @Id
