@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.user.User;
+import org.lq.internal.domain.user.UserDTO;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,5 +57,36 @@ public class UserService {
             LOG.warnf("@getUsers SERV > No users found");
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron usuarios");
         }
+    }
+
+    public void saveUser(UserDTO userDTO) throws PVException {
+        LOG.infof("@saveUser SERV > Start service to save a new user");
+
+        if (userRepository.findByDocumentNumber(userDTO.getDocumentNumber()) != null) {
+            LOG.warnf("@saveUser SERV > User already exists with document number %s", userDTO.getDocumentNumber());
+            throw new PVException(Response.Status.CONFLICT.getStatusCode(), "El usuario ya existe.");
+        }
+
+        LOG.infof("@saveUser SERV > Creating user entity from DTO");
+        User user = User.builder()
+                .documentNumber(userDTO.getDocumentNumber())
+                .userTypeId(userDTO.getUserTypeId())
+                .genderId(userDTO.getGenderId())
+                .documentTypeId(userDTO.getDocumentTypeId())
+                .userStatusId(userDTO.getUserStatusId())
+                .firstName(userDTO.getFirstName())
+                .secondName(userDTO.getSecondName())
+                .firstLastName(userDTO.getFirstLastName())
+                .secondLastName(userDTO.getSecondLastName())
+                .phone(userDTO.getPhone())
+                .address(userDTO.getAddress())
+                .email(userDTO.getEmail())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .build();
+
+        LOG.infof("@saveUser SERV > Persisting user with document number %s", userDTO.getDocumentNumber());
+        userRepository.persist(user);
+
+        LOG.infof("@saveUser SERV > User saved successfully with document number %s", userDTO.getDocumentNumber());
     }
 }

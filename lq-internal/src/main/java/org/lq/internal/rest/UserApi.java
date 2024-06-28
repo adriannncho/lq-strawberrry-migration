@@ -3,19 +3,19 @@ package org.lq.internal.rest;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.lq.internal.domain.user.UserDTO;
 import org.lq.internal.helper.exception.HandlerException;
 import org.lq.internal.helper.exception.ProblemException;
 import org.lq.internal.service.UserService;
@@ -35,33 +35,6 @@ public class UserApi {
                     @APIResponse(
                             responseCode = "200",
                             description = "Se obtiene el listado de usuarios correctamente"
-                            /*content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(
-                                            type = SchemaType.ARRAY,
-                                            example = """
-                                                    [
-                                                        {
-                                                            "prdLvlNumber": "1",
-                                                            "name": "Fresas con Crema",
-                                                            "description": "Deliciosas fresas frescas acompañadas de crema batida",
-                                                            "value": 10000
-                                                        },
-                                                        {
-                                                            "prdLvlNumber": "2",
-                                                            "name": "Fresas con Chocolate",
-                                                            "description": "Fresas frescas bañadas en chocolate derretido",
-                                                            "value": 12000
-                                                        },
-                                                        {
-                                                            "prdLvlNumber": "3",
-                                                            "name": "Tazón de Fresas",
-                                                            "description": "Tazón relleno de fresas frescas cortadas",
-                                                            "value": 8000
-                                                        }
-                                                    ]"""
-                                    )
-                            )*/
                     ),
                     @APIResponse(
                             responseCode = "404",
@@ -153,5 +126,57 @@ public class UserApi {
             ){
         userService.validateLogin(document, password);
         return Response.ok().build();
+    }
+
+    @POST
+    @Transactional
+    @Path("/register")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Usuario registrado exitosamente."
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "Errores de validación de entrada",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            example = """
+                                                    {
+                                                      
+                                                    }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "409",
+                            description = "El usuario ya existe.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = ProblemException.class)
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Registro de usuario",
+            description = "Registra un nuevo usuario en la aplicación"
+    )
+    public Response saveProduct(
+            @Valid UserDTO userDTO
+    ){
+        userService.saveUser(userDTO);
+        return Response.status(Response.Status.CREATED).build();
     }
 }

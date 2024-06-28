@@ -1,12 +1,18 @@
 package org.lq.internal.domain.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "usuario")
 public class User {
 
@@ -30,10 +36,10 @@ public class User {
     private String firstName;
 
     @Column(name = "nombre_dos")
-    private String middleName;
+    private String secondName;
 
     @Column(name = "apellido_uno")
-    private String lastName;
+    private String firstLastName;
 
     @Column(name = "apellido_dos")
     private String secondLastName;
