@@ -15,6 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.lq.internal.domain.user.LoginDTO;
 import org.lq.internal.domain.user.UserDTO;
 import org.lq.internal.helper.exception.HandlerException;
 import org.lq.internal.helper.exception.ProblemException;
@@ -66,7 +67,7 @@ public class UserApi {
             summary = "Obtener listado de usuarios",
             description = "Se obtiene el listado con la información de los usuarios registrados"
     )
-    public Response getProducts(){
+    public Response getProducts() {
         return Response.ok().entity(userService.getUsers()).build();
     }
 
@@ -110,21 +111,9 @@ public class UserApi {
             description = "Se da acceso de forma exitosa a la aplicación"
     )
     public Response validateLogin(
-            @QueryParam("document")
-            @Parameter(name = "document",
-                    required = true,
-                    example = "1055332322"
-            )
-            @NotEmpty(message = "El campo del documento no puede ser nulo ni vacío.")
-            long document,
-            @QueryParam("password")
-            @Parameter(name = "password",
-            required = true
-            )
-            @NotEmpty(message = "El campo de la contraseña no puede ser nulo ni vacío.")
-            String password
-            ){
-        userService.validateLogin(document, password);
+            @Valid LoginDTO loginDTO
+    ){
+        userService.validateLogin(loginDTO);
         return Response.ok().build();
     }
 

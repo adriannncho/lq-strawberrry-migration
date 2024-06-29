@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @Entity
@@ -55,13 +53,4 @@ public class User {
 
     @Column(name = "contraseña")
     private String password;
-
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-    @PrePersist
-    @PreUpdate
-    private void encryptPassword() {
-        this.password = passwordEncoder.encode(this.password);
-    }
-
 }

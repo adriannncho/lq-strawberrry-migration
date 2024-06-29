@@ -145,13 +145,17 @@
             <version>4.4.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>5.8.0</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-elytron-security</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-security</artifactId>
+            <artifactId>quarkus-elytron-security-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 
