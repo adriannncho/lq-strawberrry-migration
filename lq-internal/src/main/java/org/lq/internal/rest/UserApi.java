@@ -4,7 +4,7 @@ package org.lq.internal.rest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -12,7 +12,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.lq.internal.domain.user.LoginDTO;
@@ -112,7 +111,7 @@ public class UserApi {
     )
     public Response validateLogin(
             @Valid LoginDTO loginDTO
-    ){
+    ) {
         userService.validateLogin(loginDTO);
         return Response.ok().build();
     }
@@ -134,7 +133,19 @@ public class UserApi {
                                     schema = @Schema(
                                             example = """
                                                     {
-                                                      
+                                                      El campo documentNumber (número de documento) no puede ser nulo.,
+                                                      El campo userTypeId (ID de tipo de usuario) no puede ser nulo.,
+                                                      El campo genderId (ID de género) no puede ser nulo.,
+                                                      El campo documentTypeId (ID de tipo de documento) no puede ser nulo.,
+                                                      El campo userStatusId (ID de estado de usuario) no puede ser nulo.,
+                                                      El campo firstName (primer nombre) no puede ser nulo ni estar vacío.,
+                                                      El campo firstLastName (primer apellido) no puede ser nulo ni estar vacío.,
+                                                      El campo phone (teléfono) no puede ser nulo ni estar vacío.,
+                                                      El campo address (dirección) no puede ser nulo ni estar vacío.,
+                                                      El campo email (correo) no puede ser nulo ni estar vacío.,
+                                                      El campo email (correo) debe ser una dirección de correo válida.,
+                                                      El campo password (contraseña) no puede ser nulo ni estar vacío.,
+                                                      El campo password (contraseña) debe tener al menos 8 caracteres.
                                                     }"""
                                     )
                             )
@@ -163,7 +174,7 @@ public class UserApi {
     )
     public Response saveUser(
             @Valid UserDTO userDTO
-    ){
+    ) {
         userService.saveUser(userDTO);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -185,8 +196,36 @@ public class UserApi {
                                     schema = @Schema(
                                             example = """
                                                     {
-                                                      
+                                                      El campo documentNumber (número de documento) no puede ser nulo.,
+                                                      El campo userTypeId (ID de tipo de usuario) no puede ser nulo.,
+                                                      El campo genderId (ID de género) no puede ser nulo.,
+                                                      El campo documentTypeId (ID de tipo de documento) no puede ser nulo.,
+                                                      El campo userStatusId (ID de estado de usuario) no puede ser nulo.,
+                                                      El campo firstName (primer nombre) no puede ser nulo ni estar vacío.,
+                                                      El campo firstLastName (primer apellido) no puede ser nulo ni estar vacío.,
+                                                      El campo phone (teléfono) no puede ser nulo ni estar vacío.,
+                                                      El campo address (dirección) no puede ser nulo ni estar vacío.,
+                                                      El campo email (correo) no puede ser nulo ni estar vacío.,
+                                                      El campo email (correo) debe ser una dirección de correo válida.,
+                                                      El campo password (contraseña) no puede ser nulo ni estar vacío.,
+                                                      El campo password (contraseña) debe tener al menos 8 caracteres.
                                                     }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontro el usuario a actualizar.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "Usuario no encontrado."
+                                                    )
+                                            }
                                     )
                             )
                     ),
@@ -206,8 +245,8 @@ public class UserApi {
     )
     public Response updaterUser(
             @Valid UserDTO userDTO
-    ){
-        userService.updateUser( userDTO);
+    ) {
+        userService.updateUser(userDTO);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -228,8 +267,24 @@ public class UserApi {
                                     schema = @Schema(
                                             example = """
                                                     {
-                                                      
+                                                      El documento del usuario debe ser un número positivo.
                                                     }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontro el usuario a eliminar.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "Usuario no encontrado."
+                                                    )
+                                            }
                                     )
                             )
                     ),
@@ -248,8 +303,10 @@ public class UserApi {
             description = "Elimina un usuario en la aplicación"
     )
     public Response deleteUser(
-            @PathParam("userId") Long userId
-    ){
+            @PathParam("userId")
+            @Positive(message = "El documento del usuario debe ser un número positivo.")
+            Long userId
+    ) {
         userService.deleteUser(userId);
         return Response.status(Response.Status.OK).build();
     }

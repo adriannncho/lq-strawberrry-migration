@@ -8,10 +8,6 @@ import org.lq.internal.domain.user.*;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.*;
 import org.mindrot.jbcrypt.BCrypt;
-import org.wildfly.security.password.Password;
-import org.wildfly.security.password.PasswordFactory;
-import org.wildfly.security.password.interfaces.BCryptPassword;
-import org.wildfly.security.password.spec.ClearPasswordSpec;
 
 import java.util.List;
 
