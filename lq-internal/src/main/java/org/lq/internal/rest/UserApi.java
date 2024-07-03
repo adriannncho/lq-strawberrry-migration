@@ -120,7 +120,6 @@ public class UserApi {
     @POST
     @Transactional
     @Path("/register")
-    @Consumes(MediaType.APPLICATION_JSON)
     @APIResponses(
             value = {
                     @APIResponse(
@@ -162,10 +161,265 @@ public class UserApi {
             summary = "Registro de usuario",
             description = "Registra un nuevo usuario en la aplicación"
     )
-    public Response saveProduct(
+    public Response saveUser(
             @Valid UserDTO userDTO
     ){
         userService.saveUser(userDTO);
         return Response.status(Response.Status.CREATED).build();
     }
+
+    @PUT
+    @Transactional
+    @Path("/updateUser")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Usuario actualizado exitosamente."
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "Errores de validación de entrada",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            example = """
+                                                    {
+                                                      
+                                                    }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Actualización de usuario",
+            description = "Actualiza un usuario en la aplicación"
+    )
+    public Response updaterUser(
+            @Valid UserDTO userDTO
+    ){
+        userService.updateUser( userDTO);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PUT
+    @Transactional
+    @Path("/deleteUser/{userId}")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Usuario eliminado exitosamente."
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "Errores de validación de entrada",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            example = """
+                                                    {
+                                                      
+                                                    }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Eliminación de usuario",
+            description = "Elimina un usuario en la aplicación"
+    )
+    public Response deleteUser(
+            @PathParam("userId") Long userId
+    ){
+        userService.deleteUser(userId);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @GET
+    @Path("/typeDocument")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se obtiene el listado de tipos de documentos correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No hay registros de tipos de documentos en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No se encontraron registros de tipos de documentos."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener listado de tipos de documentos",
+            description = "Se obtiene el listado con la información de los tipos de documentos registrados"
+    )
+    public Response getTypeDocument() {
+        return Response.ok().entity(userService.getTypeDocument()).build();
+    }
+
+    @GET
+    @Path("/role")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se obtiene el listado de roles correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No hay registros de roles en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No se encontraron registros de roles."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener listado de roles",
+            description = "Se obtiene el listado con la información de los roles registrados"
+    )
+    public Response getRole() {
+        return Response.ok().entity(userService.getRole()).build();
+    }
+
+    @GET
+    @Path("/genderUser")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se obtiene el listado de géneros correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No hay registros de géneros en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No se encontraron registros de géneros."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener listado de géneros",
+            description = "Se obtiene el listado con la información de los géneros registrados"
+    )
+    public Response getGenderUser() {
+        return Response.ok().entity(userService.getGenderUser()).build();
+    }
+
+    @GET
+    @Path("/statusUser")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se obtiene el listado de estados correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No hay registros de estados en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No se encontraron registros de estados."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener listado de estados",
+            description = "Se obtiene el listado con la información de los estados registrados"
+    )
+    public Response getStatusUser() {
+        return Response.ok().entity(userService.getStatusUser()).build();
+    }
+
 }

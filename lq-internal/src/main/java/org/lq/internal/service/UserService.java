@@ -4,11 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
-import org.lq.internal.domain.user.LoginDTO;
-import org.lq.internal.domain.user.User;
-import org.lq.internal.domain.user.UserDTO;
+import org.lq.internal.domain.user.*;
 import org.lq.internal.helper.exception.PVException;
-import org.lq.internal.repository.UserRepository;
+import org.lq.internal.repository.*;
 import org.mindrot.jbcrypt.BCrypt;
 import org.wildfly.security.password.Password;
 import org.wildfly.security.password.PasswordFactory;
@@ -24,6 +22,18 @@ public class UserService {
 
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    TypeDocumentRepository typeDocumentRepository;
+
+    @Inject
+    RoleRepository roleRepository;
+
+    @Inject
+    GenderUserRepository genderUserRepository;
+
+    @Inject
+    StatusUserRepository statusUserRepository;
 
     public List<User> getUsers() throws PVException {
         LOG.infof("@getUsers SERV > Start service to obtain the users");
@@ -111,4 +121,112 @@ public class UserService {
             throw new PVException(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Error validando la contraseña.");
         }
     }
+
+    public void updateUser(UserDTO userDTO) throws PVException {
+        LOG.infof("@updateUser SERV > Start service to update user with ID %d", userDTO.getDocumentNumber());
+
+        User existingUser = userRepository.findById(userDTO.getDocumentNumber());
+        if (existingUser == null) {
+            LOG.warnf("@updateUser SERV > User with ID %d not found", userDTO.getDocumentNumber());
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Usuario no encontrado.");
+        }
+
+        existingUser.setUserTypeId(userDTO.getUserTypeId());
+        existingUser.setGenderId(userDTO.getGenderId());
+        existingUser.setDocumentTypeId(userDTO.getDocumentTypeId());
+        existingUser.setUserStatusId(userDTO.getUserStatusId());
+        existingUser.setFirstName(userDTO.getFirstName());
+        existingUser.setSecondName(userDTO.getSecondName());
+        existingUser.setFirstLastName(userDTO.getFirstLastName());
+        existingUser.setSecondLastName(userDTO.getSecondLastName());
+        existingUser.setPhone(userDTO.getPhone());
+        existingUser.setAddress(userDTO.getAddress());
+        existingUser.setEmail(userDTO.getEmail());
+
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            String encryptedPassword = encryptPassword(userDTO.getPassword());
+            existingUser.setPassword(encryptedPassword);
+        }
+
+        LOG.infof("@updateUser SERV > Updating user with ID %d", userDTO.getDocumentNumber());
+        userRepository.persist(existingUser);
+
+        LOG.infof("@updateUser SERV > User with ID %d updated successfully", userDTO.getDocumentNumber());
+    }
+
+    public void deleteUser(Long userId) throws PVException {
+        LOG.infof("@deleteUser SERV > Start service to delete user with ID %d", userId);
+
+        User existingUser = userRepository.findById(userId);
+        if (existingUser == null) {
+            LOG.warnf("@deleteUser SERV > User with ID %d not found", userId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Usuario no encontrado.");
+        }
+        LOG.infof("@deleteUser SERV > Deactivating user with ID %d", userId);
+        existingUser.setUserStatusId(2);
+        userRepository.persist(existingUser);
+
+        LOG.infof("@deleteUser SERV > User with ID %d deleted successfully", userId);
+    }
+
+    public List<TypeDocument> getTypeDocument() throws PVException {
+        LOG.infof("@getTypeDocument SERV > Start service to obtain type documents");
+
+        List<TypeDocument> typeDocumentList = typeDocumentRepository.listAll();
+        LOG.infof("@getTypeDocument SERV > Retrieved list of type documents");
+
+        if (typeDocumentList.isEmpty()) {
+            LOG.warnf("@getTypeDocument SERV > No type documents found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron tipos de documentos.");
+        }
+
+        LOG.infof("@getTypeDocument SERV > Finish service to obtain type documents");
+        return typeDocumentList;
+    }
+
+    public List<TypeUser> getRole() throws PVException {
+        LOG.infof("@getRole SERV > Start service to obtain roles");
+
+        List<TypeUser> roleList = roleRepository.listAll();
+        LOG.infof("@getRole SERV > Retrieved list of roles");
+
+        if (roleList.isEmpty()) {
+            LOG.warnf("@getRole SERV > No roles found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron roles registrados.");
+        }
+
+        LOG.infof("@getRole SERV > Finish service to obtain roles");
+        return roleList;
+    }
+
+    public List<GenderUser> getGenderUser() throws PVException {
+        LOG.infof("@getGenderUser SERV > Start service to obtain genders");
+
+        List<GenderUser> genderUserList = genderUserRepository.listAll();
+        LOG.infof("@getGenderUser SERV > Retrieved list of genders");
+
+        if (genderUserList.isEmpty()) {
+            LOG.warnf("@getGenderUser SERV > No genders found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron géneros registrados.");
+        }
+
+        LOG.infof("@getGenderUser SERV > Finish service to obtain genders");
+        return genderUserList;
+    }
+
+    public List<StatusUser> getStatusUser() throws PVException {
+        LOG.infof("@getStatusUser SERV > Start service to obtain user statuses");
+
+        List<StatusUser> statusUserList = statusUserRepository.listAll();
+        LOG.infof("@getStatusUser SERV > Retrieved list of user statuses");
+
+        if (statusUserList.isEmpty()) {
+            LOG.warnf("@getStatusUser SERV > No user statuses found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron estados de usuario registrados.");
+        }
+
+        LOG.infof("@getStatusUser SERV > Finish service to obtain user statuses");
+        return statusUserList;
+    }
+
 }

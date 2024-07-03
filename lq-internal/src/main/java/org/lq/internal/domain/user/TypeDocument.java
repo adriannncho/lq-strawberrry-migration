@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "tipo_documento")
+@Table(name = "TIPO_DOCUMENTO")
 public class TypeDocument {
 
     @Id
