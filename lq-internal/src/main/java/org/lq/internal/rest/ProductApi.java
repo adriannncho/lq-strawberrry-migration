@@ -1,8 +1,10 @@
 package org.lq.internal.rest;
 
 import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -91,63 +93,5 @@ public class ProductApi {
     )
     public Response getProducts(){
         return Response.ok().entity(productService.getProducts()).build();
-    }
-
-    @GET
-    @Path("/product/{numberProduct}")
-    @APIResponses(
-            value = {
-                    @APIResponse(
-                            responseCode = "200",
-                            description = "Se obtiene el producto por número correctamente",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(
-                                            type = SchemaType.ARRAY,
-                                            example = """
-                                                    {
-                                                        "prdLvlNumber": "2",
-                                                        "name": "Fresas con Chocolate",
-                                                        "description": "Fresas frescas bañadas en chocolate derretido",
-                                                        "value": 12000
-                                                    }"""
-                                    )
-                            )
-                    ),
-                    @APIResponse(
-                            responseCode = "404",
-                            description = "No hay registros de productos en base de datos.",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(
-                                            implementation = ProblemException.class,
-                                            properties = {
-                                                    @SchemaProperty(
-                                                            name = "detail",
-                                                            example = "No se encontraron registro de productos con el número ingresado."
-                                                    )
-                                            }
-                                    )
-                            )
-                    ),
-                    @APIResponse(
-                            responseCode = "500",
-                            description = "Error interno de servidor",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
-                            )
-                    )
-            }
-    )
-    @Operation(
-            summary = "Obtener producto con el número ingresado",
-            description = "Se obtiene el producto con el número ingresado"
-    )
-    public Response getProductNumber(
-            @NotNull(message = "El número de producto no puede ser menor a cero")
-            @PathParam("numberProduct") String numberProduct
-    ){
-        return Response.ok().entity(productService.getProductNumber(numberProduct)).build();
     }
 }
