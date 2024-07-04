@@ -20,6 +20,9 @@ public class UserService {
     UserRepository userRepository;
 
     @Inject
+    UserDataRepository userDataRepository;
+
+    @Inject
     TypeDocumentRepository typeDocumentRepository;
 
     @Inject
@@ -31,23 +34,19 @@ public class UserService {
     @Inject
     StatusUserRepository statusUserRepository;
 
-    public List<User> getUsers() throws PVException {
+    public List<UserData> getUsers() throws PVException {
         LOG.infof("@getUsers SERV > Start service to obtain the users");
 
-        List<User> users = userRepository.listAll();
+        List<UserData> users = userDataRepository.listAll();
         LOG.infof("@getUsers SERV > Retrieved list of users");
 
-        validateUser(users);
-
-        LOG.infof("@getUsers SERV > Finish service to obtain the users");
-        return users;
-    }
-
-    private void validateUser(List<User> users) {
         if (users.isEmpty()) {
             LOG.warnf("@getUsers SERV > No users found");
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron usuarios");
         }
+
+        LOG.infof("@getUsers SERV > Finish service to obtain the users");
+        return users;
     }
 
     public void validateLogin(LoginDTO loginDTO) throws PVException {
