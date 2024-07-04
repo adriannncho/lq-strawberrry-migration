@@ -112,8 +112,7 @@ public class UserApi {
     public Response validateLogin(
             @Valid LoginDTO loginDTO
     ) {
-        userService.validateLogin(loginDTO);
-        return Response.ok().build();
+        return Response.ok().entity(userService.validateLogin(loginDTO)).build();
     }
 
     @POST

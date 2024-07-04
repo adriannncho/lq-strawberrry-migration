@@ -49,7 +49,7 @@ public class UserService {
         return users;
     }
 
-    public void validateLogin(LoginDTO loginDTO) throws PVException {
+    public UserData validateLogin(LoginDTO loginDTO) throws PVException {
         LOG.infof("@validateLogin SERV > Start service to validate the user");
 
         User user = userRepository.findByDocumentNumber(loginDTO.getDocument());
@@ -64,6 +64,8 @@ public class UserService {
         }
 
         LOG.infof("@validateLogin SERV > Finish service to validate the user");
+
+        return userDataRepository.findByDocumentNumber(loginDTO.getDocument());
     }
 
     public void saveUser(UserDTO userDTO) throws PVException {
