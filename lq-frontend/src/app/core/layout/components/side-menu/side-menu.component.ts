@@ -1,13 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-base',
-  templateUrl: './base.component.html',
-  styleUrls: ['./base.component.css']
+  selector: 'app-side-menu',
+  templateUrl: './side-menu.component.html',
+  styleUrls: ['./side-menu.component.css']
 })
-export class BaseComponent {
+export class SideMenu {
 
   width = window.innerWidth;
+  isCollapsed = false;
 
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width
@@ -17,5 +18,9 @@ export class BaseComponent {
     if(event.target instanceof Window) {
       this.width = event.target.innerWidth;
     }
+  }
+
+  toggleCollapsed(): void {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

@@ -1,0 +1,32 @@
+.headerContainer {
+  padding: 0;
+  background-color: var(--color-neutral-white);
+}
+
+.containerelements {
+  width: 100%;
+  justify-content: end;
+}
+
+.btnHeader {
+  border: none;
+  color: var(--color-neutral-black);
+  transition: all 0.3s;
+}
+
+.btnHeader:hover {
+  color: var(--color-primary-blue);
+  font-size: 16px;
+}
+
+.btnUser {
+  border: none;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.containerBtnUser {
+  display: flex;
+  align-items: center;
+}
