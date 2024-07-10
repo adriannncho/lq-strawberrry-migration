@@ -57,7 +57,9 @@ public class ProductService {
 
         LOG.infof("@saveProduct SERV > Creating product entity from DTO");
         Product product = Product.builder()
+                .prdLvlNumber(productDTO.getPrdLvlNumber())
                 .name(productDTO.getName())
+                .size(productDTO.getSize())
                 .description(productDTO.getDescription())
                 .value(productDTO.getValue())
                 .build();
@@ -73,7 +75,7 @@ public class ProductService {
         LOG.infof("@updateProduct SERV > Start service to update product with number %d", product.getPrdLvlNumber());
 
         LOG.infof("@updateProduct SERV > Searching for existing product with number %d", product.getPrdLvlNumber());
-        Product existingProduct = productRepository.findById(product.getPrdLvlNumber());
+        Product existingProduct = productRepository.findById((long) product.getPrdLvlNumber());
         if (existingProduct == null) {
             LOG.warnf("@updateProduct SERV > No product found with number %d", product.getPrdLvlNumber());
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El producto no fue encontrado.");
@@ -83,7 +85,7 @@ public class ProductService {
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setValue(product.getValue() != null ? product.getValue() : 0L);
-        existingProduct.setSize(product.getSize() != null ? product.getSize() : 0L);
+        existingProduct.setSize(product.getSize());
 
         LOG.infof("@updateProduct SERV > Persisting updated product with number %d", product.getPrdLvlNumber());
         productRepository.persist(existingProduct);

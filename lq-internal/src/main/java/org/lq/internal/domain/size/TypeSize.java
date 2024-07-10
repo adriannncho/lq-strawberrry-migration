@@ -21,7 +21,7 @@ public class TypeSize implements Serializable {
 
     @Id
     @Column(name = "id_tipo_tamanio", length = 36)
-    private Long idTipoTamanio;
+    private int idTipoTamanio;
 
     @Column(name = "nombre", length = 36)
     private String name;

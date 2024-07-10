@@ -133,9 +133,7 @@ public class IngredientService {
         }
 
         existingIngredientType.setName(ingredientTypeDTO.getName());
-        if (ingredientTypeDTO.getActive() != null) {
-            existingIngredientType.setActive(ingredientTypeDTO.getActive());
-        }
+        existingIngredientType.setActive(ingredientTypeDTO.getActive());
 
         LOG.infof("@updateIngredientType SERV > Updating ingredient type with ID %d", ingredientTypeDTO.getIngredientTypeId());
         ingredientTypeRepository.persist(existingIngredientType);

@@ -11,15 +11,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "producto")
+@Table(name = "PRODUCTO")
 public class Product implements Serializable {
 
     @Id
     @Column(name = "ID_PRODUCTO", length = 36)
-    private Long prdLvlNumber;
+    private int prdLvlNumber;
 
     @Column(name = "ID_TAMANIO", length = 36)
-    private Long size;
+    private int size;
 
     @Column(name = "NOMBRE")
     private String name;

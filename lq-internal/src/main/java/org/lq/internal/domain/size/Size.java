@@ -18,7 +18,7 @@ public class Size implements Serializable {
 
     @Id
     @Column(name = "id_tamanio", length = 36)
-    private Long idTamanio;
+    private int idTamanio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_tamanio", referencedColumnName = "id_tipo_tamanio")

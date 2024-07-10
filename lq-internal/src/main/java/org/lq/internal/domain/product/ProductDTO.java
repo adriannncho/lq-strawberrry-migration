@@ -8,10 +8,10 @@ import lombok.Data;
 public class ProductDTO {
 
     @NotNull(message = "El campo prdLvlNumber (codigo de producto) no puede ser nulo o estar vacío.")
-    private Long prdLvlNumber;
+    private int prdLvlNumber;
 
     @NotNull(message = "El campo size (codigo de tamaño) no puede ser nulo o estar vacío.")
-    private Long size;
+    private int size;
 
     @NotNull(message = "El campo name (nombre) no puede ser nulo o estar vacío.")
     private String name;
