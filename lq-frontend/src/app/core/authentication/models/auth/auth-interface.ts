@@ -33,3 +33,8 @@ export interface User {
   email: string;
   password: string;
 }
+
+export enum RolesLQFresa {
+  _ADMIN_ = "Administrador",
+  _WAITER_ = "Mesero"
+}
