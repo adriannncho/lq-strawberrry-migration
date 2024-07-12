@@ -57,8 +57,13 @@
       <router-outlet></router-outlet>
     </div>
   </nz-content>
-  <nz-footer style="text-align: center;">
+  <nz-footer style="text-align: center;" *ngIf="width >= 800">
     <p>&copy; 2024 La Q'Fresa. Todos los derechos reservados.</p>
+  </nz-footer>
+  <nz-footer *ngIf="width < 800" class="nz-footerResponsive">
+   <app-menu-footer
+   >
+   </app-menu-footer>
   </nz-footer>
 </nz-layout>
 

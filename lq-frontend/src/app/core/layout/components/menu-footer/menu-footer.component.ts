@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-side-menu',
+  selector: 'app-menu-footer',
   templateUrl: './menu-footer.component.html',
   styleUrls: ['./menu-footer.component.css']
 })
