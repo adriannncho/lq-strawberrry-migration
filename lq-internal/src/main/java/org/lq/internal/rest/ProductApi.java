@@ -89,7 +89,7 @@ public class ProductApi {
             summary = "Obtener listado de productos",
             description = "Se obtiene el listado con la información de los productos registrados"
     )
-    public Response getProducts(){
+    public Response getProducts() {
         return Response.ok().entity(productService.getProducts()).build();
     }
 
@@ -147,7 +147,7 @@ public class ProductApi {
     public Response getProductNumber(
             @NotNull(message = "El número de producto no puede ser menor a cero")
             @PathParam("numberProduct") String numberProduct
-    ){
+    ) {
         return Response.ok().entity(productService.getProductNumber(numberProduct)).build();
     }
 }
