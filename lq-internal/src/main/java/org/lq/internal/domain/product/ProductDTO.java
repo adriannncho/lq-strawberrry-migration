@@ -1,8 +1,12 @@
 package org.lq.internal.domain.product;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import org.lq.internal.domain.detailProduct.DetailProduct;
+
+import java.util.List;
 
 @Data
 public class ProductDTO {
@@ -22,4 +26,7 @@ public class ProductDTO {
     @NotNull(message = "El campo value (precio) no puede ser nulo o estar vacío.")
     @Positive(message = "El campo value (precio) no puede ser igual o menor a cero.")
     private Long value;
+
+    @NotEmpty(message = "Los campos del detalle del producto no pueden estar vacios.")
+    private List<DetailProduct> detailProduct;
 }
