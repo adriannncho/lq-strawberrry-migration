@@ -26,9 +26,6 @@ export class AuthService {
     if(role) {
       localStorage.setItem('isLoggedActive', 'true');
       localStorage.setItem('loggedRole', 'role');
-      setTimeout(() => {
-        localStorage.removeItem('isLoggedActive');
-      },10000);
     }
   }
 
