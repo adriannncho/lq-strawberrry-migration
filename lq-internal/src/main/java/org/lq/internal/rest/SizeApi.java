@@ -14,7 +14,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.lq.internal.helper.exception.HandlerException;
 import org.lq.internal.helper.exception.ProblemException;
-import org.lq.internal.service.ProductService;
 import org.lq.internal.service.SizeService;
 
 @Path("/internal")
