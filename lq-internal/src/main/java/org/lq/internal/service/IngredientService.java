@@ -4,8 +4,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.*;
 import org.lq.internal.helper.exception.PVException;
+import org.lq.internal.repository.DetailProductRepository;
 import org.lq.internal.repository.IngredientDataRepository;
 import org.lq.internal.repository.IngredientRepository;
 import org.lq.internal.repository.IngredientTypeRepository;
@@ -25,6 +27,9 @@ public class IngredientService {
 
     @Inject
     IngredientTypeRepository ingredientTypeRepository;
+
+    @Inject
+    DetailProductRepository detailProductRepository;
 
     public List<IngredientData> getIngredient() throws PVException {
         LOG.infof("@getIngredient SERV > Start service to obtain the ingredients");
@@ -85,13 +90,20 @@ public class IngredientService {
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Ingrediente no encontrado.");
         }
 
+        LOG.infof("@deleteIngredient SERV > Checking if ingredient with ID %d is used in any product", ingredientId);
+        List<DetailProduct> detailProductsUsingIngredient = detailProductRepository.list("idIngredient", ingredientId);
+        if (!detailProductsUsingIngredient.isEmpty()) {
+            LOG.warnf("@deleteIngredient SERV > Ingredient with ID %d is used in one or more products", ingredientId);
+            throw new PVException(Response.Status.CONFLICT.getStatusCode(), "El ingrediente está siendo utilizado en uno o más productos y no se puede desactivar.");
+        }
+
         LOG.infof("@deleteIngredient SERV > Deactivating ingredient with ID %d", ingredientId);
         existingIngredient.setActive(false);
-
         ingredientRepository.persist(existingIngredient);
 
-        LOG.infof("@deleteIngredient SERV > Ingredient with ID %d deleted successfully", ingredientId);
+        LOG.infof("@deleteIngredient SERV > Ingredient with ID %d deactivated successfully", ingredientId);
     }
+
 
     public List<TypeIngredient> getIngredientType() throws PVException {
         LOG.info("@getIngredientType SERV > Start service to obtain the ingredient types");
@@ -133,9 +145,7 @@ public class IngredientService {
         }
 
         existingIngredientType.setName(ingredientTypeDTO.getName());
-        if (ingredientTypeDTO.getActive() != null) {
-            existingIngredientType.setActive(ingredientTypeDTO.getActive());
-        }
+        existingIngredientType.setActive(ingredientTypeDTO.getActive());
 
         LOG.infof("@updateIngredientType SERV > Updating ingredient type with ID %d", ingredientTypeDTO.getIngredientTypeId());
         ingredientTypeRepository.persist(existingIngredientType);
