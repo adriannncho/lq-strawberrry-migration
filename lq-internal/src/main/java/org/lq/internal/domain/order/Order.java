@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.lq.internal.domain.detailOrder.DetailOrder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -29,10 +30,10 @@ public class Order {
     private String nameCustomer;
 
     @Column(name = "FECHA_HORA")
-    private String creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = "TOTAL")
-    private String total;
+    private Long total;
 
     @Transient
     private List<DetailOrder> detailOrders;

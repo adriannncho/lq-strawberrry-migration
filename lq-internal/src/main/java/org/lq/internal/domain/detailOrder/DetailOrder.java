@@ -1,10 +1,12 @@
 package org.lq.internal.domain.detailOrder;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lq.internal.domain.product.Product;
 
 import java.io.Serializable;
 
@@ -24,8 +26,9 @@ public class DetailOrder implements Serializable {
     @Column(name = "ID_PEDIDO", length = 36)
     private int idOrder;
 
-    @Column(name = "ID_PRODUCTO", length = 36)
-    private int idProduct;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO")
+    private Product product;
 
     @Column(name = "CANTIDAD")
     private Long quantity;

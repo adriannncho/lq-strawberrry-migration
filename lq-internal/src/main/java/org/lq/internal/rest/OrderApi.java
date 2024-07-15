@@ -1,10 +1,9 @@
 package org.lq.internal.rest;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -14,6 +13,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.lq.internal.domain.order.OrderDTO;
+import org.lq.internal.domain.product.ProductDTO;
 import org.lq.internal.helper.exception.HandlerException;
 import org.lq.internal.helper.exception.ProblemException;
 import org.lq.internal.service.OrderService;
@@ -77,4 +78,57 @@ public class OrderApi {
     public Response getProducts() {
         return Response.ok().entity(orderService.getOrders()).build();
     }
+
+    @POST
+    @Transactional
+    @Path("/order")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se crea el producto correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "No hay registros de productos en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = """
+                                                                        [
+                                                                                "El campo description (descripción) no puede ser nulo o estar vacío.",
+                                                                                "El campo prdLvlNumber (número producto) no puede ser nulo o estar vacío.",
+                                                                                "El campo value (precio) no puede ser igual o menor a cero."
+                                                                        ]
+                                                                    """
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Guardar el producto",
+            description = "Se guarda el producto de forma exitosa"
+    )
+    public Response createOrder(
+            @Valid OrderDTO orderDTO
+    ){
+        orderService.createOrder(orderDTO);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
 }
