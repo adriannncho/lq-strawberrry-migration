@@ -8,6 +8,7 @@ import org.lq.internal.domain.detailOrder.DetailOrder;
 import org.lq.internal.domain.ingredient.DetailAdditional;
 import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderDTO;
+import org.lq.internal.domain.order.OrderStatus;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.DetailAdditionalRepository;
 import org.lq.internal.repository.DetailOrderRepository;
@@ -15,7 +16,6 @@ import org.lq.internal.repository.OrderRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -68,6 +68,7 @@ public class OrderService {
                 .total(orderDTO.getTotal())
                 .nameCustomer(orderDTO.getNameCustomer())
                 .idUser(orderDTO.getIdUser())
+                .status(OrderStatus.PENDIENTE)
                 .build();
 
         LOG.infof("@createOrder SERV > Persisting order: %s", order);
@@ -104,5 +105,45 @@ public class OrderService {
         }
 
         LOG.infof("@createOrder SERV > End service to create the order");
+    }
+
+    public void updateOrderStatus(long orderId) throws PVException {
+        LOG.infof("@updateOrderStatus SERV > Start service to update the status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());
+
+        Order order = orderRepository.findById(orderId);
+        if (order == null) {
+            LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido no encontrado");
+        }
+
+        order.setStatus(OrderStatus.COMPLETADO);
+        orderRepository.persist(order);
+
+        LOG.infof("@updateOrderStatus SERV > Updated status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());
+    }
+
+    public List<Order> ordersPending(){
+
+        List<Order> orderList = orderRepository.findOrdersPending();
+
+        if (orderList.isEmpty()) {
+            LOG.warnf("@getOrders SERV > No orders found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron pedidos pendientes");
+        }
+
+        for (Order order : orderList) {
+            LOG.infof("@getOrders SERV > Fetching detail orders for order ID %d", order.getIdOrder());
+            List<DetailOrder> detailOrders = detailOrderRepository.list("idOrder", order.getIdOrder());
+
+            for (DetailOrder detailOrder : detailOrders) {
+                LOG.infof("@getOrders SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+            }
+
+            order.setDetailOrders(detailOrders);
+            LOG.infof("@getOrders SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+        }
+
+        LOG.infof("@getOrders SERV > Finish service to obtain the orders");
+        return orderList;
     }
 }

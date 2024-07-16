@@ -35,6 +35,10 @@ public class Order {
     @Column(name = "TOTAL")
     private Long total;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ESTADO")
+    private OrderStatus status;
+
     @Transient
     private List<DetailOrder> detailOrders;
 }
