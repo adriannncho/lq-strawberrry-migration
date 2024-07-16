@@ -92,7 +92,7 @@ public class ProductApi {
             summary = "Obtener listado de productos",
             description = "Se obtiene el listado con la información de los productos registrados"
     )
-    public Response getProducts(){
+    public Response getProducts() {
         return Response.ok().entity(productService.getProducts()).build();
     }
 

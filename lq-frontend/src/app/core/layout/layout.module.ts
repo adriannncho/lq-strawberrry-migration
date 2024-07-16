@@ -5,11 +5,13 @@ import { RouterModule } from '@angular/router';
 import { NgZorroModule } from '../../shared/modules/ng-zorro.module';
 import { BaseComponent } from './components/base/base.component';
 import { SideMenu } from './components/side-menu/side-menu.component';
+import { MenuFooter } from './components/menu-footer/menu-footer.component'
 
 @NgModule({
   declarations: [
     BaseComponent,
-    SideMenu
+    SideMenu,
+    MenuFooter
   ],
   imports: [
     CommonModule,

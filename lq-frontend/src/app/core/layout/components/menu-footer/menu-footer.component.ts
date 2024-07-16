@@ -1,28 +1,19 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { AuthService } from 'src/app/core/authentication/services/auth.service';
 
 @Component({
-  selector: 'app-side-menu',
-  templateUrl: './side-menu.component.html',
-  styleUrls: ['./side-menu.component.css']
+  selector: 'app-menu-footer',
+  templateUrl: './menu-footer.component.html',
+  styleUrls: ['./menu-footer.component.css']
 })
-export class SideMenu implements OnInit{
+export class MenuFooter {
 
   width = window.innerWidth;
 
   @Input() isVisible!: boolean;
 
+  @Output() showMenuSide = new EventEmitter<boolean>();
   @Output() hideSideMenu = new EventEmitter<boolean>();
 
-  role!: string | null;
-
-  constructor(
-    private authService : AuthService
-  ){}
-
-  ngOnInit(): void {
-    this.role = this.authService.getRoleLogged();
-  }
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width
    * @param event Evento con los cambios en el ancho de la pantallla
@@ -33,6 +24,10 @@ export class SideMenu implements OnInit{
     }
   }
 
+  showMenu() {
+    this.showMenuSide.emit(true);
+  }
+
   hideMenu(){
     document.getElementById("menuContainer")?.classList.remove("menuContainerAnimIN");
     document.getElementById("menuContainer")?.classList.add("menuContainerAnimOUT");
@@ -40,9 +35,5 @@ export class SideMenu implements OnInit{
       this.isVisible = false;
       this.hideSideMenu.emit(false);
     }, 600);
-  }
-
-  logout() {
-    this.authService.logoutUser();
   }
 }

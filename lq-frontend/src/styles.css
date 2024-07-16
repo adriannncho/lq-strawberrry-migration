@@ -80,13 +80,7 @@ body {
   color: var(--color-primary-gray);
   min-width: 350px;
 }
-
-body {
-  font-family: 'BundayCleanYYY-SeBoldUp', 'Lato';
-  color: var(--color-primary-gray);
-  min-width: 350px;
-}
-
+d
 nz-form-label {
   font-style: normal;
   font-weight: 700;
@@ -265,4 +259,23 @@ a:hover {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.customCanvas{
+  width: 100%; 
+  height: 1px; 
+  background-color: var(--color-neutral-gray-warm);
+}
+
+@keyframes showSideMenuAnim {
+  100% {
+    transform: translateX(65vw);
+  }
+}
+
+@keyframes hideSideMenuAnim {
+  100% {
+    transform: translateX(-65vw);
+    z-index: 1100;
+  }
 }

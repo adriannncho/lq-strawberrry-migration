@@ -1,39 +1,69 @@
-.sideMenuContainer {
-  position: absolute;
-  z-index: 1000;
-  width: 5em;
-  height: 100%;
-  transition: all 0,3s;
+
+.menuBackground {
+  background-color: #646d674d;
+  height: 200vh;
+  width: 200vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1100;
 }
 
-.sideMenuCollapse {
-  position: absolute;
-  z-index: 1000;
-  width: 15em;
+.menuContainerAnimIN {
+  background-color: white;
   height: 100%;
-  transition: all 0.3s;
+  width: min(65vw, 500px);
+  position: fixed;
+  top: 0;
+  z-index: 1100;
+  left: -65vw;
+  animation: showSideMenuAnim 0.7s forwards;
 }
 
-.containerOptions {
-  height: 89vh;
+.menuContainerAnimOUT {
+    background-color: white;
+    height: 100%;
+    width: min(65vw, 500px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    animation: hideSideMenuAnim 0.7s forwards;
+}
+
+.containerOptionsMenu {
+  height: 100%;
   width: 100%;
+  overflow: auto;
 }
 
-.buttonMenu {
-  margin-left: 1.3em;
+.containerPhotoProfile {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.containerInfouser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.infoUser {
+  width: 80%;
+  border-radius: 20px;
+  color: var(--color-neutral-white);
   background-color: var(--color-primary-blue);
-  border: var(--color-primary-blue-ash);
-  transition: all 0.3s;
 }
 
-.buttonMenu:hover {
-  width: 35px;
-}
-
-li {
-  color: var(--color-neutral-black);
-}
-
-li:hover {
-  color: var(--color-primary-blue);
+.btnLogout {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 15%;
 }
