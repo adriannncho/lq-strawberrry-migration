@@ -11,6 +11,7 @@ export class MenuFooter {
 
   @Input() isVisible!: boolean;
 
+  @Output() showMenuSide = new EventEmitter<boolean>();
   @Output() hideSideMenu = new EventEmitter<boolean>();
 
   /**
@@ -21,6 +22,10 @@ export class MenuFooter {
     if(event.target instanceof Window) {
       this.width = event.target.innerWidth;
     }
+  }
+
+  showMenu() {
+    this.showMenuSide.emit(true);
   }
 
   hideMenu(){

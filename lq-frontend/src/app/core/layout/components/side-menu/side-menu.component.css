@@ -60,3 +60,10 @@
   color: var(--color-neutral-white);
   background-color: var(--color-primary-blue);
 }
+
+.btnLogout {
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 15%;
+}

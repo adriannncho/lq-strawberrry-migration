@@ -10,7 +10,7 @@
     </div>
     <div nz-col class="containerInfouser">
       <span class="infoUser">Nombre de usuario</span>
-      <span class="infoUser">Admin</span>
+      <span class="infoUser"> {{ role ? role : 'Sin rol' }} </span>
     </div>
     <div 
     nz-col nzSpan="24">
@@ -25,7 +25,7 @@
         nzSelected
         >
           <span nz-icon nzType="appstore"></span>
-          <span>Dasboarh</span>
+          <span>Dashboard</span>
         </li>
         <li
         nz-menu-item
@@ -58,6 +58,17 @@
           <span>Ventas</span>
         </li>
       </ul>
+      <div nz-col nzSpan="24">
+      <canvas class="customCanvas"></canvas>
+    </div>
+      <div nz-row class="btnLogout">
+        <div nz-col>
+          <button nz-button (click)="logout()">
+            Cerrar sesión
+            <span nz-icon nzType="logout" nzTheme="outline"></span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

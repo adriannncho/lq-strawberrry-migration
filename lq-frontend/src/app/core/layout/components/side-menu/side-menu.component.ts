@@ -1,11 +1,12 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { AuthService } from 'src/app/core/authentication/services/auth.service';
 
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.css']
 })
-export class SideMenu {
+export class SideMenu implements OnInit{
 
   width = window.innerWidth;
 
@@ -13,6 +14,15 @@ export class SideMenu {
 
   @Output() hideSideMenu = new EventEmitter<boolean>();
 
+  role!: string | null;
+
+  constructor(
+    private authService : AuthService
+  ){}
+
+  ngOnInit(): void {
+    this.role = this.authService.getRoleLogged();
+  }
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width
    * @param event Evento con los cambios en el ancho de la pantallla
@@ -30,5 +40,9 @@ export class SideMenu {
       this.isVisible = false;
       this.hideSideMenu.emit(false);
     }, 600);
+  }
+
+  logout() {
+    this.authService.logoutUser();
   }
 }
