@@ -17,6 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.lq.internal.domain.sales.Sales;
 import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderDTO;
 import org.lq.internal.helper.exception.HandlerException;
@@ -202,7 +203,6 @@ public class OrderApi {
 
     @GET
     @Path("/ordersPending")
-    @Produces(MediaType.APPLICATION_JSON)
     @APIResponses(
             value = {
                     @APIResponse(
@@ -246,4 +246,9 @@ public class OrderApi {
     public Response getPendingOrders() {
         return Response.status(Response.Status.OK).entity(orderService.ordersPending()).build();
     }
+
+
+
+
+
 }

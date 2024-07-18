@@ -10,7 +10,7 @@ import java.util.List;
 @ApplicationScoped
 public class OrderRepository implements PanacheRepository<Order> {
 
-        public List<Order> findOrdersPending() {
+    public List<Order> findOrdersPending() {
         return list("status", OrderStatus.PENDIENTE);
     }
 }
