@@ -1,0 +1,37 @@
+<nz-card>
+  <div nz-row>
+    <div 
+    nz-col
+    class="buttonResume"
+    nzSpan="24">
+      <button
+      nz-button
+      nzType="primary"
+      disabled>
+        Resumen pedido
+      </button>
+    </div>
+  </div>
+  <div nz-row>
+    <div 
+    nz-col
+    nzSpan="24"
+    >
+      <nz-tabset nzType="card">
+        <nz-tab *ngFor="let tab of tabsList" [nzTitle]="titleTemplate">
+          <ng-template #titleTemplate>
+            <span nz-icon [nzType]="tab.icon"></span>
+           {{ tab.name }}
+          </ng-template>
+          <div nz-row>
+            <div nz-col nzSpan="24">
+              <nz-card>
+                producto numero 1
+              </nz-card>
+            </div>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+</nz-card>
