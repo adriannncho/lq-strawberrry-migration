@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tipo_tamanio")
+@Table(name = "TIPO_TAMANIO")
 public class TypeSize implements Serializable {
 
     @Id

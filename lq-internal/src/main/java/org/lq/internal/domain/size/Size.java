@@ -13,12 +13,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tamanio")
+@Table(name = "TAMANIO")
 public class Size implements Serializable {
 
     @Id
     @Column(name = "id_tamanio", length = 36)
     private int idTamanio;
+
+    @Column(name = "tamanio", length = 36)
+    private Long size;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_tamanio", referencedColumnName = "id_tipo_tamanio")
