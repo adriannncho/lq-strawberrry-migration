@@ -19,7 +19,7 @@ public class Product implements Serializable {
     @Id
     @Column(name = "ID_PRODUCTO", length = 36)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int prdLvlNumber;
+    private int idProduct;
 
     @Column(name = "ID_TAMANIO", length = 36)
     private int size;
@@ -32,6 +32,15 @@ public class Product implements Serializable {
 
     @Column(name = "PRECIO")
     private Long value;
+
+    @Column(name = "CANTIDAD_TOPPINGS_CLASICOS")
+    private int quantityClasic;
+
+    @Column(name = "CANTIDAD_TOPPINGS_PREMIUMS")
+    private int quantityPremium;
+
+    @Column(name = "CANTIDAD_SALSAS")
+    private int quantitySalsa;
 
     @Transient
     private List<DetailProduct> detailProduct;
