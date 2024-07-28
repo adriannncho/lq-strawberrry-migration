@@ -1,0 +1,48 @@
+<nz-card *ngIf="product">
+  <div nz-row>
+    <div nz-col nzSpan="24" class="centerContent">
+      <span class="nameProduct">
+        {{ product.name ? product.name : '---'}} ({{ product.sizeMap }})
+      </span>
+    </div>
+  </div>
+  <form nz-form [formGroup]="productForm">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="18">
+        <nz-form-item>
+          <nz-form-label nzSpan="24" nzRequired>
+            Nombre del cliente
+          </nz-form-label>
+          <nz-form-control nzSpan="24" nzHasFeedback [nzErrorTip]="ErrorTipName">
+            <input
+            nz-input 
+            type="text"
+            formControlName="customerName"
+            (blur)="isTouchedInput('customerName')">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="6">
+        <nz-form-item>
+          <nz-form-label nzSpan="24" nzRequired>
+            Cantidad
+          </nz-form-label>
+          <nz-form-control nzSpan="24" [nzErrorTip]="ErrorTipQuantity">
+            <input
+            nz-input 
+            type="number"
+            formControlName="quantity">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</nz-card>
+
+<ng-template #ErrorTipName>
+  <p *ngIf="productForm.controls['customerName'].hasError('required')">El nombre del cliente es requerido</p>
+  <p *ngIf="productForm.controls['customerName'].hasError('minlength')">El nombre del cliente debe tener mínimo 3 caracteres</p>
+</ng-template>
+<ng-template #ErrorTipQuantity>
+  <p>La cantidad es requerida</p>
+</ng-template>
