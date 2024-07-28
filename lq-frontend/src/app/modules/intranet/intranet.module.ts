@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IntranetRoutingModule } from './intranet-routing.module'
 import { NgZorroModule } from 'src/app/shared/modules/ng-zorro.module';
 import { HomeModule } from './home/home.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -12,7 +13,8 @@ import { HomeModule } from './home/home.module';
     NgZorroModule,
     CommonModule,
     IntranetRoutingModule,
-    HomeModule
+    HomeModule,
+    SharedModule
   ]
 })
 export class IntranetModule { }
