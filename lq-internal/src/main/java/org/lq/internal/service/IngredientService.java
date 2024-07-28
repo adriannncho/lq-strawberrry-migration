@@ -12,6 +12,7 @@ import org.lq.internal.repository.IngredientDataRepository;
 import org.lq.internal.repository.IngredientRepository;
 import org.lq.internal.repository.IngredientTypeRepository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @ApplicationScoped
@@ -35,6 +36,23 @@ public class IngredientService {
         LOG.infof("@getIngredient SERV > Start service to obtain the ingredients");
 
         List<IngredientData> ingredientData = ingredientDataRepository.listAll();
+        LOG.infof("@getIngredient SERV > Retrieved list of ingredients");
+
+        if (ingredientData.isEmpty()) {
+            LOG.warnf("@getIngredient SERV > No ingredients found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron ingredientes.");
+        }
+
+        LOG.infof("@getIngredient SERV > Finish service to obtain the ingredients");
+        return ingredientData;
+    }
+
+
+    public List<IngredientData> getIngredientToppings() throws PVException {
+        LOG.infof("@getIngredient SERV > Start service to obtain the ingredients");
+
+        List<String> types = Arrays.asList("Toppings Clásicos", "Toppings Premium", "Salsas", "Adicionales");
+        List<IngredientData> ingredientData = ingredientDataRepository.findActiveIngredientsByTypes(types);
         LOG.infof("@getIngredient SERV > Retrieved list of ingredients");
 
         if (ingredientData.isEmpty()) {

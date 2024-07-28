@@ -103,6 +103,80 @@ public class IngredientApi {
         return Response.ok().entity(ingredientService.getIngredient()).build();
     }
 
+    @GET
+    @Path("/ingredientsToppingsActive")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Se obtiene el listado de ingredientes correctamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            type = SchemaType.ARRAY,
+                                            example = """
+                                                    [
+                                                        {
+                                                            "ingredientId": 1,
+                                                            "ingredientType": {
+                                                                "ingredientTypeId": 1,
+                                                                "name": "Salsas"
+                                                            },
+                                                            "name": "Salsa de Fresa"
+                                                        },
+                                                        {
+                                                            "ingredientId": 2,
+                                                            "ingredientType": {
+                                                                "ingredientTypeId": 1,
+                                                                "name": "Salsas"
+                                                            },
+                                                            "name": "Salsa de Chocolate"
+                                                        },
+                                                        {
+                                                            "ingredientId": 3,
+                                                            "ingredientType": {
+                                                                "ingredientTypeId": 1,
+                                                                "name": "Salsas"
+                                                            },
+                                                            "name": "Salsa de Caramelo"
+                                                        }
+                                                    ]"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No hay registros de ingredientes en base de datos.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No se encontraron registros de ingredientes."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener listado de ingredientes",
+            description = "Se obtiene el listado con la información de los ingredientes registrados"
+    )
+    public Response getIngredientToppings() {
+        return Response.ok().entity(ingredientService.getIngredientToppings()).build();
+    }
 
     @POST
     @Transactional
