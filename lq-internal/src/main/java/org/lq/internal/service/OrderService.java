@@ -5,18 +5,20 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailOrder.DetailOrder;
+import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.DetailAdditional;
 import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderDTO;
 import org.lq.internal.domain.order.OrderStatus;
+import org.lq.internal.domain.product.Product;
 import org.lq.internal.helper.exception.PVException;
-import org.lq.internal.repository.DetailAdditionalRepository;
-import org.lq.internal.repository.DetailOrderRepository;
-import org.lq.internal.repository.OrderRepository;
+import org.lq.internal.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.spi.ToolProvider.findFirst;
 
 @ApplicationScoped
 public class OrderService {
@@ -31,6 +33,12 @@ public class OrderService {
 
     @Inject
     DetailAdditionalRepository detailAdditionalRepository;
+
+    @Inject
+    ProductRepository productRepository;
+
+    @Inject
+    DetailProductRepository detailProductRepository;
 
     public List<Order> getOrders() throws PVException {
         LOG.infof("@getOrders SERV > Start service to obtain the orders");
@@ -59,8 +67,7 @@ public class OrderService {
         return orders;
     }
 
-
-    public void createOrder(OrderDTO orderDTO){
+    public void createOrder(OrderDTO orderDTO) {
         LOG.infof("@createOrder SERV > Start service to create the order with data: %s", orderDTO);
 
         Order order = Order.builder()
@@ -76,11 +83,19 @@ public class OrderService {
 
         List<DetailOrder> persistedDetailOrders = new ArrayList<>();
         for (DetailOrder detailOrderDTO : orderDTO.getDetailOrders()) {
+            Product product = detailOrderDTO.getProduct();
+
+            Product existingProduct = productRepository.findById((long) product.getIdProduct());
+            if (existingProduct == null) {
+                productRepository.persist(product);
+                existingProduct = product;
+            }
+
             DetailOrder detailOrder = DetailOrder.builder()
                     .idOrder(order.getIdOrder())
                     .value(detailOrderDTO.getValue())
                     .quantity(detailOrderDTO.getQuantity())
-                    .product(detailOrderDTO.getProduct())
+                    .product(existingProduct)
                     .build();
 
             LOG.infof("@createOrder SERV > Persisting detail order: %s", detailOrder);
@@ -92,7 +107,7 @@ public class OrderService {
 
         if (orderDTO.getDetailAdditionals() != null && !orderDTO.getDetailAdditionals().isEmpty()) {
             for (DetailAdditional detailAdditionalDTO : orderDTO.getDetailAdditionals()) {
-                DetailOrder correspondingDetailOrder = persistedDetailOrders.get(0);
+                DetailOrder correspondingDetailOrder = persistedDetailOrders.get(detailAdditionalDTO.getDetailOrderIndex());
 
                 DetailAdditional detailAdditional = DetailAdditional.builder()
                         .idDetailOrder(correspondingDetailOrder.getIdDetailOrder())
@@ -122,28 +137,41 @@ public class OrderService {
         LOG.infof("@updateOrderStatus SERV > Updated status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());
     }
 
-    public List<Order> ordersPending(){
-
+    public List<Order> ordersPending() {
         List<Order> orderList = orderRepository.findOrdersPending();
 
         if (orderList.isEmpty()) {
-            LOG.warnf("@getOrders SERV > No orders found");
+            LOG.warnf("@getOrdersPending SERV > No orders found");
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron pedidos pendientes");
         }
 
         for (Order order : orderList) {
-            LOG.infof("@getOrders SERV > Fetching detail orders for order ID %d", order.getIdOrder());
-            List<DetailOrder> detailOrders = detailOrderRepository.list("idOrder", order.getIdOrder());
+            LOG.infof("@getOrdersPending SERV > Fetching detail orders for order ID %d", order.getIdOrder());
+
+            List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
 
             for (DetailOrder detailOrder : detailOrders) {
-                LOG.infof("@getOrders SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+                Product product = detailOrder.getProduct();
+                if (product != null) {
+                    LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
+                    List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
+
+                    LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
+                    product.setDetailProduct(detailProducts);
+                }
+
+                LOG.infof("@getOrdersPending SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+
+                List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+                detailOrder.setDetailAdditionals(detailAdditionals);
             }
 
             order.setDetailOrders(detailOrders);
-            LOG.infof("@getOrders SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+            LOG.infof("@getOrdersPending SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
         }
 
-        LOG.infof("@getOrders SERV > Finish service to obtain the orders");
+        LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
         return orderList;
     }
+
 }

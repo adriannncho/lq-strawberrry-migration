@@ -6,9 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lq.internal.domain.detailProduct.DetailProduct;
+import org.lq.internal.domain.ingredient.DetailAdditional;
 import org.lq.internal.domain.product.Product;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -26,7 +29,7 @@ public class DetailOrder implements Serializable {
     @Column(name = "ID_PEDIDO", length = 36)
     private int idOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO")
     private Product product;
 
@@ -35,4 +38,7 @@ public class DetailOrder implements Serializable {
 
     @Column(name = "PRECIO")
     private Long value;
+
+    @Transient
+    private List<DetailAdditional> detailAdditionals;
 }

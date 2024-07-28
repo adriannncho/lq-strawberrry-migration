@@ -36,10 +36,10 @@ public class ProductService {
         }
 
         for (Product product : products) {
-            LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getPrdLvlNumber());
-            List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getPrdLvlNumber());
+            LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
+            List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
-            LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getPrdLvlNumber());
+            LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
             product.setDetailProduct(detailProducts);
         }
 
@@ -59,7 +59,7 @@ public class ProductService {
         }
 
         LOG.infof("@getProductNumber SERV > Fetching detail products for product ID %d", numberProduct);
-        List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getPrdLvlNumber());
+        List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
         LOG.infof("@getProductNumber SERV > Found %d detail products for product ID %d", detailProducts.size(), numberProduct);
         product.setDetailProduct(detailProducts);
@@ -86,14 +86,14 @@ public class ProductService {
         productRepository.persist(product);
 
         for (DetailProduct detailProduct : productDTO.getDetailProduct()) {
-            LOG.infof("@saveProduct SERV > Creating detail product entity from DTO for product ID %d", product.getPrdLvlNumber());
+            LOG.infof("@saveProduct SERV > Creating detail product entity from DTO for product ID %d", product.getIdProduct());
             DetailProduct detailProductSave = DetailProduct.builder()
-                    .idProduct(product.getPrdLvlNumber())
+                    .idProduct(product.getIdProduct())
                     .idIngredient(detailProduct.getIdIngredient())
                     .quantity(detailProduct.getQuantity())
                     .build();
 
-            LOG.infof("@saveProduct SERV > Persisting detail product for product ID %d and ingredient ID %d", product.getPrdLvlNumber(), detailProduct.getIdIngredient());
+            LOG.infof("@saveProduct SERV > Persisting detail product for product ID %d and ingredient ID %d", product.getIdProduct(), detailProduct.getIdIngredient());
             detailProductRepository.persist(detailProductSave);
         }
 
@@ -120,7 +120,7 @@ public class ProductService {
         productRepository.persist(existingProduct);
 
         LOG.infof("@updateProduct SERV > Fetching existing detail products for product ID %d", productDTO.getPrdLvlNumber());
-        List<DetailProduct> existingDetailProducts = detailProductRepository.list("idProduct", existingProduct.getPrdLvlNumber());
+        List<DetailProduct> existingDetailProducts = detailProductRepository.list("idProduct", existingProduct.getIdProduct());
 
         LOG.infof("@updateProduct SERV > Updating detail products for product ID %d", productDTO.getPrdLvlNumber());
         for (DetailProduct detailProductDTO : productDTO.getDetailProduct()) {
@@ -137,7 +137,7 @@ public class ProductService {
             if (!detailExists) {
                 LOG.infof("@updateProduct SERV > Creating new detail product for ingredient ID %d", detailProductDTO.getIdIngredient());
                 DetailProduct newDetailProduct = DetailProduct.builder()
-                        .idProduct(existingProduct.getPrdLvlNumber())
+                        .idProduct(existingProduct.getIdProduct())
                         .idIngredient(detailProductDTO.getIdIngredient())
                         .quantity(detailProductDTO.getQuantity())
                         .build();
