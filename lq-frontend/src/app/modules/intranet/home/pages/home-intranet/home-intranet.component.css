@@ -4,3 +4,13 @@
   align-items: center;
   margin-bottom: 3%;
 }
+
+.nameProduct {
+  font-size: large;
+  color: var(--color-neutral-black);
+}
+
+.btnDeleteProduct {
+  width: 100%;
+  border: none;
+}
