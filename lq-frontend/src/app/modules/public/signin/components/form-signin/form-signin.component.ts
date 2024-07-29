@@ -66,6 +66,7 @@ export class FormSigninComponent implements OnInit{
         this.router.navigate(['/']);
         this.loadingLogin = false;
         this.authService.saveRoleLogged(res.userType.name);
+        this.authService.saveIdUser(res.documentNumber.toString())
         this.notificationService.success("Bienvenido a La Q'Fresa")
       }
     }, (error) => {
