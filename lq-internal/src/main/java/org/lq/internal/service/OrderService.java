@@ -95,13 +95,8 @@ public class OrderService {
 
         List<DetailOrder> persistedDetailOrders = new ArrayList<>();
         for (DetailOrder detailOrderDTO : orderDTO.getDetailOrders()) {
-            Product product = detailOrderDTO.getProduct();
 
-            Product existingProduct = productRepository.findById((long) product.getIdProduct());
-            if (existingProduct == null) {
-                productRepository.persist(product);
-                existingProduct = product;
-            }
+            Product existingProduct = productRepository.findById((long) detailOrderDTO.getProduct().getIdProduct());
 
             DetailOrder detailOrder = DetailOrder.builder()
                     .idOrder(order.getIdOrder())
@@ -113,8 +108,6 @@ public class OrderService {
             LOG.infof("@createOrder SERV > Persisting detail order: %s", detailOrder);
             detailOrderRepository.persist(detailOrder);
             persistedDetailOrders.add(detailOrder);
-
-            LOG.infof("DETALLES ADICIONALES %s", detailOrderDTO.getDetailAdditionals().size());
 
             if (detailOrderDTO.getDetailAdditionals() != null) {
                 for (DetailAdditional detailAdditionalDTO : detailOrderDTO.getDetailAdditionals()) {
