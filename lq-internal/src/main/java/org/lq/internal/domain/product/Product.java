@@ -1,9 +1,11 @@
 package org.lq.internal.domain.product;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.lq.internal.domain.detailProduct.DetailProduct;
-import org.lq.internal.domain.size.Size;
 
 import java.io.Serializable;
 import java.util.List;

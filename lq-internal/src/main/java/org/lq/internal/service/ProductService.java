@@ -3,6 +3,7 @@ package org.lq.internal.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
+import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.product.Product;
 import org.lq.internal.domain.product.ProductDTO;
@@ -11,7 +12,6 @@ import org.lq.internal.repository.DetailProductRepository;
 import org.lq.internal.repository.ProductRepository;
 
 import java.util.List;
-import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class ProductService {
