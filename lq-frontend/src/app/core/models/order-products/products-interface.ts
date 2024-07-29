@@ -27,14 +27,23 @@ export interface Ingredient {
   ingredientId: number;
   ingredientType: IngredientType;
   name: string;
+  checked?: boolean
 }
 
 export interface ProductMap {
+  idProduct: number,
   name: string,
   description: string,
-  size: string,
+  sizeMap: string,
   quantityToppingsPremium: number,
   quantityToppingsClasic: number,
   quantitySauces: number,
-  price: number
+  price: number,
+  size: number,
+  detailProduct: DetailProduct[],
+}
+
+export interface Order {
+  products: Product,
+  
 }
