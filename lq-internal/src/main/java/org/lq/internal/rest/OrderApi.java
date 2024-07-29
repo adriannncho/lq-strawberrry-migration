@@ -246,9 +246,4 @@ public class OrderApi {
     public Response getPendingOrders() {
         return Response.status(Response.Status.OK).entity(orderService.ordersPending()).build();
     }
-
-
-
-
-
 }

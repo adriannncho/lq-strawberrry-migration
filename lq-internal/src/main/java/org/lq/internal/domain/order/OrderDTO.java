@@ -29,6 +29,4 @@ public class OrderDTO {
 
     @NotEmpty(message = "El detailOrders (detalles del pedido) no puede ser nulo o estar vacío")
     private List<DetailOrder> detailOrders;
-
-    private List<DetailAdditional> detailAdditionals;
 }

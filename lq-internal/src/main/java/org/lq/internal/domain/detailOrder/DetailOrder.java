@@ -1,12 +1,10 @@
 package org.lq.internal.domain.detailOrder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.DetailAdditional;
 import org.lq.internal.domain.product.Product;
 
