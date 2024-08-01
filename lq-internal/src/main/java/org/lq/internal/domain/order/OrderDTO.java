@@ -21,9 +21,6 @@ public class OrderDTO {
     @NotNull(message = "El idUser (id de usuario) no puede ser nulo o estar vacío")
     private Long idUser;
 
-    @NotNull(message = "El nameCustomer (nombre del cliente) no puede ser nulo o estar vacío")
-    private String nameCustomer;
-
     @NotNull(message = "El total (total del pedido) no puede ser nulo o estar vacío")
     private Long total;
 

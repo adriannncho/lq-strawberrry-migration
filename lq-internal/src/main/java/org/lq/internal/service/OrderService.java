@@ -85,7 +85,6 @@ public class OrderService {
         Order order = Order.builder()
                 .creationDate(LocalDateTime.now())
                 .total(orderDTO.getTotal())
-                .nameCustomer(orderDTO.getNameCustomer())
                 .idUser(orderDTO.getIdUser())
                 .status(OrderStatus.PENDIENTE)
                 .build();
@@ -101,6 +100,7 @@ public class OrderService {
             DetailOrder detailOrder = DetailOrder.builder()
                     .idOrder(order.getIdOrder())
                     .value(detailOrderDTO.getValue())
+                    .nameCustomer(detailOrderDTO.getNameCustomer())
                     .quantity(detailOrderDTO.getQuantity())
                     .product(existingProduct)
                     .build();
