@@ -85,7 +85,6 @@ public class OrderService {
         Order order = Order.builder()
                 .creationDate(LocalDateTime.now())
                 .total(orderDTO.getTotal())
-                .nameCustomer(orderDTO.getNameCustomer())
                 .idUser(orderDTO.getIdUser())
                 .status(OrderStatus.PENDIENTE)
                 .build();
@@ -101,6 +100,7 @@ public class OrderService {
             DetailOrder detailOrder = DetailOrder.builder()
                     .idOrder(order.getIdOrder())
                     .value(detailOrderDTO.getValue())
+                    .nameCustomer(detailOrderDTO.getNameCustomer())
                     .quantity(detailOrderDTO.getQuantity())
                     .product(existingProduct)
                     .build();
@@ -178,5 +178,41 @@ public class OrderService {
 
         LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
         return orderList;
+    }
+
+    public Order ordersPendingNumber(long orderId) {
+
+        Order order = orderRepository.findById(orderId);
+
+        if (order == null) {
+            LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido pendiente no encontrado");
+        }
+
+        List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
+
+        for (DetailOrder detailOrder : detailOrders) {
+            Product product = detailOrder.getProduct();
+            if (product != null) {
+                LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
+                List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
+
+                LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
+                product.setDetailProduct(detailProducts);
+            }
+
+            LOG.infof("@getOrdersPending SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+
+            List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+            detailOrder.setDetailAdditionals(detailAdditionals);
+
+            LOG.infof("@getOrdersPending SERV > Fetched %d detail additionals for detail order ID %d", detailAdditionals.size(), detailOrder.getIdDetailOrder());
+        }
+
+        order.setDetailOrders(detailOrders);
+        LOG.infof("@getOrdersPending SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+
+        LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
+        return order;
     }
 }

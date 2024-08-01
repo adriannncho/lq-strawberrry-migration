@@ -31,6 +31,9 @@ public class DetailOrder implements Serializable {
     @JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO")
     private Product product;
 
+    @Column(name = "CLIENTE_NOMBRE", length = 36)
+    private String nameCustomer;
+
     @Column(name = "CANTIDAD")
     private Long quantity;
 

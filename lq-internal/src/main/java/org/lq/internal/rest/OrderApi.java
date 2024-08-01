@@ -246,4 +246,57 @@ public class OrderApi {
     public Response getPendingOrders() {
         return Response.status(Response.Status.OK).entity(orderService.ordersPending()).build();
     }
+
+    @GET
+    @Path("/ordersPending/{numberOrder}")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Lista de pedidos pendientes obtenida correctamente por número",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = Order.class, type = SchemaType.ARRAY)
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontraron pedidos pendientes",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No hay pedidos pendientes en este momento por ese número."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener pedidos pendientes por número",
+            description = "Obtiene la lista de pedidos por número que están pendientes de procesar."
+    )
+    public Response getPendingOrdersNumber(
+            @Parameter(
+            description = "Número de pedido a actualizar",
+            required = true )
+            @NotNull(message = "El número de pedido no puede ser nulo")
+            @Min(value = 1, message = "El número de pedido debe ser mayor a cero")
+            @PathParam("numberOrder") long numberOrder
+    ) {
+        return Response.status(Response.Status.OK).entity(orderService.ordersPendingNumber(numberOrder)).build();
+    }
 }

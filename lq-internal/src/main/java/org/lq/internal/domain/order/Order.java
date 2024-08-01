@@ -26,9 +26,6 @@ public class Order {
     @Column(name = "ID_USUARIO")
     private Long idUser;
 
-    @Column(name = "CLIENTE_NOMBRE", length = 36)
-    private String nameCustomer;
-
     @Column(name = "FECHA_HORA")
     private LocalDateTime creationDate;
 
