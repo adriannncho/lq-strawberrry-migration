@@ -6,11 +6,16 @@ import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class OrderRepository implements PanacheRepository<Order> {
 
     public List<Order> findOrdersPending() {
         return list("status", OrderStatus.PENDIENTE);
+    }
+
+    public Optional<Order> findOrdersPendingNumber(Long orderId) {
+        return list("idOrder = ?1 and status = ?2", orderId, OrderStatus.PENDIENTE).stream().findFirst();
     }
 }

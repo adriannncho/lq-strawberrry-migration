@@ -17,6 +17,7 @@ import org.lq.internal.repository.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.spi.ToolProvider.findFirst;
 
@@ -182,13 +183,14 @@ public class OrderService {
 
     public Order ordersPendingNumber(long orderId) {
 
-        Order order = orderRepository.findById(orderId);
+        Optional<Order> orderOptional = orderRepository.findOrdersPendingNumber(orderId);
 
-        if (order == null) {
+        if (orderOptional.isEmpty()) {
             LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido pendiente no encontrado");
         }
 
+        Order order = orderOptional.get();
         List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
 
         for (DetailOrder detailOrder : detailOrders) {
