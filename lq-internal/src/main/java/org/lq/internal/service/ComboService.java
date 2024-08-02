@@ -4,10 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
-import org.lq.internal.domain.combo.Combo;
-import org.lq.internal.domain.combo.ComboDTO;
-import org.lq.internal.domain.combo.DetailCombo;
-import org.lq.internal.domain.combo.TypeDiscount;
+import org.lq.internal.domain.combo.*;
 import org.lq.internal.domain.ingredient.Ingredient;
 import org.lq.internal.domain.ingredient.IngredientDTO;
 import org.lq.internal.helper.exception.PVException;
@@ -44,7 +41,7 @@ public class ComboService {
 
         for (Combo combo : combos) {
             LOG.infof("@getCombo SERV > Fetching detail combos for combo ID %d", combo.getIdCombo());
-            List<DetailCombo> detailCombos = detailComboRepository.list("idDetailCombo", combo.getIdDetailCombo());
+            List<DetailCombo> detailCombos = detailComboRepository.list("idCombo", combo.getIdCombo());
 
             LOG.infof("@getCombo SERV > Found %d detail combos for combo ID %d", detailCombos.size(), combo.getIdCombo());
             combo.setDetailCombos(detailCombos);
@@ -67,7 +64,7 @@ public class ComboService {
 
         for (Combo combo : combos) {
             LOG.infof("@getCombo SERV > Fetching detail combos for combo ID %d", combo.getIdCombo());
-            List<DetailCombo> detailCombos = detailComboRepository.list("idDetailCombo", combo.getIdDetailCombo());
+            List<DetailCombo> detailCombos = detailComboRepository.list("idCombo", combo.getIdCombo());
 
             LOG.infof("@getCombo SERV > Found %d detail combos for combo ID %d", detailCombos.size(), combo.getIdCombo());
             combo.setDetailCombos(detailCombos);
@@ -89,9 +86,10 @@ public class ComboService {
 
         Combo combo = Combo.builder()
                 .idTypeDiscount(typeDiscount.getIdTypeDiscount())
+                .name(comboDTO.getName())
                 .value(comboDTO.getValue())
                 .description(comboDTO.getDescription())
-                .status("ACTIVO")
+                .status(String.valueOf(Status.ACTIVO))
                 .build();
 
         comboRepository.persist(combo);
@@ -103,11 +101,7 @@ public class ComboService {
                     .build();
 
             detailComboRepository.persist(detailCombo);
-
-            combo.addDetailCombo(detailCombo);
         }
-
-        // Actualizar el combo con los DetailCombos
         comboRepository.persist(combo);
 
         LOG.infof("@saveCombo SERV > Combo saved successfully with ID %d", combo.getIdCombo());

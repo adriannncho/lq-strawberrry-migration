@@ -23,4 +23,7 @@ public class DetailCombo implements Serializable {
 
     @Column(name = "ID_PRODUCTO", length = 36)
     private int idProduct;
+
+    @Column(name = "ID_COMBO", length = 36)
+    private int idCombo;
 }

@@ -23,9 +23,6 @@ public class Combo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCombo;
 
-    @Column(name = "ID_DETALLE_COMBO", length = 36)
-    private int idDetailCombo;
-
     @Column(name = "ID_TIPO_DESCUENTO", length = 36)
     private int idTypeDiscount;
 
