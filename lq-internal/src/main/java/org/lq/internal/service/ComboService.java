@@ -2,16 +2,21 @@ package org.lq.internal.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Form;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.combo.*;
+import org.lq.internal.domain.detailOrder.DetailOrder;
 import org.lq.internal.domain.ingredient.Ingredient;
 import org.lq.internal.domain.ingredient.IngredientDTO;
+import org.lq.internal.domain.product.Product;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.ComboRepository;
 import org.lq.internal.repository.DetailComboRepository;
+import org.lq.internal.repository.ProductRepository;
 import org.lq.internal.repository.TypeDiscountRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +35,9 @@ public class ComboService {
     @Inject
     TypeDiscountRepository typeDiscountRepository;
 
+    @Inject
+    ProductRepository productRepository;
+
     public List<Combo> getCombo() throws PVException {
         LOG.infof("@getCombo SERV > Start service to obtain the combos");
 
@@ -45,6 +53,13 @@ public class ComboService {
             LOG.infof("@getCombo SERV > Fetching detail combos for combo ID %d", combo.getIdCombo());
             List<DetailCombo> detailCombos = detailComboRepository.list("idCombo", combo.getIdCombo());
 
+            for (DetailCombo detailCombo : detailCombos) {
+                List<Product> productList = new ArrayList<>();
+                Product product = productRepository.findById((long) detailCombo.getIdProduct());
+                productList.add(product);
+                detailCombo.setProducts(productList);
+            }
+
             LOG.infof("@getCombo SERV > Found %d detail combos for combo ID %d", detailCombos.size(), combo.getIdCombo());
             combo.setDetailCombos(detailCombos);
         }
@@ -52,6 +67,7 @@ public class ComboService {
         LOG.infof("@getCombo SERV > Finish service to obtain the combos");
         return combos;
     }
+
 
     public List<Combo> getComboActive() throws PVException {
         LOG.infof("@getComboActive SERV > Start service to obtain active combos");
@@ -67,6 +83,13 @@ public class ComboService {
         for (Combo combo : combos) {
             LOG.infof("@getCombo SERV > Fetching detail combos for combo ID %d", combo.getIdCombo());
             List<DetailCombo> detailCombos = detailComboRepository.list("idCombo", combo.getIdCombo());
+
+            for (DetailCombo detailCombo : detailCombos) {
+                List<Product> productList = new ArrayList<>();
+                Product product = productRepository.findById((long) detailCombo.getIdProduct());
+                productList.add(product);
+                detailCombo.setProducts(productList);
+            }
 
             LOG.infof("@getCombo SERV > Found %d detail combos for combo ID %d", detailCombos.size(), combo.getIdCombo());
             combo.setDetailCombos(detailCombos);

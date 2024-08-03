@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lq.internal.domain.product.Product;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -26,4 +28,7 @@ public class DetailCombo implements Serializable {
 
     @Column(name = "ID_COMBO", length = 36)
     private int idCombo;
+
+    @Transient
+    private List<Product> products;
 }
