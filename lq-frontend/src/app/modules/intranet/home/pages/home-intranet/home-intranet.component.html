@@ -7,7 +7,8 @@
       <button
       nz-button
       nzType="primary"
-      disabled>
+      [disabled]="resumeOrder ? false : true"
+      (click)="showModal()">
         Resumen pedido
       </button>
     </div>
@@ -73,13 +74,27 @@
           </div>
         </nz-tab>
         <!-- TOPPINGS -->
-        <nz-tab nzTitle="Toppings" [nzDisabled]="blockTabToppings">
+        <nz-tab [nzTitle]="titleToppings" [nzDisabled]="blockTabToppings">
+          <ng-template #titleToppings>
+            <span nz-icon nzType="shop"></span>
+           Productos
+          </ng-template>
           <app-tab-toppings
           *ngIf="renderToppings"
-          [product]="productSendTab">
+          [product]="productSendTab"
+          (blockTabToppings)="blockTabToppings = $event"
+          (selectedIndex)="selectedIndex = $event"
+          (resumeOrder)="createResumeOrder($event)"
+          (nameCustomer)="customerName = $event">
           </app-tab-toppings>
         </nz-tab>
       </nz-tabset>
     </div>
   </div>
+  <app-modal-resume-order
+  *ngIf="isVisibleModal "
+  [isVisible]="isVisibleModal"
+  [resumeOrder]="resumeOrder"
+  (hideModalEmiter)="isVisibleModal = $event">
+  </app-modal-resume-order>
 </nz-card>

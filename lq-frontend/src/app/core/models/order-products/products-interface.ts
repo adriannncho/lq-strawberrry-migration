@@ -44,6 +44,28 @@ export interface ProductMap {
 }
 
 export interface Order {
-  products: Product,
-  
+  idUser: number;
+  total: number;
+  detailOrders: DetailOrder[];
+
+  subToatl?: number;    // Solo front
+  discont?: number;     // Solo front
+  totalOrder?: number;  // Solo front
+}
+
+export interface DetailOrder {
+  nameCustomer: string;
+  value: number;
+  quantity: number;
+  product: ProductId;
+  detailAdditionals: DetailAdditional[];
+  nameProduct: string;                     //Solo uso front
+}
+
+export interface ProductId {
+  idProduct: number;
+}
+
+export interface DetailAdditional {
+  idIngredient: number;
 }

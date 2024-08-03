@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { AuthService } from 'src/app/core/authentication/services/auth.service';
+import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { SizeProducts } from 'src/app/core/utilities/utilities-interfaces';
 
@@ -17,13 +19,21 @@ export class HomeIntranetComponent {
   selectedIndex: number = 0;
   renderToppings: boolean = false;
   productSendTab!: ProductMap;
+  idUser!: number;
+  customerName: string = '';
 
-  order = []
+  resumeOrder!: Order;
+  order!:Order;
+
+  isVisibleModal: boolean = false;
 
   constructor(
     private productsService : ProductsOrderService,
+    private authService : AuthService,
+    private notificationService : NotificationService
   ) {
     this.getProducts();
+    this.getIdUser();
   }
 
   getProducts() {
@@ -34,6 +44,9 @@ export class HomeIntranetComponent {
         this.productsMap = this.createObjProducts(this.products);
         this.loadingProducts = false;
       }
+    }, (error) => {
+      this.loadingProducts = false;
+      this.notificationService.error('Ocurrio un error al obtener los productos');
     })
   }
 
@@ -68,5 +81,25 @@ export class HomeIntranetComponent {
     this.selectedIndex = 1;
     this.blockTabToppings = false;
     this.renderToppings = true;
+  }
+
+  getIdUser() {
+    this.idUser = this.authService.getIdUser();
+  }
+
+  createResumeOrder(detail: DetailOrder[]) {
+    let total: number = 0;
+    detail.forEach(item => {
+      total = total + item.value;
+    });
+    this.resumeOrder = {
+      idUser: this.idUser,
+      detailOrders: detail,
+      total: total,
+    }
+  }
+
+  showModal() {
+    this.isVisibleModal = true;
   }
 }
