@@ -36,6 +36,9 @@ public class Order {
     @Column(name = "ESTADO")
     private OrderStatus status;
 
+    @Column(name = "DESCUENTO")
+    private Long discount;
+
     @Transient
     private List<DetailOrder> detailOrders;
 }

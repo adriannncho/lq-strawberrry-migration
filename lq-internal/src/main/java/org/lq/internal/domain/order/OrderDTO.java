@@ -24,6 +24,8 @@ public class OrderDTO {
     @NotNull(message = "El total (total del pedido) no puede ser nulo o estar vacío")
     private Long total;
 
+    private Long discount;
+
     @NotEmpty(message = "El detailOrders (detalles del pedido) no puede ser nulo o estar vacío")
     private List<DetailOrder> detailOrders;
 }

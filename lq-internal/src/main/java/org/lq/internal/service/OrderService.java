@@ -88,6 +88,7 @@ public class OrderService {
                 .total(orderDTO.getTotal())
                 .idUser(orderDTO.getIdUser())
                 .status(OrderStatus.PENDIENTE)
+                .discount(orderDTO.getDiscount())
                 .build();
 
         LOG.infof("@createOrder SERV > Persisting order: %s", order);
