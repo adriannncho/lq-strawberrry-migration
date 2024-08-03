@@ -1,11 +1,11 @@
-interface DetailProduct {
+export interface DetailProduct {
     idDetailProduct: number;
     idIngredient: number;
     idProduct: number;
     quantity: number;
 }
 
-interface Product {
+export interface Product {
   idProduct: number;
   size: number;
   name: string;
@@ -17,13 +17,13 @@ interface Product {
   detailProduct: DetailProduct[];
 }
 
-interface DetailAdditional {
+export interface DetailAdditional {
   idDetailAdditional: number;
   idDetailOrder: number;
   idIngredient: number;
 }
 
-interface DetailOrder {
+export interface DetailOrder {
   idDetailOrder: number;
   idOrder: number;
   product: Product;
@@ -33,7 +33,7 @@ interface DetailOrder {
   detailAdditionals: DetailAdditional[];
 }
 
-interface Order {
+export interface Order {
   idOrder: number;
   idUser: number;
   creationDate: string;
