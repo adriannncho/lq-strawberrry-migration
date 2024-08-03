@@ -3,6 +3,7 @@ package org.lq.internal.rest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.media.SchemaProperty;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.lq.internal.domain.combo.ComboDTO;
+import org.lq.internal.domain.combo.ComboUpdateDTO;
 import org.lq.internal.helper.exception.HandlerException;
 import org.lq.internal.helper.exception.ProblemException;
 import org.lq.internal.service.ComboService;
@@ -173,7 +175,7 @@ public class ComboApi {
             value = {
                     @APIResponse(
                             responseCode = "201",
-                            description = "Ingrediente registrado exitosamente."
+                            description = "Combo registrado exitosamente."
                     ),
                     @APIResponse(
                             responseCode = "400",
@@ -182,16 +184,16 @@ public class ComboApi {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(
                                             example = """
-                                                    {
-                                                      "El campo name no puede ser nulo ni estar vacío.",
-                                                      "El campo ingredientTypeId no puede ser nulo."
-                                                    }"""
+                                                {
+                                                  "El campo name no puede ser nulo ni estar vacío.",
+                                                  "El campo ingredientTypeId no puede ser nulo."
+                                                }"""
                                     )
                             )
                     ),
                     @APIResponse(
                             responseCode = "409",
-                            description = "El ingrediente ya existe.",
+                            description = "El combo ya existe.",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(implementation = ProblemException.class)
@@ -208,12 +210,134 @@ public class ComboApi {
             }
     )
     @Operation(
-            summary = "Registro de ingrediente",
-            description = "Registra un nuevo ingrediente en la aplicación"
+            summary = "Registro de combo",
+            description = "Registra un nuevo combo en la aplicación"
     )
-    public Response saveIngredient(
+    public Response saveCombo(
             @Valid ComboDTO comboDTO
     ) {
         comboService.saveCombo(comboDTO);
         return Response.status(Response.Status.CREATED).build();
     }
+
+    @PUT
+    @Transactional
+    @Path("/combo/update")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Combo actualizado exitosamente."
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "Errores de validación de entrada",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            example = """
+                                                {
+                                                  "El campo name no puede ser nulo ni estar vacío.",
+                                                  "El campo ingredientTypeId no puede ser nulo."
+                                                }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontró el combo a actualizar.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "Combo no encontrado."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Actualización de combo",
+            description = "Actualiza un combo en la aplicación"
+    )
+    public Response updateIngredient(
+            @Valid ComboUpdateDTO comboUpdateDTO
+    ) {
+        comboService.updateCombo(comboUpdateDTO);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PUT
+    @Transactional
+    @Path("/combo/delete/{idCombo}")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Combo desactivado exitosamente."
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "Errores de validación de entrada",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            example = """
+                                                {
+                                                  "El ID del combo debe ser un número positivo."
+                                                }"""
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontró el combo a desactivar.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "Combo no encontrado."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Desactivación de combo",
+            description = "Desactiva un combo en la aplicación"
+    )
+    public Response deleteIngredient(
+            @PathParam("idCombo")
+            @Positive(message = "El id del combo debe ser un número positivo.")
+            Long idCombo
+    ) {
+        comboService.deactivateCombo(idCombo);
+        return Response.status(Response.Status.OK).build();
+    }
+}

@@ -12,6 +12,8 @@ import org.lq.internal.repository.DetailProductRepository;
 import org.lq.internal.repository.ProductRepository;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProductService {
@@ -68,8 +70,6 @@ public class ProductService {
         LOG.infof("@getProductNumber SERV > Finish service to obtain the product with number %d", numberProduct);
         return product;
     }
-
-
 
     public void saveProduct(ProductDTO productDTO) throws PVException {
         LOG.infof("@saveProduct SERV > Start service to save a new product");
@@ -128,26 +128,32 @@ public class ProductService {
         LOG.infof("@updateProduct SERV > Fetching existing detail products for product ID %d", productDTO.getIdProduct());
         List<DetailProduct> existingDetailProducts = detailProductRepository.list("idProduct", existingProduct.getIdProduct());
 
-        LOG.infof("@updateProduct SERV > Updating detail products for product ID %d", productDTO.getIdProduct());
-        for (DetailProduct detailProductDTO : productDTO.getDetailProduct()) {
-            boolean detailExists = false;
-            for (DetailProduct existingDetailProduct : existingDetailProducts) {
-                if (existingDetailProduct.getIdIngredient() == detailProductDTO.getIdIngredient()) {
-                    LOG.infof("@updateProduct SERV > Updating existing detail product with ingredient ID %d", detailProductDTO.getIdIngredient());
-                    existingDetailProduct.setQuantity(detailProductDTO.getQuantity());
-                    detailProductRepository.persist(existingDetailProduct);
-                    detailExists = true;
-                    break;
-                }
+        Set<Integer> newIngredientIds = productDTO.getDetailProduct().stream()
+                .map(DetailProduct::getIdIngredient)
+                .collect(Collectors.toSet());
+
+        for (DetailProduct existingDetailProduct : existingDetailProducts) {
+            if (!newIngredientIds.contains(existingDetailProduct.getIdIngredient())) {
+                LOG.infof("@updateProduct SERV > Removing DetailProduct with ID %d for product with ID %d", existingDetailProduct.getIdDetailProduct(), productDTO.getIdProduct());
+                detailProductRepository.delete(existingDetailProduct);
             }
-            if (!detailExists) {
-                LOG.infof("@updateProduct SERV > Creating new detail product for ingredient ID %d", detailProductDTO.getIdIngredient());
+        }
+
+        for (DetailProduct detailProductDTO : productDTO.getDetailProduct()) {
+            DetailProduct existingDetailProduct = detailProductRepository.find("idProduct = ?1 AND idIngredient = ?2", existingProduct.getIdProduct(), detailProductDTO.getIdIngredient()).firstResult();
+
+            if (existingDetailProduct == null) {
+                LOG.infof("@updateProduct SERV > Creating new DetailProduct for ingredient ID %d", detailProductDTO.getIdIngredient());
                 DetailProduct newDetailProduct = DetailProduct.builder()
                         .idProduct(existingProduct.getIdProduct())
                         .idIngredient(detailProductDTO.getIdIngredient())
                         .quantity(detailProductDTO.getQuantity())
                         .build();
                 detailProductRepository.persist(newDetailProduct);
+            } else {
+                LOG.infof("@updateProduct SERV > DetailProduct already exists for product with ID %d, updating it", productDTO.getIdProduct());
+                existingDetailProduct.setQuantity(detailProductDTO.getQuantity());
+                detailProductRepository.persist(existingDetailProduct);
             }
         }
 

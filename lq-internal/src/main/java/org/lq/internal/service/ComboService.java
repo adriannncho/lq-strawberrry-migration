@@ -13,6 +13,8 @@ import org.lq.internal.repository.DetailComboRepository;
 import org.lq.internal.repository.TypeDiscountRepository;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ComboService {
@@ -105,5 +107,85 @@ public class ComboService {
         comboRepository.persist(combo);
 
         LOG.infof("@saveCombo SERV > Combo saved successfully with ID %d", combo.getIdCombo());
+    }
+
+    public void updateCombo(ComboUpdateDTO comboDTO) throws PVException {
+        LOG.infof("@updateCombo SERV > Start service to update combo with ID %d", comboDTO.getIdCombo());
+
+        LOG.infof("@updateCombo SERV > Retrieving existing Combo with ID %d", comboDTO.getIdCombo());
+        Combo existingCombo = comboRepository.findById((long) comboDTO.getIdCombo());
+        if (existingCombo == null) {
+            LOG.errorf("@updateCombo SERV > Combo with ID %d not found", comboDTO.getIdCombo());
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Combo no encontrado");
+        }
+
+        LOG.infof("@updateCombo SERV > Updating details of Combo with ID %d", comboDTO.getIdCombo());
+        existingCombo.setName(comboDTO.getName());
+        existingCombo.setValue(comboDTO.getValue());
+        existingCombo.setDescription(comboDTO.getDescription());
+        existingCombo.setStatus(String.valueOf(Status.ACTIVO));
+
+        LOG.infof("@updateCombo SERV > Retrieving or creating TypeDiscount for Combo with ID %d", comboDTO.getIdCombo());
+        TypeDiscount typeDiscount = typeDiscountRepository.findById((long) existingCombo.getIdTypeDiscount());
+        if (!typeDiscount.getName().equals(comboDTO.getNameDiscount())) {
+            typeDiscount.setName(comboDTO.getNameDiscount());
+            typeDiscountRepository.persist(typeDiscount);
+        }
+
+        existingCombo.setIdTypeDiscount(typeDiscount.getIdTypeDiscount());
+        comboRepository.persist(existingCombo);
+
+        LOG.infof("@updateCombo SERV > Updating DetailCombos for Combo with ID %d", comboDTO.getIdCombo());
+
+        List<DetailCombo> currentDetailCombos = detailComboRepository.find("idCombo", existingCombo.getIdCombo()).list();
+
+        Set<Integer> newProductIds = comboDTO.getDetailCombos().stream()
+                .map(DetailCombo::getIdProduct)
+                .collect(Collectors.toSet());
+
+        for (DetailCombo currentDetailCombo : currentDetailCombos) {
+            if (!newProductIds.contains(currentDetailCombo.getIdProduct())) {
+                LOG.infof("@updateCombo SERV > Removing DetailCombo with ID %d for Combo with ID %d", currentDetailCombo.getIdDetailCombo(), comboDTO.getIdCombo());
+                detailComboRepository.delete(currentDetailCombo);
+            }
+        }
+
+        for (DetailCombo detailComboDTO : comboDTO.getDetailCombos()) {
+            DetailCombo existingDetailCombo = detailComboRepository.find("idCombo = ?1 AND idProduct = ?2", existingCombo.getIdCombo(), detailComboDTO.getIdProduct()).firstResult();
+
+            if (existingDetailCombo == null) {
+                LOG.infof("@updateCombo SERV > Creating new DetailCombo for Combo with ID %d", comboDTO.getIdCombo());
+                DetailCombo newDetailCombo = DetailCombo.builder()
+                        .idProduct(detailComboDTO.getIdProduct())
+                        .idCombo(existingCombo.getIdCombo())
+                        .build();
+                detailComboRepository.persist(newDetailCombo);
+            } else {
+                LOG.infof("@updateCombo SERV > DetailCombo already exists for Combo with ID %d, updating it", comboDTO.getIdCombo());
+                existingDetailCombo.setIdProduct(detailComboDTO.getIdProduct());
+                detailComboRepository.persist(existingDetailCombo);
+            }
+        }
+
+        LOG.infof("@updateCombo SERV > Combo updated successfully with ID %d", existingCombo.getIdCombo());
+    }
+
+    public void deactivateCombo(Long comboId) throws PVException {
+        LOG.infof("@deactivateCombo SERV > Start service to deactivate combo with ID %d", comboId);
+
+        LOG.infof("@deactivateCombo SERV > Retrieving existing Combo with ID %d", comboId);
+        Combo existingCombo = comboRepository.findById(comboId);
+        if (existingCombo == null) {
+            LOG.warnf("@deactivateCombo SERV > No combo found with ID %d", comboId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El combo no fue encontrado.");
+        }
+
+        LOG.infof("@deactivateCombo SERV > Deactivating Combo with ID %d", comboId);
+        existingCombo.setStatus(String.valueOf(Status.INACTIVO));
+
+        LOG.infof("@deactivateCombo SERV > Persisting deactivated Combo with ID %d", comboId);
+        comboRepository.persist(existingCombo);
+
+        LOG.infof("@deactivateCombo SERV > Combo with ID %d deactivated successfully", comboId);
     }
 }
