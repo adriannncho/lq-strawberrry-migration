@@ -71,3 +71,31 @@ export interface ProductId {
 export interface DetailAdditional {
   idIngredient: number;
 }
+
+export interface DetailProductMap {
+  idIngredient: number;
+  quantity: number;
+}
+
+export interface ProductCreateMap {
+  size: number;
+  name: string;
+  description: string;
+  value: number;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  detailProduct: DetailProductMap[];
+}
+
+export interface ProductUpdateMap {
+  idProduct: number,
+  size: number;
+  name: string;
+  description: string;
+  value: number;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  detailProduct: DetailProductMap[];
+}

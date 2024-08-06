@@ -20,9 +20,31 @@ export interface DetailCombo {
 export interface Combo {
   idCombo: number;
   idTypeDiscount: number;
-  name: string | null;
+  name: string;
   description: string;
   value: number;
   status: string;
   detailCombos: DetailCombo[];
+}
+
+export interface DetailComboMap {
+  idProduct: number;
+}
+
+export interface ComboMap {
+  name: string;
+  nameDiscount: string;
+  description: string;
+  value: number;
+  detailCombos: DetailComboMap[];
+}
+
+
+export interface ComboUpdateMap {
+  idCombo: number;
+  name: string;
+  nameDiscount: string;
+  description: string;
+  value: number;
+  detailCombos: DetailComboMap[];
 }
