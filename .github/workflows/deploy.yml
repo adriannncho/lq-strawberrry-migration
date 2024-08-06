@@ -32,13 +32,14 @@ jobs:
       run: |
         gcloud auth configure-docker
 
+    # Asegúrate de ajustar esta ruta si mvnw no está en la raíz
     - name: Ensure mvnw is executable
       run: |
-        chmod +x ./mvnw
+        chmod +x ./lq-internal/mvnw
 
     - name: Build project
       run: |
-        ./mvnw clean package -DskipTests
+        ./lq-internal/mvnw clean package -DskipTests
 
     - name: Build and push lq-internal Docker image
       uses: docker/build-push-action@v2
