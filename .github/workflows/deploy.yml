@@ -46,5 +46,4 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/lq-internal-deployment lq-internal=gcr.io/totemic-sunrise-426016-j3/lq-internal:latest
-        kubectl set image deployment/lq-frontend-deployment lq-frontend=gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
+        kubectl apply -f secrets-yaml/
