@@ -5,12 +5,12 @@ on:
     branches:
       - dev
       - qa
-      - master
+      - main
   delete:
     branches:
       - dev
       - qa
-      - master
+      - main
 
 jobs:
   build-and-deploy:
