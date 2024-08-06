@@ -9,8 +9,3 @@
   font-size: large;
   color: var(--color-neutral-black);
 }
-
-.btnDeleteProduct {
-  width: 100%;
-  border: none;
-}

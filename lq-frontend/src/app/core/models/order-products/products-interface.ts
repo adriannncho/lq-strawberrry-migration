@@ -41,15 +41,17 @@ export interface ProductMap {
   price: number,
   size: number,
   detailProduct: DetailProduct[],
+
+  isCombo?: boolean,  
 }
 
 export interface Order {
   idUser: number;
   total: number;
   detailOrders: DetailOrder[];
+  discont: number
 
-  subToatl?: number;    // Solo front
-  discont?: number;     // Solo front
+  subToatl?: number;    // Solo front 
   totalOrder?: number;  // Solo front
 }
 

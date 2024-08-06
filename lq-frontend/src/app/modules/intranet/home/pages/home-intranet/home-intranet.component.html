@@ -19,7 +19,7 @@
     nzSpan="24"
     >
       <nz-tabset nzType="card" [(nzSelectedIndex)]="selectedIndex">
-        <nz-tab [nzTitle]="titleTemplate" [nzDisabled]="!blockTabToppings">
+        <nz-tab [nzTitle]="titleTemplate" [nzDisabled]="!blockTabToppings || selectedIndex === 2 || isCombo">
           <ng-template #titleTemplate>
             <span nz-icon nzType="coffee"></span>
            Productos
@@ -73,19 +73,35 @@
             </div>
           </div>
         </nz-tab>
+        <!-- COMBOS -->
+        <nz-tab [nzTitle]="titleCombos" [nzDisabled]="loadingCombos || selectedIndex === 2 || isProduct">
+          <ng-template #titleCombos>
+            <span nz-icon nzType="group" nzTheme="outline"></span>
+           Combos
+          </ng-template>
+          <app-tab-combos
+          [combosActive]="combosActive"
+          (intexTab)="selectedIndex = $event"
+          (productEmiter)="addProduct($event)">
+          </app-tab-combos>
+        </nz-tab>
         <!-- TOPPINGS -->
         <nz-tab [nzTitle]="titleToppings" [nzDisabled]="blockTabToppings">
           <ng-template #titleToppings>
             <span nz-icon nzType="shop"></span>
-           Productos
+           Toppings
           </ng-template>
           <app-tab-toppings
           *ngIf="renderToppings"
           [product]="productSendTab"
+          [isCombo]="isCombo"
           (blockTabToppings)="blockTabToppings = $event"
           (selectedIndex)="selectedIndex = $event"
           (resumeOrder)="createResumeOrder($event)"
-          (nameCustomer)="customerName = $event">
+          (nameCustomer)="customerName = $event"
+          (changeCombo)="changeType($event)"
+          (isComboEmitter)="isCombo = $event"
+          (isProductEmiter)="isProduct = $event">
           </app-tab-toppings>
         </nz-tab>
       </nz-tabset>
@@ -95,6 +111,7 @@
   *ngIf="isVisibleModal "
   [isVisible]="isVisibleModal"
   [resumeOrder]="resumeOrder"
-  (hideModalEmiter)="isVisibleModal = $event">
+  (hideModalEmiter)="hideModal($event)"
+  (deleteProductEmitter)="deleteProductOfOrder($event)">
   </app-modal-resume-order>
 </nz-card>

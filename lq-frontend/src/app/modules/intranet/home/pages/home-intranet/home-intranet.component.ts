@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/core/authentication/services/auth.service';
+import { Combo } from 'src/app/core/models/combos/combos.interface';
 import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
-import { SizeProducts } from 'src/app/core/utilities/utilities-interfaces';
+import { SizeProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
 
 @Component({
   selector: 'app-home-intranet',
@@ -22,10 +23,17 @@ export class HomeIntranetComponent {
   idUser!: number;
   customerName: string = '';
 
+  typesProducts = TypeProducts;
   resumeOrder!: Order;
   order!:Order;
 
   isVisibleModal: boolean = false;
+
+  loadingCombos: boolean = false;
+  combosActive!: Combo[];
+  combosAdded!: Combo[];
+  isCombo: boolean = false;
+  isProduct: boolean = false;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -34,6 +42,7 @@ export class HomeIntranetComponent {
   ) {
     this.getProducts();
     this.getIdUser();
+    this.getCombosActive();
   }
 
   getProducts() {
@@ -78,7 +87,7 @@ export class HomeIntranetComponent {
 
   addProduct(product: ProductMap) {
     this.productSendTab = product;
-    this.selectedIndex = 1;
+    this.selectedIndex = 2;
     this.blockTabToppings = false;
     this.renderToppings = true;
   }
@@ -96,10 +105,49 @@ export class HomeIntranetComponent {
       idUser: this.idUser,
       detailOrders: detail,
       total: total,
+      discont: 0
     }
   }
 
   showModal() {
     this.isVisibleModal = true;
+  }
+
+  hideModal(event: boolean) {
+    this.isVisibleModal = event;
+  }
+
+  getCombosActive() {
+    this.loadingCombos = true;
+    this.productsService.getCombosActive().subscribe(res => {
+      if(res){
+        this.combosActive = res;
+        this.loadingCombos = false;
+      }
+    })
+  }
+
+  changeType(event: boolean) {
+    this.isCombo = event;
+    this.isProduct = event;
+  }
+
+  deleteProductOfOrder(index: number) {
+    const blankVariable: any = null;
+    this.resumeOrder.detailOrders.splice(index, 1);
+    if(this.resumeOrder.detailOrders.length <= 0) {
+      this.hideModal(false);
+      this.resumeOrder = blankVariable;
+    }else{
+      this.calcTotal();
+    }
+  }
+
+  calcTotal () {
+    this.resumeOrder.detailOrders.forEach(item => {
+      let total = 0;
+      total = total + item.value;
+      this.resumeOrder.total = total;
+    });
   }
 }

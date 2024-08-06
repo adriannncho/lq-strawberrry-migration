@@ -13,3 +13,8 @@ export enum TypeIngredients {
     _SAUSES_ = 1,
     _ADICIONALES_ = 5,
 }
+
+export enum TypeProducts {
+    _PRODUCT_ = 'PRODUCT',
+    _COMBO_ = 'COMBO'
+}

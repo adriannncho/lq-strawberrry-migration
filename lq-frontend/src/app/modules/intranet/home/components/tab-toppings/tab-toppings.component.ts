@@ -12,10 +12,14 @@ import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
 export class TabToppingsComponent implements OnInit {
 
   @Input() product! : ProductMap;
+  @Input() isCombo : boolean = false;
   @Output() selectedIndex = new EventEmitter<number>();
   @Output() blockTabToppings = new EventEmitter<boolean>();
   @Output() resumeOrder = new EventEmitter<DetailOrder[]>();
   @Output() nameCustomer = new EventEmitter<string>();
+  @Output() changeCombo = new EventEmitter<boolean>();
+  @Output() isComboEmitter = new EventEmitter<boolean>();
+  @Output() isProductEmiter = new EventEmitter<boolean>();
 
   loadingToppings: boolean = false;
   productForm!: FormGroup;
@@ -104,7 +108,14 @@ export class TabToppingsComponent implements OnInit {
   }
 
   cancelOrSaveProduct() {
-    this.selectedIndex.emit(0);
+    if(!this.productsAdd) {
+      this.changeCombo.emit(false);
+    }
+    if(this.product.isCombo) {
+      this.selectedIndex.emit(1);
+    }else {
+      this.selectedIndex.emit(0);
+    }
     this.blockTabToppings.emit(true);
     this.cleanVariablesAndForm()
   }
@@ -130,20 +141,39 @@ export class TabToppingsComponent implements OnInit {
     });
   }
 
-  addProductsOfOrder(product: ProductMap) {
-    const nameCustomer = this.productForm.controls['customerName'].value;
-    const productOfAdd = this.addProductAndToppings(product);
-    if(productOfAdd) {
-      if(this.productsAdd) {
-        this.productsAdd.push(productOfAdd);
-      }else {
-        this.productsAdd = [];
-        this.productsAdd.push(productOfAdd);
+  addProductsOfOrder(product: ProductMap, isCombo:boolean | undefined) {
+    console.log(isCombo)
+    if(isCombo) {
+      this.isComboEmitter.emit(true);
+      const nameCustomer = this.productForm.controls['customerName'].value;
+      const productOfAdd = this.addProductAndToppings(product);
+      if(productOfAdd) {
+        if(this.productsAdd) {
+          this.productsAdd.push(productOfAdd);
+        }else {
+          this.productsAdd = [];
+          this.productsAdd.push(productOfAdd);
+        }
       }
+      console.log(this.productsAdd)
+      this.nameCustomer.emit(nameCustomer);
+      this.cancelOrSaveProduct();
+    }else {
+      this.isProductEmiter.emit(true);
+      const nameCustomer = this.productForm.controls['customerName'].value;
+      const productOfAdd = this.addProductAndToppings(product);
+      if(productOfAdd) {
+        if(this.productsAdd) {
+          this.productsAdd.push(productOfAdd);
+        }else {
+          this.productsAdd = [];
+          this.productsAdd.push(productOfAdd);
+        }
+      }
+      this.nameCustomer.emit(nameCustomer);
+      this.resumeOrder.emit(this.productsAdd);
+      this.cancelOrSaveProduct();
     }
-    this.nameCustomer.emit(nameCustomer);
-    this.resumeOrder.emit(this.productsAdd);
-    this.cancelOrSaveProduct();
   }
 
   addProductAndToppings(product: ProductMap): DetailOrder {

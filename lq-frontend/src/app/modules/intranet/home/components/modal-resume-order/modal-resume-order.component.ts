@@ -14,6 +14,7 @@ export class ModalResumeOrderComponent {
   @Input() isVisible!: boolean;
   @Input() resumeOrder!: Order;
   @Output() hideModalEmiter = new EventEmitter<boolean>();
+  @Output() deleteProductEmitter = new EventEmitter<number>();
 
   loadingCreate: boolean = false;
 
@@ -34,6 +35,7 @@ export class ModalResumeOrderComponent {
       idUser: order.idUser,
       detailOrders: order.detailOrders,
       total: order.total,
+      discont: order.discont ?  order.discont : 0
     }
     this.loadingCreate = true;
     this.productsService.createOrder(body).subscribe(res => {
@@ -43,5 +45,9 @@ export class ModalResumeOrderComponent {
     }, (error => {
       this.notificatinService.error('Ocurrio un error al crear el pedido')
     }))
+  }
+
+  deleteProduct(index: number) {
+    this.deleteProductEmitter.emit(index)
   }
 }

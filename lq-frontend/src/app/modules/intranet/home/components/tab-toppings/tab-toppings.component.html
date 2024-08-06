@@ -120,7 +120,7 @@
     nz-button
     class="btnAcceptToppings"
     [disabled]="productForm.invalid"
-    (click)="addProductsOfOrder(product)">
+    (click)="addProductsOfOrder(product, product.isCombo)">
       Aceptar toppings
     </button>
   </div>

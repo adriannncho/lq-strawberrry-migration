@@ -25,8 +25,15 @@ nzCentered
           Total
         </div>
       </div>
-      <div nz-row nzGutter="16" *ngFor="let product of resumeOrder.detailOrders">
+      <div nz-row nzGutter="16" *ngFor="let product of resumeOrder.detailOrders; let i = index">
         <div nz-col nzSpan="6" class="centerContent content">
+          <div
+          nz-popconfirm
+          nzPopconfirmTitle="¿Estas seguro de eliminar el producto?"
+          nzPopconfirmPlacement="top"
+          (nzOnConfirm)="deleteProduct(i)">
+            <span nz-icon nzType="delete" nzTheme="outline"></span>
+          </div>
           {{ product.nameProduct }}
         </div>
         <div nz-col nzSpan="6" class="centerContent content" style="color: #3F8600;">
