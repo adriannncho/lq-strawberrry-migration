@@ -20,6 +20,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -64,7 +70,6 @@ jobs:
         project_id: totemic-sunrise-426016-j3
         cluster_name: my-cluster
         location: us-central1-a
-
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f secrets-yaml/
