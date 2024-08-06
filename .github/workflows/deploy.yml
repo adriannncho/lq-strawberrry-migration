@@ -20,26 +20,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
-
-    - name: Grant execute permission for Maven wrapper
-      run: chmod +x ./lq-internal/mvnw
-
-    - name: Build Quarkus application
-      run: ./mvnw clean package -DskipTests
-      working-directory: ./lq-internal
-
-    - name: Verify build artifacts
-      run: |
-        ls -la ./lq-internal/target/quarkus-app/
-        ls -la ./lq-internal/target/quarkus-app/lib/
-        ls -la ./lq-internal/target/quarkus-app/app/
-        ls -la ./lq-internal/target/quarkus-app/quarkus/
-
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -52,6 +32,14 @@ jobs:
       run: |
         gcloud auth configure-docker
 
+    - name: Ensure mvnw is executable
+      run: |
+        chmod +x ./mvnw
+
+    - name: Build project
+      run: |
+        ./mvnw clean package -DskipTests
+
     - name: Build and push lq-internal Docker image
       uses: docker/build-push-action@v2
       with:
@@ -63,8 +51,8 @@ jobs:
     - name: Build and push lq-frontend Docker image
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: ./Dockerfile
+        context: ./lq-frontend
+        file: ./lq-frontend/Dockerfile
         push: true
         tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
 
