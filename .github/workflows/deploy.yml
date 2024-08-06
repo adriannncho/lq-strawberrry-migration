@@ -35,8 +35,8 @@ jobs:
     - name: Build and push lq-internal Docker image
       uses: docker/build-push-action@v2
       with:
-        context: ./lq-internal\src\main\docker
-        file: .//lq-internal\src\main\docker\Dockerfile.jvm
+        context: ./lq-internal/src/main/docker
+        file: ./lq-internal/src/main/docker/Dockerfile.jvm
         push: true
         tags: gcr.io/totemic-sunrise-426016-j3/lq-internal:latest
 
