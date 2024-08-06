@@ -39,7 +39,8 @@ jobs:
 
     - name: Build project
       run: |
-        ./lq-internal/mvnw clean package -DskipTests
+        cd ./lq-internal
+        ./mvnw clean package -DskipTests
 
     - name: Build and push lq-internal Docker image
       uses: docker/build-push-action@v2
