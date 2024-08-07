@@ -68,7 +68,7 @@ jobs:
         tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
 
     - name: Set up `kubectl`
-      uses: google-github-actions/setup-gcloud@v1
+      uses: google-github-actions/setup-gcloud@v2
       with:
         project_id: totemic-sunrise-426016-j3
         cluster_name: my-cluster
