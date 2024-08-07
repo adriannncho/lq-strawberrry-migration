@@ -38,11 +38,10 @@ jobs:
       run: |
         gcloud auth configure-docker
 
-    - name: Install Google Cloud CLI and kubectl
+    - name: Install gke-gcloud-auth-plugin
       run: |
-        curl -sSL https://sdk.cloud.google.com | bash
-        exec -l $SHELL
-        gcloud components install kubectl
+        sudo apt-get update
+        sudo apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
 
     - name: Ensure mvnw is executable
       run: |
@@ -69,9 +68,13 @@ jobs:
         push: true
         tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
 
-    - name: Set up kubectl
-      run: |
-        gcloud container clusters get-credentials my-cluster --zone us-central1-a --project totemic-sunrise-426016-j3
+    - name: Set up `kubectl`
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: totemic-sunrise-426016-j3
+        cluster_name: my-cluster
+        location: us-central1-a
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Verify gcloud authentication
       run: |
