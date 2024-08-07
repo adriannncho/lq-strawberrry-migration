@@ -23,14 +23,13 @@
             "outputPath": "dist/lq-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "css",
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/web.config",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
@@ -60,20 +59,12 @@
                   "maximumError": "2mb"
                 },
                 {
-                  "type": "all",
+                  "type": "anyComponentStyle",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
               ],
               "outputHashing": "all"
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
