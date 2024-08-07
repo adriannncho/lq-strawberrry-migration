@@ -38,10 +38,9 @@ jobs:
       run: |
         gcloud auth configure-docker
 
-    - name: Install gke-gcloud-auth-plugin
+    - name: Update Google Cloud SDK
       run: |
-        sudo apt-get update
-        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+        gcloud components update
 
     - name: Ensure mvnw is executable
       run: |
