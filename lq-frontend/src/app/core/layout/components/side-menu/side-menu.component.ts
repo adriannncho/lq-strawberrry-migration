@@ -16,6 +16,7 @@ export class SideMenu implements OnInit{
   @Output() hideSideMenu = new EventEmitter<boolean>();
   roles = RolesLQFresa;
   role!: string | null;
+  userName!: string | null;
 
   constructor(
     private authService : AuthService
@@ -23,6 +24,7 @@ export class SideMenu implements OnInit{
 
   ngOnInit(): void {
     this.role = this.authService.getRoleLogged();
+    this.userName = this.authService.getNameUser();
   }
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width

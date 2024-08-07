@@ -32,7 +32,6 @@ export class ModalResumeOrderComponent {
   }
 
   createOrder(order: Order) {
-    let nullVariable : any = {};
     let body: Order = {
       idUser: order.idUser,
       detailOrders: order.detailOrders,

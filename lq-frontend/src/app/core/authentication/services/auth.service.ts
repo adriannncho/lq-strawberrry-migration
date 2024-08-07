@@ -29,10 +29,11 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/login`, body, {headers});
   }
 
-  saveRoleLogged(role: string) {
+  saveRoleLogged(role: string, name:string) {
     if(role) {
       localStorage.setItem('isLoggedActive', 'true');
       localStorage.setItem('loggedRole', role);
+      localStorage.setItem('userName', name);
     }
   }
 
@@ -40,6 +41,10 @@ export class AuthService {
     if(id) {
       localStorage.setItem('idUser', id);
     }
+  }
+
+  getNameUser() {
+    return localStorage.getItem('userName')
   }
 
   getIdUser():number {
