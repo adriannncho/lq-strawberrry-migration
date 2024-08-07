@@ -1,5 +1,5 @@
 # Usa una imagen de Node.js para construir la aplicación
-FROM node:16 as build
+FROM node:18 as build
 
 # Establece el directorio de trabajo
 WORKDIR /app
@@ -13,8 +13,8 @@ RUN npm install
 # Copia los archivos de la aplicación
 COPY . .
 
-# Construye la aplicación Angular
-RUN npm run build --prod
+# Construye la aplicación Angular para producción
+RUN npm run build
 
 # Usa una imagen de Nginx para servir la aplicación
 FROM nginx:alpine
