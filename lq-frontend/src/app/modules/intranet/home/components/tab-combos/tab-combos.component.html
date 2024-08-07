@@ -27,9 +27,9 @@
             </div>
             <div nz-col nzSpan="24">
               <nz-collapse class="collapse">
-                <ng-container *ngFor="let detail of combo.detailCombos">
-                  <ng-container *ngFor="let product of detail.products ">
-                    <nz-collapse-panel [nzHeader]="'Productos'" [nzDisabled]="!combo.isSelect">
+                <nz-collapse-panel [nzHeader]="'Productos'" [nzDisabled]="!combo.isSelect">
+                  <ng-container *ngFor="let detail of combo.detailCombos">
+                    <ng-container *ngFor="let product of detail.products ">
                       <nz-card>
                         <div nz-row>
                           <div nz-col nzSpan="21" style="display: flex; align-items: center;">
@@ -41,15 +41,15 @@
                             nz-button
                             nzType="primary"
                             (click)="mapProduct(product, combo)">
-                             <span nz-icon nzType="shop" ></span>
+                            <span nz-icon nzType="shop" ></span>
                             </button>
                             <span *ngIf="product.isSelect" nz-icon nzType="check-circle" nzTheme="outline"></span>
                           </div>
                         </div>
                       </nz-card>
-                    </nz-collapse-panel>
                   </ng-container>
                 </ng-container>
+                </nz-collapse-panel>
               </nz-collapse>
             </div>
           </div>
