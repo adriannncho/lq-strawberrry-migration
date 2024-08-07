@@ -70,6 +70,12 @@ jobs:
         project_id: totemic-sunrise-426016-j3
         cluster_name: my-cluster
         location: us-central1-a
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Check kubectl context
+      run: |
+        kubectl config current-context
+
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f secrets-yaml/
+        kubectl apply -f secrets-yaml/ --validate=false
