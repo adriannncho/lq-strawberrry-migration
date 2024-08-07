@@ -1,5 +1,14 @@
 <div nz-row>
   <div nz-col nzSpan="24">
+    <div nz-row>
+      <div nz-col nzSpan="24" style="margin-bottom: 10px;">
+        <nz-alert
+        nzType="info"
+        nzDescription="Recuerde que debe primero seleccionar un combo, para posteriormente seleccionar los productos y agregar toppings."
+        nzShowIcon
+      ></nz-alert>      
+    </div>
+    </div>
     <nz-card style="margin-bottom:10px ;" *ngFor="let combo of combosActive">
       <div nz-row nzGutter="16">
         <div nz-col nzSpan="20">
