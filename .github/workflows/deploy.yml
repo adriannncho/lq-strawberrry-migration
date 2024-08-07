@@ -1,92 +1,76 @@
-name: Build and Deploy
+- name: Build and Deploy
+  runs-on: ubuntu-latest
 
-on:
-  push:
-    branches:
-      - dev
-      - qa
-      - main
-  delete:
-    branches:
-      - dev
-      - qa
-      - main
+  steps:
+  - name: Checkout code
+    uses: actions/checkout@v2
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  - name: Set up JDK 17
+    uses: actions/setup-java@v2
+    with:
+      distribution: 'adopt'
+      java-version: '17'
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+  - name: Set up Docker Buildx
+    uses: docker/setup-buildx-action@v2
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+  - name: Authenticate to Google Cloud
+    uses: google-github-actions/auth@v1
+    with:
+      credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+  - name: Configure Docker for Google Container Registry
+    run: |
+      gcloud auth configure-docker
 
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+  - name: Install gke-gcloud-auth-plugin in Docker
+    run: |
+      docker run --rm google/cloud-sdk:slim bash -c "gcloud components install gke-gcloud-auth-plugin"
 
-    - name: Configure Docker for Google Container Registry
-      run: |
-        gcloud auth configure-docker
+  - name: Ensure mvnw is executable
+    run: |
+      chmod +x ./lq-internal/mvnw
 
-    - name: Install gke-gcloud-auth-plugin
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
+  - name: Build project
+    run: |
+      cd ./lq-internal
+      ./mvnw clean package -DskipTests
 
-    - name: Ensure mvnw is executable
-      run: |
-        chmod +x ./lq-internal/mvnw
+  - name: Build and push lq-internal Docker image
+    uses: docker/build-push-action@v2
+    with:
+      context: ./lq-internal
+      file: ./lq-internal/src/main/docker/Dockerfile.jvm
+      push: true
+      tags: gcr.io/totemic-sunrise-426016-j3/lq-internal:latest
 
-    - name: Build project
-      run: |
-        cd ./lq-internal
-        ./mvnw clean package -DskipTests
+  - name: Build and push lq-frontend Docker image
+    uses: docker/build-push-action@v2
+    with:
+      context: ./lq-frontend
+      file: ./lq-frontend/Dockerfile
+      push: true
+      tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
 
-    - name: Build and push lq-internal Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./lq-internal
-        file: ./lq-internal/src/main/docker/Dockerfile.jvm
-        push: true
-        tags: gcr.io/totemic-sunrise-426016-j3/lq-internal:latest
+  - name: Set up `kubectl`
+    uses: google-github-actions/setup-gcloud@v1
+    with:
+      project_id: totemic-sunrise-426016-j3
+      cluster_name: my-cluster
+      location: us-central1-a
+      credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Build and push lq-frontend Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./lq-frontend
-        file: ./lq-frontend/Dockerfile
-        push: true
-        tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
+  - name: Verify gcloud authentication
+    run: |
+      gcloud auth list
+      gcloud config list
 
-    - name: Set up `kubectl`
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: totemic-sunrise-426016-j3
-        cluster_name: my-cluster
-        location: us-central1-a
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
+  - name: Verify kubectl configuration
+    run: |
+      kubectl config view
+      kubectl config get-contexts
+      kubectl config current-context
 
-    - name: Verify gcloud authentication
-      run: |
-        gcloud auth list
-        gcloud config list
-
-    - name: Verify kubectl configuration
-      run: |
-        kubectl config view
-        kubectl config get-contexts
-        kubectl config current-context
-
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -f secrets-yaml/ --validate=false
+  - name: Deploy to Kubernetes
+    run: |
+      kubectl apply -f secrets-yaml/ --validate=false
