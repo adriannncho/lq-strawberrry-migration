@@ -17,7 +17,7 @@ COPY . .
 RUN mkdir -p /app/src/assets/fonts
 
 # Copia los archivos de fuentes
-COPY src/assets/Fonts /app/src/assets/fonts
+COPY src/assets/fonts /app/src/assets/fonts
 
 # Construye la aplicación Angular para producción
 RUN npm run build
