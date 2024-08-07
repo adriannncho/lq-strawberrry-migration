@@ -72,6 +72,11 @@ jobs:
         location: us-central1-a
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+    - name: Verify gcloud authentication
+      run: |
+        gcloud auth list
+        gcloud config list
+
     - name: Verify kubectl configuration
       run: |
         kubectl config view
