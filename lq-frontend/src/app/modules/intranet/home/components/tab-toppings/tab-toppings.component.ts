@@ -147,7 +147,6 @@ export class TabToppingsComponent implements OnInit {
   }
 
   addProductsOfOrder(product: ProductMap, isCombo:boolean | undefined) {
-    console.log(isCombo)
     if(isCombo) {
       this.isComboEmitter.emit(true);
       const nameCustomer = this.productForm.controls['customerName'].value;
