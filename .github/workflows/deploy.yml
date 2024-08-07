@@ -12,6 +12,15 @@ on:
       - qa
       - main
 
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: my-cluster
+  GKE_ZONE: us-central1-a
+  DEPLOYMENT_INTERNAL_NAME: lq-internal-deployment
+  DEPLOYMENT_FRONTEND_NAME: lq-frontend-deployment
+  IMAGE_INTERNAL: lq-internal
+  IMAGE_FRONTEND: lq-frontend
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -38,26 +47,13 @@ jobs:
       run: |
         gcloud auth configure-docker
 
-    - name: Install gke-gcloud-auth-plugin using custom Docker image
-      run: |
-        docker run --rm gcr.io/totemic-sunrise-426016-j3/gke-gcloud-auth-plugin gcloud components install gke-gcloud-auth-plugin
-
-    - name: Ensure mvnw is executable
-      run: |
-        chmod +x ./lq-internal/mvnw
-
-    - name: Build project
-      run: |
-        cd ./lq-internal
-        ./mvnw clean package -DskipTests
-
     - name: Build and push lq-internal Docker image
       uses: docker/build-push-action@v2
       with:
         context: ./lq-internal
         file: ./lq-internal/src/main/docker/Dockerfile.jvm
         push: true
-        tags: gcr.io/totemic-sunrise-426016-j3/lq-internal:latest
+        tags: gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_INTERNAL }}:latest
 
     - name: Build and push lq-frontend Docker image
       uses: docker/build-push-action@v2
@@ -65,14 +61,14 @@ jobs:
         context: ./lq-frontend
         file: ./lq-frontend/Dockerfile
         push: true
-        tags: gcr.io/totemic-sunrise-426016-j3/lq-frontend:latest
+        tags: gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_FRONTEND }}:latest
 
     - name: Set up `kubectl`
-      uses: google-github-actions/setup-gcloud@v2
+      uses: google-github-actions/setup-gcloud@v1
       with:
-        project_id: totemic-sunrise-426016-j3
-        cluster_name: my-cluster
-        location: us-central1-a
+        project_id: ${{ env.PROJECT_ID }}
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Verify gcloud authentication
@@ -86,6 +82,12 @@ jobs:
         kubectl config get-contexts
         kubectl config current-context
 
-    - name: Deploy to Kubernetes
+    - name: Deploy lq-internal to Kubernetes
       run: |
-        kubectl apply -f secrets-yaml/ --validate=false
+        kubectl set image deployment/${{ env.DEPLOYMENT_INTERNAL_NAME }} ${IMAGE_INTERNAL}=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_INTERNAL }}:latest
+        kubectl rollout status deployment/${{ env.DEPLOYMENT_INTERNAL_NAME }}
+    
+    - name: Deploy lq-frontend to Kubernetes
+      run: |
+        kubectl set image deployment/${{ env.DEPLOYMENT_FRONTEND_NAME }} ${IMAGE_FRONTEND}=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_FRONTEND }}:latest
+        kubectl rollout status deployment/${{ env.DEPLOYMENT_FRONTEND_NAME }}
