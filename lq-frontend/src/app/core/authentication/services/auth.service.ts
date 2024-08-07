@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs';
 import { User } from '../models/auth/auth-interface';
@@ -19,11 +19,14 @@ export class AuthService {
   ){}
 
   signinWhithIdentificationAndPassword (document: number, password: string): Observable<User> {
+    const headers = new HttpHeaders({
+      'ngrok-skip-browser-warning': 'true'
+    });
     const body = {
       document,
       password
     }
-    return this.http.post<User>(`${this.apiUrl}/login`, body);
+    return this.http.post<User>(`${this.apiUrl}/login`, body, {headers});
   }
 
   saveRoleLogged(role: string) {
@@ -31,6 +34,17 @@ export class AuthService {
       localStorage.setItem('isLoggedActive', 'true');
       localStorage.setItem('loggedRole', role);
     }
+  }
+
+  saveIdUser(id: string) {
+    if(id) {
+      localStorage.setItem('idUser', id);
+    }
+  }
+
+  getIdUser():number {
+    let idUser = localStorage.getItem('idUser')
+    return Number(idUser);
   }
 
   getRoleLogged(): string | null {

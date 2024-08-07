@@ -1,4 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { RolesLQFresa } from 'src/app/core/authentication/models/auth/auth-interface';
+import { AuthService } from 'src/app/core/authentication/services/auth.service';
 
 @Component({
   selector: 'app-menu-footer',
@@ -13,6 +15,14 @@ export class MenuFooter {
 
   @Output() showMenuSide = new EventEmitter<boolean>();
   @Output() hideSideMenu = new EventEmitter<boolean>();
+  roles = RolesLQFresa;
+  role!: string | null;
+
+  constructor(
+    private authService : AuthService,
+  ) {
+    this.role = this.authService.getRoleLogged();
+  }
 
   /**
    * Escucha los eventos del cambio del ancho de la pantalla y asigna el valor de width
