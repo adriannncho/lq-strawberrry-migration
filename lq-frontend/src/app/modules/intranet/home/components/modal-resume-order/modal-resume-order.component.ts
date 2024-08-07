@@ -43,7 +43,9 @@ export class ModalResumeOrderComponent {
     this.productsService.createOrder(body).subscribe(res => {
       this.loadingCreate = false;
       this.notificatinService.success('Pedido creado exitosamente');
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      },2000)
     }, (error => {
       this.notificatinService.error('Ocurrio un error al crear el pedido, intente cerrando sesión e ingresando nuevamente')
     }))
