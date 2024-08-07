@@ -183,4 +183,12 @@ export class HomeIntranetComponent {
       }
     });
   }
+
+  resetVariables() {
+    let blankVariable: any = null;
+    this.resumeOrder = blankVariable;
+    this.isVisibleModal = false;
+    this.isCombo = false;
+    this.isProduct = false;
+  }
 }
