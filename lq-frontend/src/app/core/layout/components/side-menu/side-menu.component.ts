@@ -1,4 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { RolesLQFresa } from 'src/app/core/authentication/models/auth/auth-interface';
 import { AuthService } from 'src/app/core/authentication/services/auth.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class SideMenu implements OnInit{
   @Input() isVisible!: boolean;
 
   @Output() hideSideMenu = new EventEmitter<boolean>();
-
+  roles = RolesLQFresa;
   role!: string | null;
 
   constructor(
