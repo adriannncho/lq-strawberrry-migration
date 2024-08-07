@@ -7,6 +7,8 @@ import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailOrder.DetailOrder;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.DetailAdditional;
+import org.lq.internal.domain.ingredient.Ingredient;
+import org.lq.internal.domain.ingredient.IngredientData;
 import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderDTO;
 import org.lq.internal.domain.order.OrderStatus;
@@ -40,6 +42,9 @@ public class OrderService {
 
     @Inject
     DetailProductRepository detailProductRepository;
+
+    @Inject
+    IngredientDataRepository ingredienDataRepository;
 
     public List<Order> getOrders() {
         List<Order> orderList = orderRepository.listAll();
@@ -200,6 +205,11 @@ public class OrderService {
                 LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
                 List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
+                for (DetailProduct detailProduct : detailProducts) {
+                    IngredientData ingredient = ingredienDataRepository.findById((long) detailProduct.getIdIngredient());
+                    detailProduct.setIngredient(ingredient);
+                }
+
                 LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
                 product.setDetailProduct(detailProducts);
             }
@@ -207,6 +217,10 @@ public class OrderService {
             LOG.infof("@getOrdersPending SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
 
             List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+            for (DetailAdditional detailAdditional : detailAdditionals) {
+                IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                detailAdditional.setIngredient(ingredient);
+            }
             detailOrder.setDetailAdditionals(detailAdditionals);
 
             LOG.infof("@getOrdersPending SERV > Fetched %d detail additionals for detail order ID %d", detailAdditionals.size(), detailOrder.getIdDetailOrder());

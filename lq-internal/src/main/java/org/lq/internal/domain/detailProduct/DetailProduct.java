@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.lq.internal.domain.ingredient.DetailAdditional;
+import org.lq.internal.domain.ingredient.Ingredient;
+import org.lq.internal.domain.ingredient.IngredientData;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -29,4 +33,7 @@ public class DetailProduct implements Serializable {
 
     @Column(name = "CANTIDAD")
     private Long quantity;
+
+    @Transient
+    private IngredientData ingredient;
 }
