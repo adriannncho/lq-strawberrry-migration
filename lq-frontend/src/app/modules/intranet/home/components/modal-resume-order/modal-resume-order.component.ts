@@ -42,7 +42,7 @@ export class ModalResumeOrderComponent {
     this.productsService.createOrder(body).subscribe(res => {
       this.loadingCreate = false;
       this.notificatinService.success('Pedido creado exitosamente');
-      this.resetVariablesEmit.emit(true)
+      this.resetVariables(true);
     }, (error => {
       this.loadingCreate = false;
       this.notificatinService.error('Ocurrio un error al crear el pedido, intente cerrando sesión e ingresando nuevamente')
@@ -51,5 +51,9 @@ export class ModalResumeOrderComponent {
 
   deleteProduct(index: number) {
     this.deleteProductEmitter.emit(index)
+  }
+
+  resetVariables(isLine: boolean) {
+    this.resetVariablesEmit.emit(isLine)
   }
 }

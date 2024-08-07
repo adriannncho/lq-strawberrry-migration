@@ -42,7 +42,7 @@ export interface ProductMap {
   size: number,
   detailProduct: DetailProduct[],
 
-  isCombo?: boolean,  
+  isCombo?: boolean,  //Solo front
 }
 
 export interface Order {

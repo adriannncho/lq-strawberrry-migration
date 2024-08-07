@@ -8,6 +8,8 @@ export interface DetailProduct {
   quantityPremium: number;
   quantitySalsa: number;
   detailProduct: null;
+
+  isSelect?: boolean;
 }
 
 export interface DetailCombo {

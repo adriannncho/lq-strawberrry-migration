@@ -1,7 +1,8 @@
 <nz-modal
 [(nzVisible)]="isVisible"
 nzCentered
-[nzClosable]="false">
+[nzClosable]="true"
+(nzOnCancel)="hideModal()">
   <ng-container *nzModalContent>
     <div nz-row *ngIf="loadingCreate">
       <div nz-col [nzXs]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
@@ -82,8 +83,8 @@ nzCentered
         <button
         nz-button
         [disabled]="loadingCreate"
-        (click)="hideModal()">
-          Cancelar
+        (click)="resetVariables(false)">
+          Eliminar
         </button>
       </div>
       <div nz-col>

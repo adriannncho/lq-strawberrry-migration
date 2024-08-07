@@ -37,11 +37,13 @@
                           </div>
                           <div nz-col nzSpan="3">
                             <button
+                            *ngIf="!product.isSelect"
                             nz-button
                             nzType="primary"
                             (click)="mapProduct(product, combo)">
                              <span nz-icon nzType="shop" ></span>
                             </button>
+                            <span *ngIf="product.isSelect" nz-icon nzType="check-circle" nzTheme="outline"></span>
                           </div>
                         </div>
                       </nz-card>

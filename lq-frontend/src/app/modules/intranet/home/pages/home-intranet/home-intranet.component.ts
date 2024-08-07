@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/authentication/services/auth.service';
 import { Combo } from 'src/app/core/models/combos/combos.interface';
 import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { SizeProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
+import { TabToppingsComponent } from '../../components/tab-toppings/tab-toppings.component';
 
 @Component({
   selector: 'app-home-intranet',
@@ -12,6 +13,7 @@ import { SizeProducts, TypeProducts } from 'src/app/core/utilities/utilities-int
   styleUrls: ['./home-intranet.component.css']
 })
 export class HomeIntranetComponent {
+  @ViewChild(TabToppingsComponent) topping!: TabToppingsComponent;
   products!: Product[]; 
   productsMap!: ProductMap[];
   sizes = SizeProducts;
@@ -111,6 +113,13 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrderCombo(detail: DetailOrder[]) {
+    this.combosActive.forEach(item => {
+      item.detailCombos.forEach(element => {
+        element.products.forEach(subItem => {
+          subItem.isSelect = detail.some(detailItem => subItem.idProduct === detailItem.product.idProduct);
+        });
+      });
+    });
     let total: number = 0;
     let discont: number = 0;
     let subTotal: number = 0;
@@ -155,11 +164,12 @@ export class HomeIntranetComponent {
   }
 
   deleteProductOfOrder(index: number) {
-    const blankVariable: any = null;
+    this.restarCombos(index);
     this.resumeOrder.detailOrders.splice(index, 1);
+    
     if(this.resumeOrder.detailOrders.length <= 0) {
       this.hideModal(false);
-      this.resumeOrder = blankVariable;
+      this.resetVariables(false);
     }else{
       this.calcTotal();
     }
@@ -184,11 +194,38 @@ export class HomeIntranetComponent {
     });
   }
 
-  resetVariables() {
+  resetVariables(isLine: boolean) {
+    if(!isLine) {
+      this.restarCombos(null)
+    }
     let blankVariable: any = null;
     this.resumeOrder = blankVariable;
     this.isVisibleModal = false;
     this.isCombo = false;
     this.isProduct = false;
+    this.topping.productsAdd = blankVariable;
+  }
+
+  restarCombos(index: number | null) {
+    if(index) {
+      let idProduct = this.resumeOrder.detailOrders[index].product.idProduct;
+      this.combosActive.forEach(item => {
+        item.detailCombos.forEach(element => {
+          element.products.forEach(subItem => {
+            if (subItem.idProduct === idProduct) {
+              subItem.isSelect = false;
+            }
+          });
+        });
+      });
+    }else {
+      this.combosActive.forEach(item => {
+        item.detailCombos.forEach(element => {
+          element.products.forEach(subItem => {
+            subItem.isSelect = false;
+          });
+        });
+      });
+    }
   }
 }
