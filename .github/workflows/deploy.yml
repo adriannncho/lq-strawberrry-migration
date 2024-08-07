@@ -35,6 +35,15 @@ jobs:
         distribution: 'adopt'
         java-version: '17'
 
+    - name: Ensure mvnw is executable
+      run: |
+        chmod +x ./lq-internal/mvnw
+
+    - name: Build project
+      run: |
+        cd ./lq-internal
+        ./mvnw clean package -DskipTests
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -63,7 +72,7 @@ jobs:
         push: true
         tags: gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_FRONTEND }}:latest
 
-    - name: Set up `kubectl`
+    - name: Set up kubectl
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ env.PROJECT_ID }}
@@ -86,7 +95,7 @@ jobs:
       run: |
         kubectl set image deployment/${{ env.DEPLOYMENT_INTERNAL_NAME }} ${IMAGE_INTERNAL}=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_INTERNAL }}:latest
         kubectl rollout status deployment/${{ env.DEPLOYMENT_INTERNAL_NAME }}
-    
+
     - name: Deploy lq-frontend to Kubernetes
       run: |
         kubectl set image deployment/${{ env.DEPLOYMENT_FRONTEND_NAME }} ${IMAGE_FRONTEND}=gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_FRONTEND }}:latest
