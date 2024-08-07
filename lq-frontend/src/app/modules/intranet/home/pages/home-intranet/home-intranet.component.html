@@ -82,7 +82,8 @@
           <app-tab-combos
           [combosActive]="combosActive"
           (intexTab)="selectedIndex = $event"
-          (productEmiter)="addProduct($event)">
+          (productEmiter)="addProduct($event)"
+          (comboSelectedEmit)="comboSelected = $event">
           </app-tab-combos>
         </nz-tab>
         <!-- TOPPINGS -->
@@ -98,6 +99,7 @@
           (blockTabToppings)="blockTabToppings = $event"
           (selectedIndex)="selectedIndex = $event"
           (resumeOrder)="createResumeOrder($event)"
+          (resumeOrderCombo)="createResumeOrderCombo($event)"
           (nameCustomer)="customerName = $event"
           (changeCombo)="changeType($event)"
           (isComboEmitter)="isCombo = $event"

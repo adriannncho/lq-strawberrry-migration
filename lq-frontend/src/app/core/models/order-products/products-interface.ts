@@ -51,7 +51,7 @@ export interface Order {
   detailOrders: DetailOrder[];
   discont: number
 
-  subToatl?: number;    // Solo front 
+  subTotal?: number;    // Solo front 
   totalOrder?: number;  // Solo front
 }
 

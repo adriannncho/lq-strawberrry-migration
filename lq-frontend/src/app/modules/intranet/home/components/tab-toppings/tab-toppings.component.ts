@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DetailAdditional, DetailOrder, Ingredient, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
 
@@ -20,6 +21,7 @@ export class TabToppingsComponent implements OnInit {
   @Output() changeCombo = new EventEmitter<boolean>();
   @Output() isComboEmitter = new EventEmitter<boolean>();
   @Output() isProductEmiter = new EventEmitter<boolean>();
+  @Output() resumeOrderCombo = new EventEmitter<DetailOrder[]>();
 
   loadingToppings: boolean = false;
   productForm!: FormGroup;
@@ -39,7 +41,8 @@ export class TabToppingsComponent implements OnInit {
 
   constructor(
     private productsService : ProductsOrderService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService : NotificationService
   ) {}
 
    ngOnInit(): void {
@@ -65,6 +68,8 @@ export class TabToppingsComponent implements OnInit {
         this.sauces = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._SAUSES_);
       }
       this.loadingToppings = false;
+    }, error => {
+      this.notificationService.error('Ocurrió un error al obtener los toppings.', 'Error')
     })
    }
 
@@ -155,8 +160,8 @@ export class TabToppingsComponent implements OnInit {
           this.productsAdd.push(productOfAdd);
         }
       }
-      console.log(this.productsAdd)
       this.nameCustomer.emit(nameCustomer);
+      this.resumeOrderCombo.emit(this.productsAdd)
       this.cancelOrSaveProduct();
     }else {
       this.isProductEmiter.emit(true);

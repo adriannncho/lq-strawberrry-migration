@@ -46,6 +46,6 @@ export class CombosService {
     const headers = new HttpHeaders({
       'ngrok-skip-browser-warning': 'true'
     });
-    return this.http.put<Combo>(`${this.apiUrl}/ingredients/delete/${comboId}`, {},{headers});
+    return this.http.put<Combo>(`${this.apiUrl}/ingredients/delete/${comboId}`,{headers});
    }
 }

@@ -3,6 +3,7 @@ import { Order } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { Location } from '@angular/common';
+import { Combo } from 'src/app/core/models/combos/combos.interface';
 
 @Component({
   selector: 'app-modal-resume-order',
@@ -13,6 +14,7 @@ export class ModalResumeOrderComponent {
 
   @Input() isVisible!: boolean;
   @Input() resumeOrder!: Order;
+  @Input() combo!: Combo;
   @Output() hideModalEmiter = new EventEmitter<boolean>();
   @Output() deleteProductEmitter = new EventEmitter<number>();
 
@@ -43,7 +45,7 @@ export class ModalResumeOrderComponent {
       this.notificatinService.success('Pedido creado exitosamente');
       window.location.reload();
     }, (error => {
-      this.notificatinService.error('Ocurrio un error al crear el pedido')
+      this.notificatinService.error('Ocurrio un error al crear el pedido, intente cerrando sesión e ingresando nuevamente')
     }))
   }
 

@@ -20,7 +20,7 @@
               <nz-collapse class="collapse">
                 <ng-container *ngFor="let detail of combo.detailCombos">
                   <ng-container *ngFor="let product of detail.products ">
-                    <nz-collapse-panel [nzHeader]="'Productos'">
+                    <nz-collapse-panel [nzHeader]="'Productos'" [nzDisabled]="!combo.isSelect">
                       <nz-card>
                         <div nz-row>
                           <div nz-col nzSpan="21" style="display: flex; align-items: center;">
@@ -30,7 +30,7 @@
                             <button
                             nz-button
                             nzType="primary"
-                            (click)="mapProduct(product)">
+                            (click)="mapProduct(product, combo)">
                              <span nz-icon nzType="shop" ></span>
                             </button>
                           </div>
@@ -43,16 +43,11 @@
             </div>
           </div>
         </div>
-        <div nz-col nzSpan="4" style="display: flex; align-items: center;"> 
-          <button 
-          nz-button
-          nzType="primary"
-          style="background: none;"
-          [disabled]="true"
-          (click)="addCombo(combo)">
-          <span nz-icon nzType="plus-circle" nzTheme="twotone" nzTwotoneColor="#3F8600" style="font-size: 24px;"></span>
-          </button>
-        </div>
+        <nz-radio-group [(ngModel)]="comboSelect"  (ngModelChange)="chageSelectCombo($event)" class="centerContent">
+          <div nz-col nzSpan="4" style="display: flex; align-items: center;"> 
+            <label nz-radio [nzValue]="combo"></label>
+          </div>
+        </nz-radio-group>
       </div>
     </nz-card>
   </div>

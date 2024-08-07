@@ -14,7 +14,7 @@
   </div>
   <form nz-form [formGroup]="productForm">
     <div nz-row nzGutter="16">
-      <div nz-col nzSpan="18">
+      <div nz-col [nzSpan]="product.isCombo ? '24' : '18' ">
         <nz-form-item>
           <nz-form-label nzSpan="24" nzRequired>
             Nombre del cliente
@@ -28,7 +28,7 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-      <div nz-col nzSpan="6">
+      <div nz-col nzSpan="6" *ngIf="!product.isCombo">
         <nz-form-item>
           <nz-form-label nzSpan="24" nzRequired>
             Cantidad

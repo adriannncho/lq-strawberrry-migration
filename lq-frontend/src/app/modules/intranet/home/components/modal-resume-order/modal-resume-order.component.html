@@ -54,7 +54,7 @@ nzCentered
             SubTotal:
         </div>
         <div nz-col nzSpan="6">
-          $ {{ resumeOrder.total }}
+          $ {{ resumeOrder.subTotal ? resumeOrder.subTotal : 0 }}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
@@ -70,7 +70,7 @@ nzCentered
             Total:
         </div>
         <div nz-col nzSpan="6">
-          $ {{ resumeOrder.discont ?  resumeOrder.total - resumeOrder.discont : resumeOrder.total}}
+          $ {{  resumeOrder.total ?  resumeOrder.total : 0 }}
         </div>
       </div>
     </nz-card>

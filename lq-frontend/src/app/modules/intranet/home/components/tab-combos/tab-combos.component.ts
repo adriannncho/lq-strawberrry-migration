@@ -13,19 +13,19 @@ export class TabCombosComponent {
   @Input() combosActive!: Combo[];
   @Output() intexTab = new EventEmitter<number>();
   @Output() productEmiter = new EventEmitter<ProductMap>();
+  @Output() comboSelectedEmit = new EventEmitter<Combo>();
 
   productsMap!: ProductMap;
   sizes = SizeProducts;
+  comboSelect!: Combo;
 
-  addCombo(combo:Combo) {
-    
-  }
+
 
   changetab() {
     this.intexTab.emit(2);
   }
 
-  mapProduct(product: DetailProduct) {
+  mapProduct(product: DetailProduct, combo: Combo) {
     let sizeMap: string = '';
     if(product.size === 1) {
       sizeMap = this.sizes._ID_ONE_;
@@ -51,5 +51,17 @@ export class TabCombosComponent {
 
   productMapEmiter(productsMap: ProductMap) {
     this.productEmiter.emit(productsMap);
+  }
+
+  chageSelectCombo(combo: Combo) {
+    this.combosActive.forEach(item => {
+      if(item.idCombo === combo.idCombo) {
+        item.isSelect = true;
+        this.comboSelect = item;
+      }else {
+        item.isSelect = false;
+      }
+    })
+    this.comboSelectedEmit.emit(this.comboSelect);
   }
 }

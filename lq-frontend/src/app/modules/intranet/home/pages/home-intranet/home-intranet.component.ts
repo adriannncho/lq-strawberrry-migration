@@ -34,6 +34,7 @@ export class HomeIntranetComponent {
   combosAdded!: Combo[];
   isCombo: boolean = false;
   isProduct: boolean = false;
+  comboSelected!: Combo;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -55,7 +56,7 @@ export class HomeIntranetComponent {
       }
     }, (error) => {
       this.loadingProducts = false;
-      this.notificationService.error('Ocurrio un error al obtener los productos');
+      this.notificationService.error('Ocurrió un error al obtener los productos disponibles.', 'Error');
     })
   }
 
@@ -109,6 +110,25 @@ export class HomeIntranetComponent {
     }
   }
 
+  createResumeOrderCombo(detail: DetailOrder[]) {
+    let total: number = 0;
+    let discont: number = 0;
+    let subTotal: number = 0;
+    detail.forEach(item => {
+      subTotal = subTotal + item.value;
+      discont = subTotal - this.comboSelected.value;
+      total = subTotal - discont;
+    });
+
+    this.resumeOrder = {
+      idUser: this.idUser,
+      detailOrders: detail,
+      total: total,
+      discont: discont,
+      subTotal: subTotal
+    }
+  }
+
   showModal() {
     this.isVisibleModal = true;
   }
@@ -124,6 +144,8 @@ export class HomeIntranetComponent {
         this.combosActive = res;
         this.loadingCombos = false;
       }
+    }, error => {
+      this.notificationService.error('Ocurrió un error al obtener los combos disponibles.', 'Error')
     })
   }
 
@@ -145,9 +167,20 @@ export class HomeIntranetComponent {
 
   calcTotal () {
     this.resumeOrder.detailOrders.forEach(item => {
-      let total = 0;
-      total = total + item.value;
-      this.resumeOrder.total = total;
+      let total: number = 0;
+      let discont: number = 0;
+      let subTotal: number = 0;
+      if(this.isCombo) {
+        subTotal = subTotal + item.value;
+        discont = subTotal - this.comboSelected.value;
+        total = subTotal - discont;
+        this.resumeOrder.total = total;
+        this.resumeOrder.subTotal = subTotal;
+        this.resumeOrder.discont = discont;
+      }else {
+        total = total + item.value;
+        this.resumeOrder.total = total;
+      }
     });
   }
 }

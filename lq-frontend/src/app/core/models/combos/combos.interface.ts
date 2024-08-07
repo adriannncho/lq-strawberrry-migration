@@ -25,6 +25,8 @@ export interface Combo {
   value: number;
   status: string;
   detailCombos: DetailCombo[];
+
+  isSelect?: boolean;  // Solo front
 }
 
 export interface DetailComboMap {
