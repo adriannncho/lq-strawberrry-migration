@@ -40,7 +40,8 @@ jobs:
 
     - name: Install gke-gcloud-auth-plugin
       run: |
-        gcloud components install gke-gcloud-auth-plugin
+        sudo apt-get update
+        sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
 
     - name: Ensure mvnw is executable
       run: |
