@@ -13,6 +13,12 @@ RUN npm install
 # Copia los archivos de la aplicación
 COPY . .
 
+# Asegúrate de que la carpeta de fuentes existe antes de copiar
+RUN mkdir -p /app/src/assets/fonts
+
+# Copia los archivos de fuentes
+COPY src/assets/Fonts /app/src/assets/fonts
+
 # Construye la aplicación Angular para producción
 RUN npm run build
 
