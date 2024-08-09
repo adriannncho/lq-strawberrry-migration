@@ -41,3 +41,7 @@ nb-configuration.xml
 
 # Plugin directory
 /.quarkus/cli/plugins/
+
+# Asegura que los archivos necesarios para Docker no sean ignorados
+!pom.xml
+!src/
