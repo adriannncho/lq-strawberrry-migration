@@ -4,6 +4,10 @@ FROM maven:3.8.7-eclipse-temurin-17 AS build
 # Establece el directorio de trabajo
 WORKDIR /workspace
 
+# Copia el archivo pom.xml y el código fuente del proyecto al contenedor
+COPY lq-strawberrry-migration/lq-internal/pom.xml /workspace/
+COPY lq-strawberrry-migration/lq-internal/src /workspace/src
+
 # Construye el proyecto
 RUN mvn clean package -DskipTests
 
