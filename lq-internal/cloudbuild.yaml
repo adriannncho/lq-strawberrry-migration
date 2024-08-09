@@ -3,7 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-t', 'gcr.io/$PROJECT_ID/lq-fresa-internal',
+      '-t', 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal',
       '-f', 'lq-internal/src/main/docker/Dockerfile.jvm',
       '.'
     ]
@@ -20,14 +20,14 @@ steps:
       'run',
       'deploy',
       'lq-fresa-internal',
-      '--image', 'gcr.io/$PROJECT_ID/lq-fresa-internal:latest',
+      '--image', 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal:latest',
       '--platform', 'managed',
       '--region', 'us-west1',
       '--allow-unauthenticated'
     ]
 
 images:
-  - 'gcr.io/$PROJECT_ID/lq-fresa-internal'
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal'
 
 options:
   logging: CLOUD_LOGGING_ONLY
