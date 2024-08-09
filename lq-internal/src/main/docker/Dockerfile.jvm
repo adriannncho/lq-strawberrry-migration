@@ -1,5 +1,5 @@
-# Usa una imagen de Maven para compilar la aplicación
-FROM maven:3.8.7-openjdk-17 AS build
+# Usa una imagen oficial de Maven con OpenJDK 17
+FROM maven:3.8.8-openjdk-17 AS build
 
 # Establece el directorio de trabajo en /workspace
 WORKDIR /workspace
