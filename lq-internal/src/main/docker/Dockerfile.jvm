@@ -8,8 +8,13 @@ WORKDIR /workspace
 COPY /lq-internal/pom.xml /workspace/
 COPY /lq-internal/src /workspace/src
 
+# Verifica que los archivos están en el directorio de trabajo
+RUN ls -R /workspace
+
 # Construye el proyecto
 RUN mvn clean package -DskipTests
+
+# Verifica el contenido del directorio target
 RUN ls -R /workspace/target
 
 # Usa una imagen base para ejecutar la aplicación
