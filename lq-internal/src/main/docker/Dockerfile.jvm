@@ -1,26 +1,23 @@
-# Usa una imagen oficial de Maven con OpenJDK 17
-FROM maven:3.8.7-eclipse-temurin-17 AS build
+FROM maven:3.8.8-openjdk-17 AS build
 
 # Establece el directorio de trabajo
 WORKDIR /workspace
 
-# Copia el archivo pom.xml y el código fuente al contenedor
+# Copia el archivo pom.xml y el código fuente
 COPY pom.xml ./
 COPY src ./src
 
-# Compila la aplicación utilizando Maven
+# Construye el proyecto
 RUN mvn clean package -DskipTests
 
-# Usa la imagen base de OpenJDK para ejecutar la aplicación
+# Usa una imagen base para ejecutar la aplicación
 FROM registry.access.redhat.com/ubi8/openjdk-17:latest
 
-ENV LANGUAGE='en_US:en'
-
-# Copia los archivos compilados desde la fase de construcción
-COPY --chown=185 --from=build /workspace/target/quarkus-app/lib/ /deployments/lib/
-COPY --chown=185 --from=build /workspace/target/quarkus-app/*.jar /deployments/
-COPY --chown=185 --from=build /workspace/target/quarkus-app/app/ /deployments/app/
-COPY --chown=185 --from=build /workspace/target/quarkus-app/quarkus/ /deployments/quarkus/
+# Copia los artefactos construidos al contenedor final
+COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 target/quarkus-app/*.jar /deployments/
+COPY --chown=185 target/quarkus-app/app/ /deployments/app/
+COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
 
 EXPOSE 8080
 USER 185
