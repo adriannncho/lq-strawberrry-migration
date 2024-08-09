@@ -11,24 +11,20 @@ COPY /lq-internal/src /workspace/src
 # Verifica que los archivos están en el directorio de trabajo
 RUN ls -R /workspace
 
-# Construye el proyecto
+# Compila el proyecto
 RUN mvn clean package -DskipTests
 
-# Verifica el contenido del directorio target
-RUN ls -R /workspace/target
-
-# Usa una imagen base para ejecutar la aplicación
+# Usa una imagen base de Red Hat UBI8 con OpenJDK 17 para ejecutar la aplicación
 FROM registry.access.redhat.com/ubi8/openjdk-17:latest
 
-# Copia los artefactos construidos al contenedor final
-COPY --chown=185 /workspace/target/quarkus-app/lib/ /deployments/lib/
-COPY --chown=185 /workspace/target/quarkus-app/*.jar /deployments/
-COPY --chown=185 /workspace/target/quarkus-app/app/ /deployments/app/
-COPY --chown=185 /workspace/target/quarkus-app/quarkus/ /deployments/quarkus/
+# Establece el directorio de trabajo
+WORKDIR /app
 
+# Copia el JAR y el contenido del directorio quarkus-app desde el contenedor de construcción
+COPY --from=build /workspace/target/quarkus-app /app
+
+# Expon el puerto que la aplicación usa
 EXPOSE 8080
-USER 185
-ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
-ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]
+# Comando para ejecutar la aplicación
+CMD ["java", "-jar", "quarkus-run.jar"]
