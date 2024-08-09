@@ -8,6 +8,11 @@ steps:
       '.'
     ]
 
+  # Esperar unos segundos para asegurar que la imagen esté disponible
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args: ['-c', 'sleep 30']
+
   # Paso 2: Desplegar la imagen en Google Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args: [
@@ -15,7 +20,7 @@ steps:
       'run',
       'deploy',
       'lq-fresa-internal',
-      '--image', 'gcr.io/$PROJECT_ID/lq-fresa-internal',
+      '--image', 'gcr.io/$PROJECT_ID/lq-fresa-internal:latest',
       '--platform', 'managed',
       '--region', 'us-west1',
       '--allow-unauthenticated'
