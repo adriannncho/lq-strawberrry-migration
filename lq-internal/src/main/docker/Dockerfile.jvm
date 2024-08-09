@@ -1,11 +1,12 @@
 # Usa una imagen oficial de Maven con OpenJDK 17
 FROM maven:3.8.7-eclipse-temurin-17 AS build
 
-# Establece el directorio de trabajo en /workspace
+# Establece el directorio de trabajo
 WORKDIR /workspace
 
-# Copia los archivos de proyecto al contenedor
-COPY ./ /workspace/
+# Copia el archivo pom.xml y el código fuente al contenedor
+COPY pom.xml ./
+COPY src ./src
 
 # Compila la aplicación utilizando Maven
 RUN mvn clean package -DskipTests
