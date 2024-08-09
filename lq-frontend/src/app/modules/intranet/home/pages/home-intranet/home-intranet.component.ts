@@ -37,6 +37,9 @@ export class HomeIntranetComponent {
   isCombo: boolean = false;
   isProduct: boolean = false;
   comboSelected!: Combo;
+  okOrder: boolean = false;
+  comboIniciado: boolean = false;
+  comboEnd: boolean = false;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -110,20 +113,28 @@ export class HomeIntranetComponent {
       total: total,
       discont: 0
     }
+    this.okOrder = true;
   }
 
-  createResumeOrderCombo(detail: DetailOrder[]) {
+  createResumeOrderCombo(detaile: DetailOrder[]) {
     this.combosActive.forEach(item => {
-      item.detailCombos.forEach(element => {
-        element.products.forEach(subItem => {
-          subItem.isSelect = detail.some(detailItem => subItem.idProduct === detailItem.product.idProduct);
-        });
+      detaile.forEach(detail => {
+        this.changesCantidadProd(detail.idCombo, detaile)
+        if(item.idCombo === detail.idCombo ) {
+          item.detailCombos.forEach(element => {
+            element.products.forEach(subItem => {
+              if(subItem.idProduct === detail.product.idProduct) {
+                subItem.isSelect = true;
+              }
+            });
+          });
+        }
       });
     });
     let total: number = 0;
     let discont: number = 0;
     let subTotal: number = 0;
-    detail.forEach(item => {
+    detaile.forEach(item => {
       subTotal = subTotal + item.value;
       discont = subTotal - this.comboSelected.value;
       total = subTotal - discont;
@@ -131,7 +142,7 @@ export class HomeIntranetComponent {
 
     this.resumeOrder = {
       idUser: this.idUser,
-      detailOrders: detail,
+      detailOrders: detaile,
       total: total,
       discont: discont,
       subTotal: subTotal
@@ -151,6 +162,12 @@ export class HomeIntranetComponent {
     this.productsService.getCombosActive().subscribe(res => {
       if(res){
         this.combosActive = res;
+        this.combosActive.forEach(item => {
+          item.complete = false;
+            item.catProducts = item.detailCombos.length;
+              item.catProductsAdd = 0;
+              item.complete = false;;
+        })
         this.loadingCombos = false;
       }
     }, error => {
@@ -164,9 +181,10 @@ export class HomeIntranetComponent {
   }
 
   deleteProductOfOrder(index: number) {
-    this.restarCombos(index);
+    if(this.isCombo) {
+      this.restarCombos(index);
+    }
     this.resumeOrder.detailOrders.splice(index, 1);
-    
     if(this.resumeOrder.detailOrders.length <= 0) {
       this.hideModal(false);
       this.resetVariables(false);
@@ -204,19 +222,28 @@ export class HomeIntranetComponent {
     this.isCombo = false;
     this.isProduct = false;
     this.topping.productsAdd = blankVariable;
+    this.okOrder = false;
   }
 
   restarCombos(index: number | null) {
     if(index) {
       let idProduct = this.resumeOrder.detailOrders[index].product.idProduct;
       this.combosActive.forEach(item => {
-        item.detailCombos.forEach(element => {
-          element.products.forEach(subItem => {
-            if (subItem.idProduct === idProduct) {
-              subItem.isSelect = false;
-            }
+        if(item.isSelect) {
+          if(item.catProductsAdd && item.catProductsAdd > 0) {
+            item.catProductsAdd = item.catProductsAdd -1;
+            this.comboEnd = false;
+            this.okOrder = false;
+          }
+          item.complete = false;
+          item.detailCombos.forEach(element => {
+            element.products.forEach(subItem => {
+              if (subItem.idProduct === idProduct) {
+                subItem.isSelect = false;
+              }
+            });
           });
-        });
+        }
       });
     }else {
       this.combosActive.forEach(item => {
@@ -227,5 +254,28 @@ export class HomeIntranetComponent {
         });
       });
     }
+  }
+
+  changesCantidadProd(idCombo: number | undefined,detail: DetailOrder[]) {
+    this.combosActive.forEach(item => {
+      if(item.idCombo === idCombo) {
+        if(item.catProductsAdd) {
+          item.catProductsAdd = detail.length
+        }else {
+          item.catProductsAdd = 1
+        }
+        if(item.catProducts === item.catProductsAdd) {
+          this.okOrder = true;
+          item.complete = true;
+          this.comboIniciado = false;
+          this.comboEnd = true;
+        }else {
+          this.okOrder = false;
+          item.complete = false;
+          this.comboIniciado = true;
+        }
+      }
+    })
+
   }
 }

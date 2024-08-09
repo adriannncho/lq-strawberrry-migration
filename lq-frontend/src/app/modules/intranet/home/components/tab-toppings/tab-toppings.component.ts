@@ -14,6 +14,7 @@ export class TabToppingsComponent implements OnInit {
 
   @Input() product! : ProductMap;
   @Input() isCombo : boolean = false;
+  @Input() comboIniciado: boolean = false;
   @Output() selectedIndex = new EventEmitter<number>();
   @Output() blockTabToppings = new EventEmitter<boolean>();
   @Output() resumeOrder = new EventEmitter<DetailOrder[]>();
@@ -211,6 +212,7 @@ export class TabToppingsComponent implements OnInit {
       detailAdditionals:toppingsAdd,
       nameProduct: product.name,
       nameCustomer: this.productForm.controls['customerName'].value.toUpperCase().trim(),
+      idCombo: product.idCombo ? product.idCombo : 0
     } 
     return productAdd
   }

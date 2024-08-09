@@ -42,7 +42,8 @@ export interface ProductMap {
   size: number,
   detailProduct: DetailProduct[],
 
-  isCombo?: boolean,  //Solo front
+  isCombo?: boolean,
+  idCombo?: number,  //Solo front
 }
 
 export interface Order {
@@ -62,6 +63,7 @@ export interface DetailOrder {
   product: ProductId;
   detailAdditionals: DetailAdditional[];
   nameProduct: string;                     //Solo uso front
+  idCombo?: number;
 }
 
 export interface ProductId {

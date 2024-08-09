@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Combo, DetailProduct } from 'src/app/core/models/combos/combos.interface';
-import { Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { SizeProducts } from 'src/app/core/utilities/utilities-interfaces';
 
 @Component({
@@ -11,6 +11,8 @@ import { SizeProducts } from 'src/app/core/utilities/utilities-interfaces';
 export class TabCombosComponent {
 
   @Input() combosActive!: Combo[];
+  @Input() comboIniciado: boolean = false;
+  @Input() comboEnd: boolean = false;
   @Output() intexTab = new EventEmitter<number>();
   @Output() productEmiter = new EventEmitter<ProductMap>();
   @Output() comboSelectedEmit = new EventEmitter<Combo>();
@@ -18,8 +20,6 @@ export class TabCombosComponent {
   productsMap!: ProductMap;
   sizes = SizeProducts;
   comboSelect!: Combo;
-
-
 
   changetab() {
     this.intexTab.emit(2);
@@ -43,7 +43,8 @@ export class TabCombosComponent {
       quantityToppingsPremium: product.quantityPremium,
       size: product.size,
       sizeMap: sizeMap,
-      isCombo: true
+      isCombo: true,
+      idCombo: combo.idCombo
     }
 
     this.productMapEmiter(this.productsMap);

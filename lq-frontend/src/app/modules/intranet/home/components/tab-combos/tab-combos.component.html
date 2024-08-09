@@ -27,7 +27,7 @@
             </div>
             <div nz-col nzSpan="24">
               <nz-collapse class="collapse">
-                <nz-collapse-panel [nzHeader]="'Productos'" [nzDisabled]="!combo.isSelect">
+                <nz-collapse-panel [nzHeader]="'Productos'">
                   <ng-container *ngFor="let detail of combo.detailCombos">
                     <ng-container *ngFor="let product of detail.products ">
                       <nz-card>
@@ -38,6 +38,7 @@
                           <div nz-col nzSpan="3">
                             <button
                             *ngIf="!product.isSelect"
+                            [disabled]="!combo.isSelect"
                             nz-button
                             nzType="primary"
                             (click)="mapProduct(product, combo)">
@@ -54,11 +55,15 @@
             </div>
           </div>
         </div>
-        <nz-radio-group [(ngModel)]="comboSelect"  (ngModelChange)="chageSelectCombo($event)" class="centerContent">
-          <div nz-col nzSpan="4" style="display: flex; align-items: center;"> 
-            <label nz-radio [nzValue]="combo"></label>
+        <div nz-col nzSpan="4" style="display: flex;">
+          <div nz-row nzGutter="16">
+            <div nz-col nzSpan="24">
+              <nz-radio-group [(ngModel)]="comboSelect"  (ngModelChange)="chageSelectCombo($event)" class="centerContent"> 
+                  <label [nzDisabled]="comboIniciado || comboEnd" nz-radio [nzValue]="combo"></label>
+              </nz-radio-group>
+            </div>
           </div>
-        </nz-radio-group>
+        </div>
       </div>
     </nz-card>
   </div>
