@@ -15,30 +15,18 @@ export class ProductsOrderService {
   ){}
 
  getAllProducts(): Observable<Product[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Product[]>(`${this.apiUrl}/products`, {headers});
+  return this.http.get<Product[]>(`${this.apiUrl}/products`);
  }
 
  getProduct(numberProduct : number): Observable<Product[]> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.get<Product[]>(`${this.apiUrl}/products/${numberProduct}`, {headers});
+    return this.http.get<Product[]>(`${this.apiUrl}/products/${numberProduct}`);
  }
 
  createProduct(product : ProductCreateMap) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.post<ProductCreateMap>(`${this.apiUrl}/product`, product, {headers});
+    return this.http.post<ProductCreateMap>(`${this.apiUrl}/product`, product);
  }
 
  updateProduct(product : ProductUpdateMap) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.put<ProductUpdateMap>(`${this.apiUrl}/product`, product, {headers});
+    return this.http.put<ProductUpdateMap>(`${this.apiUrl}/product`, product);
  }
 }

@@ -15,37 +15,22 @@ export class CombosService {
   ){}
 
  getAllCombos(): Observable<Combo[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Combo[]>(`${this.apiUrl}/combo`, {headers});
+  return this.http.get<Combo[]>(`${this.apiUrl}/combo`);
  }
 
  getCombosActive(): Observable<Combo[]> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.get<Combo[]>(`${this.apiUrl}/combo`, {headers});
+    return this.http.get<Combo[]>(`${this.apiUrl}/combo`);
  }
 
  createCombo(combo : ComboMap) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.post<ComboMap>(`${this.apiUrl}/combo/register`, combo, {headers});
+    return this.http.post<ComboMap>(`${this.apiUrl}/combo/register`, combo);
  }
 
  updateCombo(combo : ComboUpdateMap) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.put<ComboUpdateMap>(`${this.apiUrl}/combo/register`, combo, {headers});
+    return this.http.put<ComboUpdateMap>(`${this.apiUrl}/combo/register`, combo);
  }
 
  desactiveIngredient(comboId: number) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.put<Combo>(`${this.apiUrl}/ingredients/delete/${comboId}`,{headers});
+    return this.http.put<Combo>(`${this.apiUrl}/ingredients/delete/${comboId}`, {});
    }
 }

@@ -14,48 +14,30 @@ export class SaleService {
   ){}
 
   getSale(): Observable<number> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.get<number>(`${this.apiUrl}/totalSales`, {headers});
+    return this.http.get<number>(`${this.apiUrl}/totalSales`);
   }
 
   getSaleDaily(date: string): Observable<SalesDaily> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-  
     const params = new HttpParams().set('date', date);
-    return this.http.get<SalesDaily>(`${this.apiUrl}/totalSalesDaily`, { headers, params });
+    return this.http.get<SalesDaily>(`${this.apiUrl}/totalSalesDaily`, { params });
   }
 
   getSaleWeek(date: string): Observable<SalesWeek> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-  
     const params = new HttpParams().set('date', date);
-    return this.http.get<SalesWeek>(`${this.apiUrl}/totalSalesWeek`, { headers, params });
+    return this.http.get<SalesWeek>(`${this.apiUrl}/totalSalesWeek`, { params });
   }
 
   getSaleMonth(date: string): Observable<SalesMonth> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
   
     const params = new HttpParams().set('date', date);
-    return this.http.get<SalesMonth>(`${this.apiUrl}/totalSalesMonth`, { headers, params });
+    return this.http.get<SalesMonth>(`${this.apiUrl}/totalSalesMonth`, { params });
   }
 
   getSalesByRange(startDate: string, endDate: string): Observable<SalesMonth> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate);
 
-    return this.http.get<SalesMonth>(`${this.apiUrl}/totalSalesByRange`, { headers, params });
+    return this.http.get<SalesMonth>(`${this.apiUrl}/totalSalesByRange`, { params });
   }
 }

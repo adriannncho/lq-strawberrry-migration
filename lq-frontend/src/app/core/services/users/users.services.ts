@@ -14,30 +14,18 @@ export class UserService {
   ){}
 
  getAllUsers(): Observable<User[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<User[]>(`${this.apiUrl}/users`, {headers});
+  return this.http.get<User[]>(`${this.apiUrl}/users`);
  }
 
  createUser(user : UserMap){
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.post<UserMap>(`${this.apiUrl}/register`, user, {headers});
+    return this.http.post<UserMap>(`${this.apiUrl}/register`, user);
  }
 
  updateUser(user : UserMap){
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.put<UserMap>(`${this.apiUrl}/updateUser`, user, {headers});
+    return this.http.put<UserMap>(`${this.apiUrl}/updateUser`, user);
  }
 
  desactiveUser(userId : number){
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.put<UserMap>(`${this.apiUrl}/deleteUser/${userId}`, {headers});
+    return this.http.put<UserMap>(`${this.apiUrl}/deleteUser/${userId}`, {});
  }
 }
