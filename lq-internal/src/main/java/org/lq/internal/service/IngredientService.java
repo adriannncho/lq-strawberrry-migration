@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+import org.lq.internal.domain.combo.Status;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.*;
 import org.lq.internal.helper.exception.PVException;
@@ -116,7 +117,12 @@ public class IngredientService {
         }
 
         LOG.infof("@deleteIngredient SERV > Deactivating ingredient with ID %d", ingredientId);
-        existingIngredient.setActive(false);
+        if (existingIngredient.isActive()){
+            existingIngredient.setActive(false);
+        } else {
+            existingIngredient.setActive(true);
+        }
+
         ingredientRepository.persist(existingIngredient);
 
         LOG.infof("@deleteIngredient SERV > Ingredient with ID %d deactivated successfully", ingredientId);
@@ -180,8 +186,14 @@ public class IngredientService {
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Tipo de ingrediente no encontrado.");
         }
 
+        if (existingIngredientType.isActive()){
+            existingIngredientType.setActive(false);
+        } else {
+            existingIngredientType.setActive(true);
+        }
+
         LOG.infof("@deleteIngredientType SERV > Deactivating ingredient type with ID %d", ingredientTypeId);
-        existingIngredientType.setActive(false);
+
 
         ingredientTypeRepository.persist(existingIngredientType);
 

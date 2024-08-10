@@ -172,12 +172,16 @@ public class ProductService {
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El producto no fue encontrado.");
         }
 
-        LOG.infof("@deactivateProduct SERV > Deactivating product with ID %d", numberProduct);
-        product.setStatus(String.valueOf(Status.INACTIVO));
+        if (product.getStatus().equals(Status.ACTIVO.toString())){
+            product.setStatus(String.valueOf(Status.INACTIVO));
+        } else {
+            product.setStatus(String.valueOf(Status.ACTIVO));
+            LOG.infof("@deactivateProduct SERV > Deactivating product with ID %d", numberProduct);
+        }
 
-        LOG.infof("@deactivateProduct SERV > Persisting deactivated product with ID %d", numberProduct);
+        LOG.infof("@deactivateProduct SERV > Persisting product with ID %d", numberProduct);
         productRepository.persist(product);
 
-        LOG.infof("@deactivateProduct SERV > Product with ID %d deactivated successfully", numberProduct);
+        LOG.infof("@deactivateProduct SERV > Product with ID %d change status successfully", numberProduct);
     }
 }
