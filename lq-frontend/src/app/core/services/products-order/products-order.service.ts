@@ -16,30 +16,18 @@ export class ProductsOrderService {
   ){}
 
  getAllProducts(): Observable<Product[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Product[]>(`${this.apiUrl}/products`, {headers});
+  return this.http.get<Product[]>(`${this.apiUrl}/products`);
  }
 
  getActiveIngredientsAndToppings():Observable<Ingredient[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredientsToppingsActive`, {headers});
+  return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredientsToppingsActive`);
  }
 
  createOrder(order: Order) {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.post<Order>(`${this.apiUrl}/order`, order, {headers} )
+  return this.http.post<Order>(`${this.apiUrl}/order`, order)
  }
 
  getCombosActive(): Observable<Combo[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Combo[]>(`${this.apiUrl}/combosActive` , {headers})
+  return this.http.get<Combo[]>(`${this.apiUrl}/combosActive`)
  }
 }

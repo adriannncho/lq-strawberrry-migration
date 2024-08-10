@@ -62,17 +62,17 @@
 @font-face {
   font-family: 'BundayCleanYYY-SeBoldUp';
   src:
-    url('../src/assets/Fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype"),
-    url('./assets/Fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype"),
-    url('/assets/Fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype");
+    url('../src/assets/fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype"),
+    url('./assets/fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype"),
+    url('/assets/fonts/BundayCleanYYY-SeBoldUp.ttf') format("truetype");
 }
 
 @font-face {
   font-family: 'BundayCleanYYY-Bold';
   src:
-    url('../src/assets/Fonts/BundayCleanBold.ttf') format("truetype"),
-    url('./assets/Fonts/BundayCleanBold.ttf') format("truetype"),
-    url('/assets/Fonts/BundayCleanBold.ttf') format("truetype");
+    url('../src/assets/fonts/BundayCleanBold.ttf') format("truetype"),
+    url('./assets/fonts/BundayCleanBold.ttf') format("truetype"),
+    url('/assets/fonts/BundayCleanBold.ttf') format("truetype");
 }
 
 body {

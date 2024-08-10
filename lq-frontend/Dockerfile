@@ -1,5 +1,5 @@
 # Usa una imagen de Node.js para construir la aplicación
-FROM node:16 as build
+FROM node:18 as build
 
 # Establece el directorio de trabajo
 WORKDIR /app
@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Asegúrate de que la carpeta de fuentes existe antes de copiar
-RUN mkdir -p /app/src/assets/Fonts
+RUN mkdir -p /app/src/assets/fonts
 
 # Copia los archivos de fuentes
-COPY src/assets/Fonts /app/src/assets/Fonts
+COPY src/assets/fonts /app/src/assets/fonts
 
 # Construye la aplicación Angular
 RUN npm run build --prod

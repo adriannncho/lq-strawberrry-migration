@@ -14,37 +14,22 @@ export class IngredientService {
   ){}
 
   getAllIngredientsAndToppings():Observable<Ingredient[]> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredients`, {headers});
+    return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredients`);
   }
 
  createIngredient(ingredient : IngredientMap) {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.post<Ingredient>(`${this.apiUrl}/ingredients/register`, ingredient, {headers});
+    return this.http.post<Ingredient>(`${this.apiUrl}/ingredients/register`, ingredient);
  }
 
  createTypeIngredient(ingredientType : IngredientTypeMap) {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.post<Ingredient>(`${this.apiUrl}/ingredientsType/register`, ingredientType, {headers});
+  return this.http.post<Ingredient>(`${this.apiUrl}/ingredientsType/register`, ingredientType);
  }
 
  updateIngredient(ingredient: IngredientUpdateMap) {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.put<Ingredient>(`${this.apiUrl}/ingredients/update`, ingredient, {headers});
+  return this.http.put<Ingredient>(`${this.apiUrl}/ingredients/update`, ingredient);
  }
 
  desactiveIngredient(ingredientId: number) {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.put<Ingredient>(`${this.apiUrl}/ingredients/delete/${ingredientId}`, {},{headers});
+  return this.http.put<Ingredient>(`${this.apiUrl}/ingredients/delete/${ingredientId}`, {});
  }
 }

@@ -14,16 +14,10 @@ export class OrderService {
   ){}
 
  getAllOrdersPendings(): Observable<Order[]> {
-  const headers = new HttpHeaders({
-    'ngrok-skip-browser-warning': 'true'
-  });
-  return this.http.get<Order[]>(`${this.apiUrl}/ordersPending`, {headers});
+  return this.http.get<Order[]>(`${this.apiUrl}/ordersPending`);
  }
 
  getOrderPending(numberOrder : number): Observable<Order> {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': 'true'
-    });
-    return this.http.get<Order>(`${this.apiUrl}/ordersPending/${numberOrder}`, {headers});
+    return this.http.get<Order>(`${this.apiUrl}/ordersPending/${numberOrder}`);
  }
 }
