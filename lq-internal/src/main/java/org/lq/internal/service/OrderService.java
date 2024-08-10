@@ -141,8 +141,23 @@ public class OrderService {
             LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido no encontrado");
         }
-        order.setStatus(OrderStatus.PENDIENTE);
+
         order.setStatus(OrderStatus.COMPLETADO);
+        orderRepository.persist(order);
+
+        LOG.infof("@updateOrderStatus SERV > Updated status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());
+    }
+
+    public void cancelOrderStatus(long orderId) throws PVException {
+        LOG.infof("@updateOrderStatus SERV > Start service to update the status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());
+
+        Order order = orderRepository.findById(orderId);
+        if (order == null) {
+            LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido no encontrado");
+        }
+
+        order.setStatus(OrderStatus.CANCELADO);
         orderRepository.persist(order);
 
         LOG.infof("@updateOrderStatus SERV > Updated status of order ID %d to %s", orderId, OrderStatus.COMPLETADO.toString());

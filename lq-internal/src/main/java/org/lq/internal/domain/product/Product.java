@@ -44,6 +44,9 @@ public class Product implements Serializable {
     @Column(name = "CANTIDAD_SALSAS")
     private int quantitySalsa;
 
+    @Column(name = "ESTADO")
+    private String status;
+
     @Transient
     private List<DetailProduct> detailProduct;
 }

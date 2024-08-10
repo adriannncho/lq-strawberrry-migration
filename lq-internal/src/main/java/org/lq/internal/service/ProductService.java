@@ -4,6 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+import org.lq.internal.domain.combo.Combo;
+import org.lq.internal.domain.combo.Status;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.product.Product;
 import org.lq.internal.domain.product.ProductDTO;
@@ -158,5 +160,24 @@ public class ProductService {
         }
 
         LOG.infof("@updateProduct SERV > Product with number %d updated successfully", productDTO.getIdProduct());
+    }
+
+    public void deactivateProduct(long numberProduct) throws PVException {
+        LOG.infof("@deactivateProduct SERV > Start service to deactivate product with ID %d", numberProduct);
+
+        LOG.infof("@deactivateProduct SERV > Retrieving existing product with ID %d", numberProduct);
+        Product product = productRepository.findById(numberProduct);
+        if (product == null) {
+            LOG.warnf("@deactivateProduct SERV > No product found with ID %d", numberProduct);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El producto no fue encontrado.");
+        }
+
+        LOG.infof("@deactivateProduct SERV > Deactivating product with ID %d", numberProduct);
+        product.setStatus(String.valueOf(Status.INACTIVO));
+
+        LOG.infof("@deactivateProduct SERV > Persisting deactivated product with ID %d", numberProduct);
+        productRepository.persist(product);
+
+        LOG.infof("@deactivateProduct SERV > Product with ID %d deactivated successfully", numberProduct);
     }
 }
