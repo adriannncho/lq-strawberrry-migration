@@ -6,7 +6,7 @@
       </span>
       <nz-statistic
       style="display: flex;"
-      [nzValue]="( product.price)!"
+      [nzValue]="( product.price | number)!"
       [nzPrefix]="'$'"
       [nzValueStyle]="{ color: '#3F8600' }"
       ></nz-statistic>

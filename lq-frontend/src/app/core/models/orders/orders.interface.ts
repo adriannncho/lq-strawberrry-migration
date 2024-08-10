@@ -1,8 +1,28 @@
+export interface IngredientType {
+  ingredientTypeId: number;
+  name: string;
+  active: boolean;
+}
+
+export interface Ingredient {
+  ingredientId: number;
+  ingredientType: IngredientType;
+  name: string;
+}
+
 export interface DetailProduct {
-    idDetailProduct: number;
-    idIngredient: number;
-    idProduct: number;
-    quantity: number;
+  idDetailProduct: number;
+  idIngredient: number;
+  idProduct: number;
+  quantity: number;
+  ingredient: Ingredient;
+}
+
+export interface DetailAdditional {
+  idDetailAdditional: number;
+  idDetailOrder: number;
+  idIngredient: number;
+  ingredient: Ingredient;
 }
 
 export interface Product {
@@ -15,13 +35,13 @@ export interface Product {
   quantityPremium: number;
   quantitySalsa: number;
   detailProduct: DetailProduct[];
+  toppings: {
+      classic: Ingredient[];
+      premium: Ingredient[];
+      sauces: Ingredient[];
+  };
 }
 
-export interface DetailAdditional {
-  idDetailAdditional: number;
-  idDetailOrder: number;
-  idIngredient: number;
-}
 
 export interface DetailOrder {
   idDetailOrder: number;
@@ -33,12 +53,12 @@ export interface DetailOrder {
   detailAdditionals: DetailAdditional[];
 }
 
-export interface Order {
+export interface OrderResponse {
   idOrder: number;
   idUser: number;
   creationDate: string;
   total: number;
   status: string;
-  discount: number;
+  discount: number | null;
   detailOrders: DetailOrder[];
 }

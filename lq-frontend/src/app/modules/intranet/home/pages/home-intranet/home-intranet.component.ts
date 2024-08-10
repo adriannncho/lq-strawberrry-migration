@@ -104,21 +104,32 @@ export class HomeIntranetComponent {
 
   createResumeOrder(detail: DetailOrder[]) {
     let total: number = 0;
+    let valueAditional = 1000;
+    let valueAdd : number = 0;
     detail.forEach(item => {
       total = total + item.value;
+      if(item.detailAdditionals) {
+        valueAdd = valueAditional * item.detailAdditionals.length;
+      }
     });
     this.resumeOrder = {
       idUser: this.idUser,
       detailOrders: detail,
-      total: total,
+      total: total + valueAdd,
+      subTotal: total + valueAdd ,
       discont: 0
     }
     this.okOrder = true;
   }
 
   createResumeOrderCombo(detaile: DetailOrder[]) {
+    let valueAdd: number = 0;
+    let valueAditional: number = 1000;
     this.combosActive.forEach(item => {
       detaile.forEach(detail => {
+        if(detail.detailAdditionals){
+          valueAdd = item.detailCombos.length;
+        }
         this.changesCantidadProd(detail.idCombo, detaile)
         if(item.idCombo === detail.idCombo ) {
           item.detailCombos.forEach(element => {
@@ -135,9 +146,9 @@ export class HomeIntranetComponent {
     let discont: number = 0;
     let subTotal: number = 0;
     detaile.forEach(item => {
-      subTotal = subTotal + item.value;
+      subTotal = subTotal + item.value + (valueAdd * valueAditional);
       discont = subTotal - this.comboSelected.value;
-      total = subTotal - discont;
+      total = subTotal - discont + (valueAdd * valueAditional);
     });
 
     this.resumeOrder = {
@@ -195,9 +206,14 @@ export class HomeIntranetComponent {
 
   calcTotal () {
     this.resumeOrder.detailOrders.forEach(item => {
+      let valueAdd: number = 0;
+      let valueAditional: number = 1000;
       let total: number = 0;
       let discont: number = 0;
       let subTotal: number = 0;
+      if(item.detailAdditionals) {
+        valueAdd = item.detailAdditionals.length;
+      }
       if(this.isCombo) {
         subTotal = subTotal + item.value;
         discont = subTotal - this.comboSelected.value;
@@ -209,6 +225,8 @@ export class HomeIntranetComponent {
         total = total + item.value;
         this.resumeOrder.total = total;
       }
+      subTotal = subTotal + (valueAdd * valueAditional);
+      total = total + (valueAdd * valueAditional);
     });
   }
 
