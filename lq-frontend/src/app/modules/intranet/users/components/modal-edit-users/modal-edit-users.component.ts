@@ -51,8 +51,4 @@ export class ModalEditUsersComponent {
   hideModal() {
     this.hideModalEmit.emit(false);
   }
-
-  showModalCant() {
-    this.isVisibleCant = true;
-  }
 }

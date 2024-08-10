@@ -21,6 +21,9 @@ export class UsersComponent {
     private notificationService : NotificationService
   ) {
     this.getDocumentTypeId();
+    this.getGender();
+    this.getTypeUser();
+    this.getUserStatus();
     this.getUsers();
   }
 
