@@ -13,7 +13,7 @@ export class UsersComponent {
   users!: User[];
   typeUser!: UserType[];
   gender!: Gender[];
-  documentTypeId!: DocumentTypeId[];
+  documentType!: DocumentTypeId[];
   userStatus!: UserStatus[];
 
   constructor(
@@ -27,6 +27,7 @@ export class UsersComponent {
   getUsers() {
     this.loadingUsers = true;
     this.userService.getAllUsers().subscribe(res => {
+      this.loadingUsers = false;
       if(res) {
         this.users = res;
       }
@@ -37,7 +38,7 @@ export class UsersComponent {
     this.loadingUsers = true;
     this.userService.getAllDocumentTypeId().subscribe(res => {
       if(res) {
-        this.documentTypeId = res;
+        this.documentType = res;
       }
     })
   }
@@ -67,5 +68,9 @@ export class UsersComponent {
         this.userStatus = res;
       }
     })
+  }
+
+  getFullName(user: User): string {
+    return `${user.firstName} ${user.secondName ? user.secondName : ''} ${user.firstLastName} ${user.secondLastName}`.trim();
   }
 }

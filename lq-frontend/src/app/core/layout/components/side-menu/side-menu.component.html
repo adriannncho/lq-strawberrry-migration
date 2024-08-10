@@ -45,6 +45,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'users']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
           <span >Usuarios</span>

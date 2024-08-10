@@ -9,21 +9,25 @@ import { UserService } from 'src/app/core/services/users/users.services';
 })
 export class TableUsersComponent {
   @Input() users!: User[];
+  @Input() typeUser!: UserType[];
+  @Input() gender!: Gender[];
+  @Input() documentType!: DocumentTypeId[];
+  @Input() userStatus!: UserStatus[];
   @Input() loadingUsers: boolean = false;
 
   isvisibleModal: boolean = false;
   usersModal!: User;
   isVisibleModalEdit: boolean = false;
   usersEdit!: User;
-  typeUser!: UserType[];
-  gender!: Gender[];
-  documentTypeId!: DocumentTypeId[];
-  userStatus!: UserStatus[];
 
   constructor(
     private userService : UserService
   ) {
-
+    
+  }
+  
+  getFullName(user: User): string {
+    return `${user.firstName} ${user.secondName ? user.secondName : ''} ${user.firstLastName} ${user.secondLastName}`.trim();
   }
 
   showModal(users: User) {
