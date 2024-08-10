@@ -108,7 +108,7 @@ export class HomeIntranetComponent {
     let valueAditional = 1000;
     let valueAdd : number = 0;
     detail.forEach(item => {
-      total = total + item.value;
+      total = total + item.value * item.quantity;
       if(item.detailAdditionals) {
         valueAdd = valueAditional * item.detailAdditionals.length;
       }
