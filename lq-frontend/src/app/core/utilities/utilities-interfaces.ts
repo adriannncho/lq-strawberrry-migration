@@ -18,3 +18,8 @@ export enum TypeProducts {
     _PRODUCT_ = 'PRODUCT',
     _COMBO_ = 'COMBO'
 }
+
+export enum StatusProducts {
+    ACTIVO = "ACTIVO",
+    INACTIVO = "INACTIVO"
+}

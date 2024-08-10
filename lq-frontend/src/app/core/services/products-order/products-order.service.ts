@@ -24,10 +24,14 @@ export class ProductsOrderService {
  }
 
  createOrder(order: Order) {
-  return this.http.post<Order>(`${this.apiUrl}/order`, order)
+  return this.http.post<Order>(`${this.apiUrl}/order`, order);
  }
 
  getCombosActive(): Observable<Combo[]> {
-  return this.http.get<Combo[]>(`${this.apiUrl}/combosActive`)
+  return this.http.get<Combo[]>(`${this.apiUrl}/combosActive`);
+ }
+
+ changeStatus(idProduct: number) {
+  return this.http.put<number>(`${this.apiUrl}/product/delete/${idProduct}`, {});
  }
 }

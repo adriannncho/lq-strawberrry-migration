@@ -4,7 +4,7 @@ import { Combo } from 'src/app/core/models/combos/combos.interface';
 import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
-import { SizeProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
+import { SizeProducts, StatusProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
 import { TabToppingsComponent } from '../../components/tab-toppings/tab-toppings.component';
 
 @Component({
@@ -24,6 +24,7 @@ export class HomeIntranetComponent {
   productSendTab!: ProductMap;
   idUser!: number;
   customerName: string = '';
+  statusProducts = StatusProducts;
 
   typesProducts = TypeProducts;
   resumeOrder!: Order;
@@ -55,7 +56,7 @@ export class HomeIntranetComponent {
     this.loadingProducts = true;
     this.productsService.getAllProducts().subscribe(res => {
       if(res) {
-        this.products = res;
+        this.products = res.filter(f => f.status === this.statusProducts.ACTIVO);
         this.productsMap = this.createObjProducts(this.products);
         this.loadingProducts = false;
       }

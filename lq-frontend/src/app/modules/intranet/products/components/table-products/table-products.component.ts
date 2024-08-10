@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
 
 @Component({
@@ -9,6 +9,7 @@ import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.inter
 export class TableProductsComponent {
   @Input() productsMap!: LinkedProduct[];
   @Input() loadingProducts: boolean = false;
+  @Output() changeStatusProductEmit = new EventEmitter<number>()
 
   isvisibleModal: boolean = false;
   productModal!: LinkedProduct;
@@ -20,6 +21,10 @@ export class TableProductsComponent {
 
   hideModalInfo(hide: boolean) {
     this.isvisibleModal = hide;
+  }
+
+  changeStatus(idProduct: number) {
+    this.changeStatusProductEmit.emit(idProduct)
   }
 
 }

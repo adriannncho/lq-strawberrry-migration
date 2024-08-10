@@ -14,6 +14,7 @@ export interface Product {
   quantityClasic: number;
   quantityPremium: number;
   quantitySalsa: number;
+  status: string;
   detailProduct: DetailProduct[];
 }
 

@@ -62,7 +62,11 @@
               </div>
               <div nz-col nzSpan="24">
                 <button
-                nz-button>
+                nz-button
+                nz-popconfirm
+                nzPopconfirmTitle="¿Estas seguro de cambiar el estado del producto?"
+                nzPopconfirmPlacement="top"
+                (nzOnConfirm)="changeStatus(product.idProduct)">
                   <span nz-icon nzType="delete" nzTheme="twotone" nzTwotoneColor="#DD0021"></span>
                 </button>
               </div>
