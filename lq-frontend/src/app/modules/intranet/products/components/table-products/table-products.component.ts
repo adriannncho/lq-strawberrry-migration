@@ -18,4 +18,8 @@ export class TableProductsComponent {
     this.isvisibleModal = true;
   }
 
+  hideModalInfo(hide: boolean) {
+    this.isvisibleModal = hide;
+  }
+
 }

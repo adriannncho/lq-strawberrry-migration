@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
 
 @Component({
@@ -9,4 +9,9 @@ import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.inter
 export class ModalInfoProductComponent {
   @Input() productMap!: LinkedProduct;
   @Input() isVisible: boolean = false;
+  @Output() hideModalEmitter = new EventEmitter<boolean>()
+
+  hideModalEmit() {
+    this.hideModalEmitter.emit(false);
+  }
 }
