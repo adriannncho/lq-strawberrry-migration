@@ -33,6 +33,7 @@ export interface LinkedProduct {
     name: string;
     description: string;
     value: number;
+    status: string;
     quantityClasic: number;
     quantityPremium: number;
     quantitySalsa: number;
@@ -48,4 +49,9 @@ export interface LinkedProduct {
     idProduct: number;
     quantity: number;
     ingredient: Ingredient | null;  // Vinculado con la interfaz Ingredient
+  }
+
+  export interface IngredientMapCreate {
+    idIngredient: number,
+    quantity: number
   }

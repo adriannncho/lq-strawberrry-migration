@@ -102,3 +102,15 @@ export interface ProductUpdateMap {
   quantitySalsa: number;
   detailProduct: DetailProductMap[];
 }
+
+export interface TypeSize {
+  idTipoTamanio: number;
+  name: string;
+  abbreviation: string;
+}
+
+export interface ProductSize {
+  idTamanio: number;
+  size: number;
+  typeSize: TypeSize;
+}

@@ -11,6 +11,7 @@ export enum TypeIngredients {
     _TOPPINGS_PREMIUM_ = 3,
     _TOPPINGS_CLASIC_ = 4,
     _SAUSES_ = 1,
+    _CAPAS_ = 2,
     _ADICIONALES_ = 5,
 }
 

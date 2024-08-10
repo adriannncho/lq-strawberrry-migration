@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Ingredient, LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
-import { Product } from 'src/app/core/models/order-products/products-interface';
+import { Product, TypeSize } from 'src/app/core/models/order-products/products-interface';
 import { IngredientService } from 'src/app/core/services/ingredients/ingredients.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
@@ -75,7 +75,7 @@ export class ProductsComponent {
       this.notificationService.success('Se ha cambiado el estado del producto #'+ idProduct +' de manera exitosa', 'Exito' );
       setTimeout(() => {
         window.location.reload();
-      }, 2000)
+      }, 1000)
     })
   }
 }
