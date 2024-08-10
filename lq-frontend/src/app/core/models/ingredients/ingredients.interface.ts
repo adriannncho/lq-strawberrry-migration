@@ -26,3 +26,26 @@ export interface IngredientUpdateMap {
     name: string;
     active: boolean
 }
+
+export interface LinkedProduct {
+    idProduct: number;
+    size: number;
+    name: string;
+    description: string;
+    value: number;
+    quantityClasic: number;
+    quantityPremium: number;
+    quantitySalsa: number;
+    salsas: LinkedDetailProduct[];
+    capas: LinkedDetailProduct[];
+    toppingsPremium: LinkedDetailProduct[];
+    toppingsClasic: LinkedDetailProduct[];
+  }
+  
+  export interface LinkedDetailProduct {
+    idDetailProduct: number;
+    idIngredient: number;
+    idProduct: number;
+    quantity: number;
+    ingredient: Ingredient | null;  // Vinculado con la interfaz Ingredient
+  }

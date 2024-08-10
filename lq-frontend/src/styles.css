@@ -279,3 +279,17 @@ a:hover {
     z-index: 1100;
   }
 }
+
+.ant-modal-header {
+  background: var(--color-primary-blue-ash);
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--color-primary-blue-ash);
+  color: var(--color-neutral-white);
+  text-align: center;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center;
+}

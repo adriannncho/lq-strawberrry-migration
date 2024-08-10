@@ -33,6 +33,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'products']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="coffee" nzTheme="outline"></span>
           <span>Productos</span>

@@ -1,0 +1,46 @@
+<nz-modal
+[nzVisible]="isVisible"
+[nzTitle]="titleModal"
+nzCentered
+[nzClosable]="true">
+  <ng-container *nzModalContent="">
+    <div>
+      <h2>{{ productMap.name }}</h2>
+      <p>{{ productMap.description }}</p>
+      <p><strong>Valor:</strong> {{ productMap.value | currency }}</p>
+      <h3>Salsas:</h3>
+      <div nz-row>
+        <div nz-col nzSpan="8" *ngFor="let salsa of productMap.salsas">
+          {{ salsa.ingredient?.name }} ({{ salsa.quantity }})
+        </div>
+      </div>
+      <h3>Capas:</h3>
+      <div nz-row>
+        <div nz-col nzSpan="8" *ngFor="let capa of productMap.capas">
+          {{ capa.ingredient?.name }} ({{ capa.quantity }}) -
+        </div>
+      </div>
+      <h3>Toppings Premium:</h3>
+      <div nz-row *ngIf="productMap.toppingsPremium">
+        <div nz-col nzSpan="8" *ngFor="let toppingPremium of productMap.toppingsPremium">
+          {{ toppingPremium.ingredient?.name }} ({{ toppingPremium.quantity }})
+        </div>
+      </div>
+      <h3>Toppings Clásicos:</h3>
+      <div nz-row>
+        <div nz-col nzSpan="8" *ngFor="let toppingClasic of productMap.toppingsClasic">
+          {{ toppingClasic.ingredient?.name }} ({{ toppingClasic.quantity }})
+        </div>
+      </div>
+      <h3>Cant. Toppings Premium: {{ productMap.quantityPremium }}</h3>
+      <h3>Cant. Toppings Clásicos: {{ productMap.quantityClasic }}</h3>
+      <h3>Cant. Salsas: {{ productMap.quantitySalsa }}</h3>
+    </div>
+  </ng-container>
+</nz-modal>
+
+<ng-template #titleModal>
+  <span style="font-size: 24px; color: white;">
+    Info producto # {{ productMap.idProduct }}
+  </span>
+</ng-template>
