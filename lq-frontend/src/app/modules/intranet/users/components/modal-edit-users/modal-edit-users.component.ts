@@ -22,8 +22,6 @@ export class ModalEditUsersComponent {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log(this.documentType,this.typeUser, this.gender, this.userStatus);
-
     this.editForm = this.fb.group({
       documentTypeId: [this.usersEdit.documentTypeId.idTypeDocument, [Validators.required]],
       documentNumber: [this.usersEdit.documentNumber, [Validators.required]],

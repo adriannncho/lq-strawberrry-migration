@@ -118,7 +118,6 @@ export class ModalEditProductComponent {
     this.findAndSetToppings(this.detailProd);
     this.editForm.controls[nameControlIngredient].reset();
     this.editForm.controls[nameControlQuantity].reset();
-    console.log(this.detailProd)
   }
 
   findAndSetToppings(detail: DetailProductMap[]) {
@@ -129,12 +128,9 @@ export class ModalEditProductComponent {
   }
 
   findIngredientNameById(id: number[]): string {
-    console.log('id',id)
     let nameIngredient: string;
     const allIngredients = [...this.tClasics, ...this.premiums, ...this.sauces, ...this.capas];
-    console.log(allIngredients)
     const foundIngredient = allIngredients.find(ingredient => id.includes(ingredient.ingredientId));
-    console.log(foundIngredient);
 
     if (foundIngredient) {
       nameIngredient = foundIngredient.name;
@@ -171,7 +167,6 @@ export class ModalEditProductComponent {
       quantitySalsa: this.editForm.controls['cantSauces'].value || 0,
       detailProduct: body
     };
-    console.log(this.productOfUpdate)
     this.updateProductEmit(this.productOfUpdate);
   }
 
