@@ -3,6 +3,7 @@ export interface DetailProduct {
   idIngredient: number;
   idProduct: number;
   quantity: number;
+  name: string;
 }
 
 export interface Product {
@@ -78,6 +79,13 @@ export interface DetailAdditional {
 export interface DetailProductMap {
   idIngredient: number;
   quantity: number;
+  name: string
+  typeId: number
+}
+
+export interface DetailProductMapSend {
+  idIngredient: number;
+  quantity: number;
 }
 
 export interface ProductCreateMap {
@@ -100,7 +108,7 @@ export interface ProductUpdateMap {
   quantityClasic: number;
   quantityPremium: number;
   quantitySalsa: number;
-  detailProduct: DetailProductMap[];
+  detailProduct: DetailProductMapSend[];
 }
 
 export interface TypeSize {
@@ -113,4 +121,15 @@ export interface ProductSize {
   idTamanio: number;
   size: number;
   typeSize: TypeSize;
+}
+export interface CreateProductBody {
+  idProduct: number;
+  size: number;
+  name: string;
+  description: string;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  value: number;
+  detailProduct: DetailProductMapSend[];
 }

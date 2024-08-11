@@ -1,3 +1,5 @@
+import { DetailProduct } from "../order-products/products-interface";
+
 export interface IngredientType {
     ingredientTypeId: number;
     name: string;

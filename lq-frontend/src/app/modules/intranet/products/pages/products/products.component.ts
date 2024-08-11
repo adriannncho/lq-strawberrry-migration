@@ -49,7 +49,7 @@ export class ProductsComponent {
       const linkedProducts = this.products.map(product => {
         const detailProductGrouped = product.detailProduct.map(detail => ({
           ...detail,
-          ingredient: this.ingredients.find(ingredient => ingredient.ingredientId === detail.idIngredient) || null
+          ingredient: this.ingredients.find(ingredient => ingredient.ingredientId === detail.idIngredient) || null,
         }));
     
         return {
@@ -57,12 +57,11 @@ export class ProductsComponent {
           salsas: detailProductGrouped.filter(detail => detail.ingredient?.ingredientType.name === 'Salsas'),
           capas: detailProductGrouped.filter(detail => detail.ingredient?.ingredientType.name === 'Capas'),
           toppingsPremium: detailProductGrouped.filter(detail => detail.ingredient?.ingredientType.name === 'Toppings Premium'),
-          toppingsClasic: detailProductGrouped.filter(detail => detail.ingredient?.ingredientType.name === 'Toppings Clásicos')
+          toppingsClasic: detailProductGrouped.filter(detail => detail.ingredient?.ingredientType.name === 'Toppings Clásicos'),
         };
       });
       this.productsMap = linkedProducts;
       this.loadingProducts = false;
-      console.log(linkedProducts)
     }else {
       this.mapProducts();
     }

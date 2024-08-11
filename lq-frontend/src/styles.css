@@ -293,3 +293,8 @@ a:hover {
 .ant-table-tbody > tr > td {
   text-align: center;
 }
+
+.ant-form-item .ant-form-item-label>label{
+  color: var(--color-primary-blue-ash);
+  font-size: 16px;
+}

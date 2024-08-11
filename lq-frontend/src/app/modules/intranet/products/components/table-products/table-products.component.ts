@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
-import { Ingredient, ProductSize } from 'src/app/core/models/order-products/products-interface';
+import { CreateProductBody, Ingredient, Product, ProductSize } from 'src/app/core/models/order-products/products-interface';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsService } from 'src/app/core/services/products/product.service';
 import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
 
@@ -11,6 +12,7 @@ import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
 })
 export class TableProductsComponent implements OnInit{
   @Input() productsMap!: LinkedProduct[];
+  @Input() products!: Product[];
   @Input() loadingProducts: boolean = false;
   @Output() changeStatusProductEmit = new EventEmitter<number>();
 
@@ -25,9 +27,12 @@ export class TableProductsComponent implements OnInit{
   sauces!: Ingredient[];
   capas!: Ingredient[];
   typesIngredients = TypeIngredients;
+  product!: Product;
+  loadingUpdate: boolean = false;
 
   constructor(
-    private productsService : ProductsService
+    private productsService : ProductsService,
+    private notificationService : NotificationService
   ) {
 
   }
@@ -77,6 +82,20 @@ export class TableProductsComponent implements OnInit{
 
   hideModalEdit() {
     this.isVisibleModalEdit = false;
+  }
+
+  updateProduct(product: CreateProductBody){
+    this.loadingUpdate = true;
+    this.productsService.updateProduct(product).subscribe(res => {
+      this.notificationService.success('Productos # ' + product.idProduct + ' actualizado correctamente', 'Exito')
+      this.loadingUpdate = false;
+      setTimeout(()=> {
+        window.location.reload()
+      },500)
+    }, error => {
+      this.loadingUpdate = false;
+      this.notificationService.error('Ocurrio un error al actualizar el producto, intente mas tarde', 'Error')
+    })
   }
 
 }
