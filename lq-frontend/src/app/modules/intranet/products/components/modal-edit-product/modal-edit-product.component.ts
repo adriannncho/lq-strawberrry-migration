@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LinkedDetailProduct, LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
-import { CreateProductBody, DetailProductMap, DetailProductMapSend, Ingredient, ProductSize } from 'src/app/core/models/order-products/products-interface';
+import { UpdateProductBody, DetailProductMap, DetailProductMapSend, Ingredient, ProductSize } from 'src/app/core/models/order-products/products-interface';
 import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
 
 @Component({
@@ -20,11 +20,11 @@ export class ModalEditProductComponent {
   @Input() capas!:  Ingredient[]; 
   @Input() loadingUpdate: boolean = false; 
   @Output() hideModalEmit = new EventEmitter<boolean>()
-  @Output() updateProductEmitter = new EventEmitter<CreateProductBody>()
+  @Output() updateProductEmitter = new EventEmitter<UpdateProductBody>()
   editForm!: FormGroup;
   pendingValidateCant: boolean = false;
   isVisibleCant: boolean = false;
-  productOfUpdate!: CreateProductBody;
+  productOfUpdate!: UpdateProductBody;
   detailProd!: DetailProductMap[];
   typeProducts = TypeIngredients;
   toPremiums!: DetailProductMap[];
@@ -170,7 +170,7 @@ export class ModalEditProductComponent {
     this.updateProductEmit(this.productOfUpdate);
   }
 
-  updateProductEmit(product: CreateProductBody) {
+  updateProductEmit(product: UpdateProductBody) {
     this.updateProductEmitter.emit(product);
   }
 }

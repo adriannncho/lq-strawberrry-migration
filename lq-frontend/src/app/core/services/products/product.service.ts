@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs'
-import { Ingredient, Product, ProductCreateMap, ProductSize, ProductUpdateMap } from '../../models/order-products/products-interface';
+import { CreatedProductBody, Ingredient, Product, ProductCreateMap, ProductSize, ProductUpdateMap } from '../../models/order-products/products-interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +30,8 @@ export class ProductsService {
    return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredientsToppingsActive`);
   }
 
- createProduct(product : ProductCreateMap) {
-    return this.http.post<ProductCreateMap>(`${this.apiUrl}/product`, product);
+ createProduct(product : CreatedProductBody) {
+    return this.http.post<CreatedProductBody>(`${this.apiUrl}/product`, product);
  }
 
  updateProduct(product : ProductUpdateMap) {

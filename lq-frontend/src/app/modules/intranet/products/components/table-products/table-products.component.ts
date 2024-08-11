@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
-import { CreateProductBody, Ingredient, Product, ProductSize } from 'src/app/core/models/order-products/products-interface';
+import { UpdateProductBody, Ingredient, Product, ProductSize, CreatedProductBody } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsService } from 'src/app/core/services/products/product.service';
 import { TypeIngredients } from 'src/app/core/utilities/utilities-interfaces';
@@ -17,6 +17,7 @@ export class TableProductsComponent implements OnInit{
   @Output() changeStatusProductEmit = new EventEmitter<number>();
 
   isvisibleModal: boolean = false;
+  isVisibleModalAdd: boolean = false;
   productModal!: LinkedProduct;
   isVisibleModalEdit: boolean = false;
   productEdit!: LinkedProduct;
@@ -45,13 +46,21 @@ export class TableProductsComponent implements OnInit{
     this.productsService.getSizes().subscribe(res => {
       if(res) {
         this.sizes = res;
+      }else {
+        this.notificationService.error('No se encontraron tamaños');
       }
+    }, error=> {
+      this.notificationService.error('Error al obtener tamaños');
     })
     this.productsService.getActiveIngredientsAndToppings().subscribe(res => {
       if(res) {
         this.ingredients = res;
         this.mapIngredients();
+      }else {
+        this.notificationService.error('No se encontraron ingredientes');
       }
+    }, error => {
+      this.notificationService.error('Error al obtener ingredientes');
     })
   }
 
@@ -84,7 +93,7 @@ export class TableProductsComponent implements OnInit{
     this.isVisibleModalEdit = false;
   }
 
-  updateProduct(product: CreateProductBody){
+  updateProduct(product: UpdateProductBody){
     this.loadingUpdate = true;
     this.productsService.updateProduct(product).subscribe(res => {
       this.notificationService.success('Productos # ' + product.idProduct + ' actualizado correctamente', 'Exito')
@@ -95,6 +104,28 @@ export class TableProductsComponent implements OnInit{
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al actualizar el producto, intente mas tarde', 'Error')
+    })
+  }
+
+  showModalCreated() {
+    this.isVisibleModalAdd = true;
+  }
+
+  hideModalCreated() {
+    this.isVisibleModalAdd = false;
+  }
+
+  createProduct(product: CreatedProductBody) {
+    this.loadingUpdate = true;
+    this.productsService.createProduct(product).subscribe(res => {
+      this.notificationService.success('Productos creado correctamente', 'Exito')
+      this.loadingUpdate = false;
+      setTimeout(()=> {
+        window.location.reload()
+      },500)
+    }, error => {
+      this.loadingUpdate = false;
+      this.notificationService.error('Ocurrio un error al crear el producto, intente mas tarde', 'Error')
     })
   }
 

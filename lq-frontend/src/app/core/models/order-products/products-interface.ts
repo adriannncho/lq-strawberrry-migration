@@ -122,8 +122,18 @@ export interface ProductSize {
   size: number;
   typeSize: TypeSize;
 }
-export interface CreateProductBody {
+export interface UpdateProductBody {
   idProduct: number;
+  size: number;
+  name: string;
+  description: string;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  value: number;
+  detailProduct: DetailProductMapSend[];
+}
+export interface CreatedProductBody {
   size: number;
   name: string;
   description: string;

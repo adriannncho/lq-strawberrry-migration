@@ -10,7 +10,7 @@ nzWidth="100%"
         <app-loading-box [loadingText]="'Cargando'"></app-loading-box> 
       </div>
     </div>
-    <form [formGroup]="editForm" *ngIf="!loadingUpdate">
+    <form [formGroup]="addForm" *ngIf="!loadingUpdate">
       <div nz-row nzGutter="16">
         <div nz-col nzSpan="24">
           <nz-form-item>
@@ -122,7 +122,7 @@ nzWidth="100%"
           nz-button
           nzType="primary"
           style="margin-bottom: 10px; width: 100px;"
-          [disabled]="!editForm.controls['premium'].value  || !editForm.controls['premiumCantAdd'].value"
+          [disabled]="!addForm.controls['premium'].value  || !addForm.controls['premiumCantAdd'].value"
           (click)="addIngredient('premium','premiumCantAdd')">
             <span nz-icon nzType="plus-square" nzTheme="outline"></span>
           </button>
@@ -160,7 +160,7 @@ nzWidth="100%"
           nz-button
           nzType="primary"
           style="margin-bottom: 10px; width: 100px;"
-          [disabled]="!editForm.controls['clasics'].value  || !editForm.controls['clasicsCantAdd'].value"
+          [disabled]="!addForm.controls['clasics'].value  || !addForm.controls['clasicsCantAdd'].value"
           (click)="addIngredient('clasics','clasicsCantAdd')">
             <span nz-icon nzType="plus-square" nzTheme="outline"></span>
           </button>
@@ -198,7 +198,7 @@ nzWidth="100%"
           nz-button
           nzType="primary"
           style="margin-bottom: 10px; width: 100px;"
-          [disabled]="!editForm.controls['sauces'].value  || !editForm.controls['saucesCantAdd'].value"
+          [disabled]="!addForm.controls['sauces'].value  || !addForm.controls['saucesCantAdd'].value"
           (click)="addIngredient('sauces','saucesCantAdd')">
             <span nz-icon nzType="plus-square" nzTheme="outline"></span>
           </button>
@@ -236,7 +236,7 @@ nzWidth="100%"
           nz-button
           nzType="primary"
           style="margin-bottom: 10px; width: 100px;"
-          [disabled]="!editForm.controls['capas'].value  || !editForm.controls['capasCantAdd'].value"
+          [disabled]="!addForm.controls['capas'].value  || !addForm.controls['capasCantAdd'].value"
           (click)="addIngredient('capas','capasCantAdd')">
             <span nz-icon nzType="plus-square" nzTheme="outline"></span>
           </button>
@@ -266,7 +266,7 @@ nzWidth="100%"
         nz-button
         nzType="primary"
         (click)="updateProduct()"
-        [disabled]="detailProd.length <= 0 || loadingUpdate">
+        [disabled]="detailProd.length <= 0 || loadingUpdate || addForm.invalid">
         Aceptar
       </button>
       </div>
@@ -276,6 +276,7 @@ nzWidth="100%"
 
 <ng-template #titleModal>
   <span style="font-size: 24px; color: white;">
-    Editar producto # {{ productEdit.idProduct }}
+    Crear producto
   </span>
 </ng-template>
+

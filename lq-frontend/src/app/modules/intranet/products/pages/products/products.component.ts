@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Ingredient, LinkedProduct } from 'src/app/core/models/ingredients/ingredients.interface';
-import { Product, TypeSize } from 'src/app/core/models/order-products/products-interface';
+import { Product } from 'src/app/core/models/order-products/products-interface';
 import { IngredientService } from 'src/app/core/services/ingredients/ingredients.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
@@ -31,7 +31,13 @@ export class ProductsComponent {
       if(res) {
         this.products = res;
         this.mapProducts();
+      }else {
+        this.loadingProducts = false;
+        this.notificationService.error('No se encontraron productos', 'Error')
       }
+    }, error => {
+      this.loadingProducts = false;
+      this.notificationService.error('Error al obtener productos', 'Error')
     })
   }
 
@@ -40,7 +46,11 @@ export class ProductsComponent {
     this.ingredientsService.getAllIngredientsAndToppings().subscribe(res => {
       if(res) {
         this.ingredients = res;
+      }else {
+        this.notificationService.error('No se encontraron ingredientes', 'Error')
       }
+    },error => {
+      this.notificationService.error('Error al obtener ingredientes', 'Error')
     })
   }
 

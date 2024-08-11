@@ -8,6 +8,19 @@
       </div>
     </div>
     <nz-card>
+      <div nz-row>
+        <div nz-col nzSpan="24" class="containerBtnAdd">
+          <button
+          nz-button
+          nzType="primary"
+          class="btnAdd"
+          [disabled]="loadingProducts"
+          (click)="showModalCreated()"
+          >
+          <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+          </button>
+        </div>
+      </div>
       <nz-table 
       #productsTable 
       [nzData]="productsMap" 
@@ -109,3 +122,16 @@
 (hideModalEmit)="hideModalEdit()"
 (updateProductEmitter)="updateProduct($event)">
 </app-modal-edit-product>
+
+<app-modal-add-product
+*ngIf="isVisibleModalAdd"
+[isVisible]="isVisibleModalAdd"
+[premiums]="premium"
+[sauces]="sauces"
+[tClasics]="clasic"
+[capas]="capas"
+[sizes]="sizes"
+[loadingUpdate]="loadingUpdate"
+(hideModalEmit)="hideModalCreated()"
+(updateProductEmitter)="createProduct($event)">
+</app-modal-add-product>
