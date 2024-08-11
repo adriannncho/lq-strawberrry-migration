@@ -52,7 +52,7 @@ public class IngredientService {
     public List<IngredientData> getIngredientToppings() throws PVException {
         LOG.infof("@getIngredient SERV > Start service to obtain the ingredients");
 
-        List<String> types = Arrays.asList("Toppings Clásicos", "Toppings Premium", "Salsas", "Adicionales");
+        List<String> types = Arrays.asList("Toppings Clásicos", "Toppings Premium", "Salsas", "Adicionales", "Capas");
         List<IngredientData> ingredientData = ingredientDataRepository.findActiveIngredientsByTypes(types);
         LOG.infof("@getIngredient SERV > Retrieved list of ingredients");
 

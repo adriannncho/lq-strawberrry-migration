@@ -18,4 +18,7 @@ public class IngredientData {
 
     @Column(name = "NOMBRE")
     private String name;
+
+    @Column(name = "ACTIVO")
+    private boolean active;
 }
