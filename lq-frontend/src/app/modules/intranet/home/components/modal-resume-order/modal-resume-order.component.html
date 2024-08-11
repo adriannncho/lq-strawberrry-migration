@@ -2,6 +2,7 @@
 [(nzVisible)]="isVisible"
 nzCentered
 [nzClosable]="true"
+nzWidth="100%"
 (nzOnCancel)="hideModal()">
   <ng-container *nzModalContent>
     <div nz-row *ngIf="loadingCreate">

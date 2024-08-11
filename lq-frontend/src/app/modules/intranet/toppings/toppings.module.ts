@@ -4,10 +4,12 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ToppingsRoutingModule } from './toppings-routing.module';
 import { ToppingsComponent } from './pages/toppings/toppings.component';
 import { TableToppingsComponent } from './components/table-toppings/table-toppings.component';
+import { ModalEditIngredientComponent } from './components/modal-edit-ingredient/modal-edit-ingredient.component';
 @NgModule({
   declarations: [
     ToppingsComponent,
-    TableToppingsComponent
+    TableToppingsComponent,
+    ModalEditIngredientComponent
   ],
   imports: [
     CommonModule,

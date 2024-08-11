@@ -43,7 +43,7 @@ export class ProductsComponent {
 
   getIngredients() {
     this.loadingProducts = true;
-    this.ingredientsService.getAllIngredientsAndToppings().subscribe(res => {
+    this.ingredientsService.getActiveIngredientsAndToppings().subscribe(res => {
       if(res) {
         this.ingredients = res;
       }else {

@@ -19,7 +19,7 @@ export class ProductsOrderService {
   return this.http.get<Product[]>(`${this.apiUrl}/products`);
  }
 
- getActiveIngredientsAndToppings():Observable<Ingredient[]> {
+ getActiveIngredientsAndToppingsP():Observable<Ingredient[]> {
   return this.http.get<Ingredient[]>(`${this.apiUrl}/ingredientsToppingsActive`);
  }
 

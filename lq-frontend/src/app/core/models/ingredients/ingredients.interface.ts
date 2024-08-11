@@ -10,6 +10,7 @@ export interface Ingredient {
     ingredientId: number;
     ingredientType: IngredientType;
     name: string;
+    active: boolean;
 }
 
 export interface IngredientMap {

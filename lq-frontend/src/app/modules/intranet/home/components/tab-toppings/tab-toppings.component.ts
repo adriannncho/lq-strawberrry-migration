@@ -61,7 +61,7 @@ export class TabToppingsComponent implements OnInit {
 
    getIngredientsAndToppings() {
     this.loadingToppings = true;
-    this.productsService.getActiveIngredientsAndToppings().subscribe(res => {
+    this.productsService.getActiveIngredientsAndToppingsP().subscribe(res => {
       if(res) {
         this.adicionales = res;
         this.toppingsPremium = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_PREMIUM_);
