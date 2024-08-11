@@ -85,6 +85,7 @@ public class ProductService {
                 .quantityPremium(productDTO.getQuantityPremium())
                 .quantitySalsa(productDTO.getQuantitySalsa())
                 .quantityClasic(productDTO.getQuantityClasic())
+                .status(Status.ACTIVO.toString())
                 .build();
 
         LOG.infof("@saveProduct SERV > Persisting product with name %s", productDTO.getName());
@@ -123,6 +124,7 @@ public class ProductService {
         existingProduct.setQuantityPremium(productDTO.getQuantityPremium());
         existingProduct.setQuantityClasic(productDTO.getQuantityClasic());
         existingProduct.setQuantitySalsa(productDTO.getQuantitySalsa());
+        existingProduct.setStatus(productDTO.getStatus());
 
         LOG.infof("@updateProduct SERV > Persisting updated product with number %d", productDTO.getIdProduct());
         productRepository.persist(existingProduct);
