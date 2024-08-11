@@ -202,6 +202,38 @@ public class OrderService {
         return orderList;
     }
 
+    public List<Order> ordersCompleted() {
+        List<Order> orderList = orderRepository.findOrdersCompleted();
+
+        if (orderList.isEmpty()) {
+            LOG.warnf("@ordersCompleted SERV > No orders found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontraron pedidos completados");
+        }
+
+        for (Order order : orderList) {
+            LOG.infof("@ordersCompleted SERV > Fetching detail orders for order ID %d", order.getIdOrder());
+
+            List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
+
+            for (DetailOrder detailOrder : detailOrders) {
+                Product product = detailOrder.getProduct();
+                if (product != null) {
+                    List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
+                    product.setDetailProduct(detailProducts);
+                }
+
+                List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+                detailOrder.setDetailAdditionals(detailAdditionals);
+            }
+
+            order.setDetailOrders(detailOrders);
+            LOG.infof("@ordersCompleted SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+        }
+
+        LOG.infof("@ordersCompleted SERV > Finish service to obtain the orders");
+        return orderList;
+    }
+
     public Order ordersPendingNumber(long orderId) {
 
         Optional<Order> orderOptional = orderRepository.findOrdersPendingNumber(orderId);

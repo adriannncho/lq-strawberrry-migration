@@ -15,6 +15,10 @@ public class OrderRepository implements PanacheRepository<Order> {
         return list("status", OrderStatus.PENDIENTE);
     }
 
+    public List<Order> findOrdersCompleted() {
+        return list("status", OrderStatus.COMPLETADO);
+    }
+
     public Optional<Order> findOrdersPendingNumber(Long orderId) {
         return list("idOrder = ?1 and status = ?2", orderId, OrderStatus.PENDIENTE).stream().findFirst();
     }

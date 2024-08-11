@@ -304,6 +304,52 @@ public class OrderApi {
     }
 
     @GET
+    @Path("/ordersCompleted")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Lista de pedidos completados obtenida correctamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = Order.class, type = SchemaType.ARRAY)
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontraron pedidos completados",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No hay pedidos completados en este momento."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener pedidos completados",
+            description = "Obtiene la lista de pedidos completados."
+    )
+    public Response getCompleted() {
+        return Response.status(Response.Status.OK).entity(orderService.ordersCompleted()).build();
+    }
+
+    @GET
     @Path("/ordersPending/{numberOrder}")
     @APIResponses(
             value = {
