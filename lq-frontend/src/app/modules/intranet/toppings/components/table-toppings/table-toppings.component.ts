@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Ingredient, IngredientType } from 'src/app/core/models/ingredients/ingredients.interface';
+import { CreatedIngredient, Ingredient, IngredientType, IngredientTypeMap } from 'src/app/core/models/ingredients/ingredients.interface';
 import { IngredientService } from 'src/app/core/services/ingredients/ingredients.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -20,6 +20,8 @@ export class TableToppingsComponent implements OnInit{
   loadingUpdate: boolean = false;
   isVisibleModalEditType: boolean = false;
   typeEdited!: IngredientType;
+  isVisbleModalAddIngredient: boolean = false;
+  isVisibleModalAddType: boolean = false;
 
   constructor(
     private ingredientsService : IngredientService,
@@ -86,6 +88,51 @@ export class TableToppingsComponent implements OnInit{
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al actualizar el tipo de ingrediente', 'Error');
+    })
+  }
+
+  showModalAddIngredient() {
+    this.isVisbleModalAddIngredient = true;
+  }
+
+  hideModalAddIngredient() {
+    this.isVisbleModalAddIngredient = false;
+  }
+
+  addIngredient(body:CreatedIngredient ) {
+    this.loadingUpdate = true;
+    this.ingredientsService.createIngredient(body).subscribe(res => {
+      this.loadingUpdate = false;
+      this.notificationService.success('Se ha creado el ingrediente correctamente');
+      this.hideModalAddIngredient();
+      setTimeout(() => {
+        window.location.reload()
+      },1500)
+    }, error => {
+      this.notificationService.error('Ocurrio un error al crear el ingrediente intente mas tarde')
+    })
+  }
+
+  showModalAddType() {
+    this.isVisibleModalAddType = true;
+  }
+
+  
+  hideModalAddType() {
+    this.isVisibleModalAddType = false;
+  }
+  
+  addTypeIngredient(body:IngredientTypeMap ) {
+    this.loadingUpdate = true;
+    this.ingredientsService.createTypeIngredient(body).subscribe(res => {
+      this.loadingUpdate = false;
+      this.notificationService.success('Se ha creado el tipo de ingrediente correctamente');
+      this.hideModalAddIngredient();
+      setTimeout(() => {
+        window.location.reload()
+      },1500)
+    }, error => {
+      this.notificationService.error('Ocurrio un error al crear el tipo de ingrediente intente mas tarde')
     })
   }
 }

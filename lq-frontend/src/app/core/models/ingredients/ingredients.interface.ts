@@ -13,6 +13,12 @@ export interface Ingredient {
     active: boolean;
 }
 
+export interface CreatedIngredient {
+    ingredientType: IngredientType;
+    name: string;
+    active: boolean;
+}
+
 export interface IngredientMap {
     ingredientType: IngredientType;
     name: string;

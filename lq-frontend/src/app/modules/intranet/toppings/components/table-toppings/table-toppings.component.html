@@ -14,7 +14,8 @@
           nz-button
           nzType="primary"
           class="btnAdd"
-          
+          [disabled]="loadingIngredients"
+          (click)="showModalAddIngredient()"
           >
           <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
           </button>
@@ -78,7 +79,8 @@
           nz-button
           nzType="primary"
           class="btnAdd"
-          
+          [disabled]="loadingTypesIngredients"
+          (click)="showModalAddType()"
           >
           <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
           </button>
@@ -139,3 +141,20 @@
 (hideModalEmitter)="hideModalEditType()"
 (updateIngredientEmit)="updateIngredientType($event)">
 </app-modal-edit-type-ingredient>
+
+<app-modal-created-ingredient
+*ngIf="isVisbleModalAddIngredient"
+[isVisible]="isVisbleModalAddIngredient"
+[typeIngredients]="typesIngredients"
+[loadingUpdate]="loadingUpdate"
+(hideModalEmitter)="hideModalAddIngredient()"
+(addIngredientEmit)="addIngredient($event)">
+</app-modal-created-ingredient>
+
+<app-modal-created-type-ingredient
+*ngIf="isVisibleModalAddType"
+[isVisible]="isVisibleModalAddType"
+[loadingUpdate]="loadingUpdate"
+(hideModalEmitter)="hideModalAddType()"
+(addTypeIngredientEmit)="addTypeIngredient($event)">
+</app-modal-created-type-ingredient>
