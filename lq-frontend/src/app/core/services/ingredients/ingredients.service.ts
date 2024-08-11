@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs'
-import { Ingredient, IngredientMap, IngredientType, IngredientTypeMap, IngredientUpdateMap } from '../../models/ingredients/ingredients.interface';
+import { Ingredient, IngredientMap, IngredientType, IngredientTypeMap } from '../../models/ingredients/ingredients.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -34,8 +34,12 @@ export class IngredientService {
   return this.http.post<Ingredient>(`${this.apiUrl}/ingredientsType/register`, ingredientType);
  }
 
- updateIngredient(ingredient: IngredientUpdateMap) {
+ updateIngredient(ingredient: Ingredient) {
   return this.http.put<Ingredient>(`${this.apiUrl}/ingredients/update`, ingredient);
+ }
+
+ updateTypeIngredient(ingredient: IngredientType) {
+  return this.http.put<IngredientType>(`${this.apiUrl}/ingredientsType/update`, ingredient);
  }
 
  desactiveIngredient(ingredientId: number) {

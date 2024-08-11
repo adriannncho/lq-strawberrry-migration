@@ -61,10 +61,81 @@
     </nz-card>
   </div>
 </div>
+<!-- TIPOS INGREDIENTES -->
+<div nz-row style="margin-top: 70px;">
+  <div nz-col nzSpan="24">
+    <div nz-row class="titleTable">
+      <div nz-col nzSpan="24">
+        <h1>
+          Tipos de ingredientes La Q'Fresa
+        </h1>
+      </div>
+    </div>
+    <nz-card>
+      <div nz-row>
+        <div nz-col nzSpan="24" class="containerBtnAdd">
+          <button
+          nz-button
+          nzType="primary"
+          class="btnAdd"
+          
+          >
+          <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+          </button>
+        </div>
+      </div>
+      <nz-table 
+      #typeIngredients 
+      [nzData]="allTypesIngredients" 
+      [nzLoading]="loadingTypesIngredients"
+      [nzBordered]="true"
+      [nzScroll]="{ x: '200px', y: '600px' }">
+        <thead>
+          <tr>
+            <th nzWidth="70px">ID</th>
+            <th nzWidth="100px">Nombre</th>
+            <th nzWidth="100px">Estado</th>
+            <th nzWidth="90px" nzRight>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ingredient of typeIngredients.data">
+            <td >#{{ ingredient.ingredientTypeId }}</td>
+            <td >{{ ingredient.name }}</td>
+            <td> {{ ingredient.active ? "ACTIVO" : "INACTIVO" }} </td>
+            <td nzRight>
+              <div nz-row>
+                <div nz-col nzSpan="24">
+                  <button
+                  nz-button
+                  (click)="showModalEditType(ingredient)"
+                  >
+                    <span nz-icon nzType="edit" nzTheme="twotone" nzTwotoneColor="#19477c"></span>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>  
+    </nz-card>
+  </div>
+</div>
 
 <app-modal-edit-ingredient
 *ngIf="isVisibleModalEdit"
 [isVisible]="isVisibleModalEdit"
 [ingredient]="ingredientModal"
-[typeIngredients]="typesIngredients">
+[typeIngredients]="typesIngredients"
+(loadingUpdate)="loadingUpdate"
+(hideModalEmitter)="hideModalEdit()"
+(updateIngredientEmit)="updateIngredient($event)">
 </app-modal-edit-ingredient>
+
+<app-modal-edit-type-ingredient
+*ngIf="isVisibleModalEditType"
+[isVisible]="isVisibleModalEditType"
+[ingredient]="typeEdited"
+(hideModalEmitter)="hideModalEditType()"
+(updateIngredientEmit)="updateIngredientType($event)">
+</app-modal-edit-type-ingredient>

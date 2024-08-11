@@ -25,19 +25,7 @@ nzWidth="600px"
               />
             </nz-form-control>
           </nz-form-item>
-        </div>
-        <div nz-col nzSpan="24">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="24" nzFor="type">Tipo de ingrediente</nz-form-label>
-            <nz-form-control [nzSpan]="24">
-              <nz-select
-              formControlName="type"
-              >
-                <nz-option *ngFor="let item of typeIngredients" [nzLabel]="item.name" [nzValue]="item.ingredientTypeId"></nz-option>
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-        </div>        
+        </div>      
         <div nz-col nzSpan="24">
           <nz-form-item>
             <nz-form-label [nzSpan]="24" nzFor="status">Estado</nz-form-label>
@@ -79,6 +67,6 @@ nzWidth="600px"
 
 <ng-template #titleModal>
   <span style="font-size: 24px; color: white;">
-    Editar ingrediente # {{ ingredient.ingredientId }}
+    Editar ingrediente # {{ ingredient.ingredientTypeId }}
   </span>
 </ng-template>

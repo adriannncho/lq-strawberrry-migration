@@ -23,13 +23,6 @@ export interface IngredientTypeMap {
     active: boolean;
 }
 
-export interface IngredientUpdateMap {
-    ingredientId: number;
-    ingredientType: number;
-    name: string;
-    active: boolean
-}
-
 export interface LinkedProduct {
     idProduct: number;
     size: number;

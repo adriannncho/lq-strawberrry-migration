@@ -1,19 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Ingredient, IngredientType } from 'src/app/core/models/ingredients/ingredients.interface';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { IngredientType } from 'src/app/core/models/order-products/products-interface';
 
 @Component({
-  selector: 'app-modal-edit-ingredient',
-  templateUrl: './modal-edit-ingredient.component.html',
-  styleUrls: ['./modal-edit-ingredient.component.css']
+  selector: 'app-modal-edit-type-ingredient',
+  templateUrl: './modal-edit-type-ingredient.component.html',
+  styleUrls: ['./modal-edit-type-ingredient.component.css']
 })
-export class ModalEditIngredientComponent implements OnInit {
+export class ModalEditTypeIngredientComponent implements OnInit {
   @Input() isVisible: boolean = false;
   @Input() loadingUpdate: boolean = false;
-  @Input() ingredient!: Ingredient;
-  @Input() typeIngredients!: IngredientType[];
+  @Input() ingredient!: IngredientType;
   @Output() hideModalEmitter = new EventEmitter<boolean>()
-  @Output() updateIngredientEmit = new EventEmitter<Ingredient>()
+  @Output() updateIngredientEmit = new EventEmitter<IngredientType>()
   editIngredient!: FormGroup;
 
   status = [
@@ -35,7 +34,6 @@ export class ModalEditIngredientComponent implements OnInit {
   ngOnInit(): void {
     this.editIngredient = this.fb.group({
       name: [this.ingredient.name, [Validators.required, Validators.minLength(3)]],
-      type: [this.ingredient.ingredientType.ingredientTypeId, [Validators.required]],
       status: [this.ingredient.active, [Validators.required]]
     });
   }
@@ -44,10 +42,9 @@ export class ModalEditIngredientComponent implements OnInit {
     this.hideModalEmitter.emit(true);
   }
 
-  updateIngredient(ingredient: Ingredient) {
-    let ingredientBody: Ingredient = {
-      ingredientId: ingredient.ingredientId,
-      ingredientType: this.editIngredient.controls['type'].value,
+  updateIngredient(ingredient: IngredientType) {
+    let ingredientBody: IngredientType = {
+      ingredientTypeId: ingredient.ingredientTypeId,
       name: this.editIngredient.controls['name'].value,
       active: this.editIngredient.controls['status'].value
     }
