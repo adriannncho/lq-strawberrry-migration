@@ -30,6 +30,7 @@ export interface Ingredient {
   ingredientType: IngredientType;
   name: string;
   checked?: boolean
+  isAditional: boolean
 }
 
 export interface ProductMap {
@@ -74,6 +75,7 @@ export interface ProductId {
 
 export interface DetailAdditional {
   idIngredient: number;
+  isAditional: boolean
 }
 
 export interface DetailProductMap {

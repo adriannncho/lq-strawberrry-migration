@@ -42,7 +42,6 @@ export class ModalEditUsersComponent {
 
   submitForm(): void {
     if (this.editForm.valid) {
-      console.log('Usuario editado:', this.editForm.value);
     }
   }
 

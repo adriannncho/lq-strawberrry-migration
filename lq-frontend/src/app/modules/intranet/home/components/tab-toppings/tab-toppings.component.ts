@@ -185,22 +185,34 @@ export class TabToppingsComponent implements OnInit {
     let toppingsAdd: DetailAdditional[] = [];
     if(this.toppingsPremiumAdd.length > 0) {
       this.toppingsPremiumAdd.forEach(item => {
-        toppingsAdd.push({idIngredient: item.ingredientId});
+        toppingsAdd.push({
+          idIngredient: item.ingredientId,
+          isAditional : false
+        });
       });
     }
     if(this.toppingsClasicAdd.length > 0) {
       this.toppingsClasicAdd.forEach(item => {
-        toppingsAdd.push({idIngredient: item.ingredientId});
+        toppingsAdd.push({
+          idIngredient: item.ingredientId,
+          isAditional : false
+        });
       });   
     }
     if(this.saucesAdd.length > 0) {
       this.saucesAdd.forEach(item => {
-        toppingsAdd.push({idIngredient: item.ingredientId});
+        toppingsAdd.push({
+          idIngredient: item.ingredientId,
+          isAditional : false
+        });
       });
     }
     if(this.adicionalesAdd.length > 0) {
       this.adicionalesAdd.forEach(item => {
-        toppingsAdd.push({idIngredient: item.ingredientId});
+        toppingsAdd.push({
+          idIngredient: item.ingredientId,
+          isAditional : true
+        });
       });
     }
     const productAdd: DetailOrder ={
