@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { User, UserType, Gender, DocumentTypeId, UserStatus } from 'src/app/core/models/users/users.interface';
+import { User, UserType, Gender, DocumentTypeId, UserStatus, UserMap } from 'src/app/core/models/users/users.interface';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UserService } from 'src/app/core/services/users/users.services';
 
 @Component({
@@ -19,9 +20,12 @@ export class TableUsersComponent {
   usersModal!: User;
   isVisibleModalEdit: boolean = false;
   usersEdit!: User;
+  loadingUpdate: boolean = false;
+  isVisibleModalAdd: boolean = false;
 
   constructor(
-    private userService : UserService
+    private userService : UserService,
+    private notificationService : NotificationService
   ) {
     
   }
@@ -48,4 +52,39 @@ export class TableUsersComponent {
     this.isVisibleModalEdit = false;
   }
 
+  createUser(user: UserMap) {
+    this.loadingUpdate = true;
+    this.userService.createUser(user).subscribe(res => {
+      this.notificationService.success('Usuario creado correctamente', 'Exito')
+      this.loadingUpdate = false;
+      setTimeout(()=> {
+        window.location.reload()
+      },500)
+    }, error => {
+      this.loadingUpdate = false;
+      this.notificationService.error('Ocurrio un error al crear el usuario, intente mas tarde', 'Error')
+    })
+  }
+
+  showModalCreated() {
+    this.isVisibleModalAdd = true;
+  }
+
+  hideModalCreated() {
+    this.isVisibleModalAdd = false;
+  }
+
+  updateUser(user: UserMap) {
+    this.loadingUpdate = true;
+    this.userService.updateUser(user).subscribe(res => {
+      this.notificationService.success('Usuario actualizado correctamente', 'Exito')
+      this.loadingUpdate = false;
+      setTimeout(()=> {
+        window.location.reload()
+      },500)
+    }, error => {
+      this.loadingUpdate = false;
+      this.notificationService.error('Ocurrio un error al crear el usuario, intente mas tarde', 'Error')
+    })
+  }
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { User, UserType, Gender, DocumentTypeId, UserStatus  } from 'src/app/core/models/users/users.interface';
+import { User, UserType, Gender, DocumentTypeId, UserStatus, UserMap  } from 'src/app/core/models/users/users.interface';
 
 @Component({
   selector: 'app-modal-edit-users',
@@ -14,10 +14,13 @@ export class ModalEditUsersComponent {
   @Input() documentType!: DocumentTypeId[];
   @Input() userStatus!: UserStatus[];
   @Input() isVisible: boolean = false;
+  @Input() loadingUpdate: boolean = false;
   @Output() hideModalEmit = new EventEmitter<boolean>()
+  @Output() updateUserEmitter = new EventEmitter<UserMap>()
   editForm!: FormGroup;
   pendingValidateCant: boolean = true;
   isVisibleCant: boolean = false;
+  userOfUpdate!: UserMap;
 
   constructor(private fb: FormBuilder) {}
 
@@ -47,5 +50,28 @@ export class ModalEditUsersComponent {
 
   hideModal() {
     this.hideModalEmit.emit(false);
+  }
+
+  updateUser() {
+    this.userOfUpdate = {
+      documentNumber: this.editForm.controls['documentNumber'].value,
+      userTypeId: this.editForm.controls['userType'].value,
+      genderId: this.editForm.controls['gender'].value,
+      documentTypeId: this.editForm.controls['documentTypeId'].value,
+      userStatusId: this.editForm.controls['userStatus'].value,
+      firstName: this.editForm.controls['firstName'].value,
+      secondName: this.editForm.controls['secondName'].value,
+      firstLastName: this.editForm.controls['firstLastName'].value,
+      secondLastName: this.editForm.controls['secondLastName'].value,
+      phone: this.editForm.controls['phone'].value,
+      address: this.editForm.controls['address']?.value || '',
+      email: this.editForm.controls['email'].value,
+      password: this.editForm.controls['password'].value,
+    };
+    this.updateUserEmit(this.userOfUpdate);
+  }
+
+  updateUserEmit(user: UserMap) {
+    this.updateUserEmitter.emit(user);
   }
 }

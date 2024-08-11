@@ -8,6 +8,19 @@
       </div>
     </div>
     <nz-card>
+      <div nz-row>
+        <div nz-col nzSpan="24" class="containerBtnAdd">
+          <button
+          nz-button
+          nzType="primary"
+          class="btnAdd"
+          [disabled]="loadingUsers"
+          (click)="showModalCreated()"
+          >
+          <span nz-icon nzType="plus-circle" nzTheme="outline"></span>
+          </button>
+        </div>
+      </div>
       <nz-table 
       #usersTable 
       [nzData]="users" 
@@ -87,5 +100,24 @@
 [documentType]="documentType"
 [userStatus]="userStatus"
 [isVisible]="isVisibleModalEdit"
-(hideModalEmit)="hideModalEdit()">
+(hideModalEmit)="hideModalEdit()"
+(updateUserEmitter)="updateUser($event)">
 </app-modal-edit-users>
+
+<app-modal-info-users
+[isVisible]="isvisibleModal"
+[users]="usersModal"
+(hideModalEmitter)="hideModalInfo($event)">
+</app-modal-info-users>
+
+<app-modal-add-users
+*ngIf="isVisibleModalAdd"
+[isVisible]="isVisibleModalAdd"
+[typeUser]="typeUser"
+[gender]="gender"
+[documentType]="documentType"
+[userStatus]="userStatus"
+[loadingUpdate]="loadingUpdate"
+(hideModalEmit)="hideModalCreated()"
+(createUserEmitter)="createUser($event)">
+</app-modal-add-users>

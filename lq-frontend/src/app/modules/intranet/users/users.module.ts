@@ -5,6 +5,8 @@ import { TableUsersComponent } from './components/table-users/table-users.compon
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './pages/users/users.component';
 import { ModalEditUsersComponent } from './components/modal-edit-users/modal-edit-users.component';
+import { ModalInfoUsersComponent } from './components/modal-info-users/modal-info-users.component';
+import { ModalAddUsersComponent } from './components/modal-add-users/modal-add-users.component';
 
 
 @NgModule({
@@ -12,6 +14,8 @@ import { ModalEditUsersComponent } from './components/modal-edit-users/modal-edi
     UsersComponent,
     TableUsersComponent,
     ModalEditUsersComponent,
+    ModalInfoUsersComponent,
+    ModalAddUsersComponent,
   ],
   imports: [
     CommonModule,
