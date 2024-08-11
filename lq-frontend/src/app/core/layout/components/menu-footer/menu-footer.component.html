@@ -36,7 +36,9 @@
       nz-button 
       nzType="default" 
       nz-row 
-      class="optionMenuButton">
+      class="optionMenuButton"
+      [routerLink]="['/', 'intranet', 'toppings' ]"
+      routerLinkActive="active">
         <span nz-icon class="menuIcon" nzType="shop"></span>
         <div nz-col nzSpan="24"><span class="footerText">Toppings</span></div>
       </button>

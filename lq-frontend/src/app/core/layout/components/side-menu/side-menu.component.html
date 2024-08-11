@@ -57,6 +57,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'toppings']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Toppings</span>
