@@ -44,7 +44,12 @@
       </button>
     </div>
     <div nz-col nzSpan="4.8" *ngIf="role === roles._ADMIN_">
-      <button nz-button nzType="default" nz-row class="optionMenuButton">
+      <button nz-button 
+      nzType="default" 
+      nz-row 
+      class="optionMenuButton"
+      [routerLink]="['/', 'intranet', 'toppings' ]"
+      routerLinkActive="active">
         <span nz-icon class="menuIcon" nzType="mail"></span>
         <div nz-col nzSpan="24"><span class="footerText">Historico</span></div>
       </button>

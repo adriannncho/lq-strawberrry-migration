@@ -26,6 +26,10 @@ const routes: Routes = [
   {
     path: 'toppings',
     loadChildren: () => import('./toppings/toppings.module').then((m) => m.ToppingsModule)
+  },
+  {
+    path: 'historic-sale',
+    loadChildren: () => import('./historicSale/historic-sale.module').then((m) => m.HistoricSaleModule)
   }
 ];
 
