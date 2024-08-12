@@ -125,8 +125,7 @@ export class ModalAddProductComponent {
       quantityClasic: this.addForm.controls['cantClasic'].value || 0,
       quantityPremium: this.addForm.controls['cantPremium'].value || 0,
       quantitySalsa: this.addForm.controls['cantSauces'].value || 0,
-      detailProduct: body,
-      status: "ACTIVO"
+      detailProduct: body
     };
     this.updateProductEmit(this.productOfUpdate);
   }
