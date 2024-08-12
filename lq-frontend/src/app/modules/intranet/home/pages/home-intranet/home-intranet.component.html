@@ -52,7 +52,7 @@
                       </div>
                       <div nz-col nzSpan="24">
                         <nz-statistic
-                        [nzValue]="( product.price)!"
+                        [nzValue]="( product.price | number)!"
                         [nzPrefix]="'$'"
                         [nzValueStyle]="{ color: '#3F8600' }"
                         ></nz-statistic>
@@ -81,6 +81,8 @@
           </ng-template>
           <app-tab-combos
           [combosActive]="combosActive"
+          [comboIniciado]="comboIniciado"
+          [comboEnd]="comboEnd"
           (intexTab)="selectedIndex = $event"
           (productEmiter)="addProduct($event)"
           (comboSelectedEmit)="comboSelected = $event">
@@ -96,6 +98,7 @@
           *ngIf="renderToppings"
           [product]="productSendTab"
           [isCombo]="isCombo"
+          [comboIniciado]="comboIniciado"
           (blockTabToppings)="blockTabToppings = $event"
           (selectedIndex)="selectedIndex = $event"
           (resumeOrder)="createResumeOrder($event)"
@@ -113,6 +116,7 @@
   *ngIf="isVisibleModal "
   [isVisible]="isVisibleModal"
   [resumeOrder]="resumeOrder"
+  [okOrder]="okOrder"
   (hideModalEmiter)="hideModal($event)"
   (deleteProductEmitter)="deleteProductOfOrder($event)"
   (resetVariablesEmit)="resetVariables($event)">

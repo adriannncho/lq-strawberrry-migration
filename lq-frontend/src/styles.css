@@ -25,7 +25,7 @@
   --color-secondary-orange-base: #EFAE30;
   --color-secondary-orange-dark: #866404;
   --color-secondary-orange-light: #FCF5CB;
-  --color-secondary-green-base: #008A00;
+  --color-secondary-green-base: #3F8600;
   --color-secondary-green-dark: #155724;
   --color-secondary-green-light: #D7F0D9;
   --color-neutral-black: #000000;
@@ -278,4 +278,23 @@ a:hover {
     transform: translateX(-65vw);
     z-index: 1100;
   }
+}
+
+.ant-modal-header {
+  background: var(--color-primary-blue-ash);
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--color-primary-blue-ash);
+  color: var(--color-neutral-white);
+  text-align: center;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center;
+}
+
+.ant-form-item .ant-form-item-label>label{
+  color: var(--color-primary-blue-ash);
+  font-size: 16px;
 }

@@ -33,6 +33,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'products']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="coffee" nzTheme="outline"></span>
           <span>Productos</span>
@@ -40,6 +45,23 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'combos']"
+        (click)="hideMenu()"
+        >
+          <span nz-icon nzType="group" nzTheme="outline"></span>
+          <span>Combos</span>
+        </li>
+        <li
+        *ngIf="role === roles._ADMIN_"
+        nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'users']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="usergroup-add" nzTheme="outline"></span>
           <span >Usuarios</span>
@@ -47,6 +69,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'toppings']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="shop" nzTheme="outline"></span>
           <span>Toppings</span>
@@ -54,6 +81,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'historic-sale']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="mail"></span>
           <span>Historico</span>
@@ -61,6 +93,11 @@
         <li
         *ngIf="role === roles._ADMIN_"
         nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'sale']"
+        (click)="hideMenu()"
         >
           <span nz-icon nzType="dollar"></span>
           <span>Ventas</span>

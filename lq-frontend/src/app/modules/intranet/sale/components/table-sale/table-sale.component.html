@@ -1,0 +1,14 @@
+<div nz-row style="margin-top: 70px; width: 100%;">
+  <nz-card nzTitle="Ventas La Q'Fresa" style="width: 100%;">
+    <div nz-row style="margin: 10px;">
+      <div nz-col nzSpan="24" >
+        <nz-card nzTitle="Ventas totales">
+          <nz-statistic
+          [nzValue]="( sales | currency)!"
+          [nzValueStyle]="{ color: '#3F8600' }"
+          ></nz-statistic>
+        </nz-card>
+      </div>
+    </div>
+  </nz-card>
+</div>

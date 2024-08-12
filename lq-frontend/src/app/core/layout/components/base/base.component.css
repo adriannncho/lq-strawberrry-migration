@@ -72,7 +72,7 @@ nz-content {
   padding: 0;
   box-shadow: 0 0 10px var(--color-primary-gray);
   background-color: var(--color-neutral-white);
-}
+} 
 
 nz-content {
   margin: 0;

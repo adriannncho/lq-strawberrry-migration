@@ -29,6 +29,9 @@ export interface Combo {
   detailCombos: DetailCombo[];
 
   isSelect?: boolean;  // Solo front
+  catProducts?: number; //Solo front
+  catProductsAdd?: number; //Solo front
+  complete?: boolean; // solo front
 }
 
 export interface DetailComboMap {

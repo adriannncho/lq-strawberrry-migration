@@ -198,7 +198,63 @@ public class OrderApi {
             @PathParam("numberOrder") long numberOrder
     ) {
         orderService.updateOrderStatus(numberOrder);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PUT
+    @Transactional
+    @Path("/cancelOrder/{numberOrder}")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "201",
+                            description = "Pedido cancelado correctamente"
+                    ),
+                    @APIResponse(
+                            responseCode = "400",
+                            description = "No se pudo cancelar el estado del pedido debido a datos incorrectos o faltantes.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = """
+                                                                        [
+                                                                            "El número de pedido no puede ser menor a cero."
+                                                                        ]
+                                                                      """
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno del servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Cancelar estado del pedido",
+            description = "Cancela el estado del pedido basado en el número de pedido proporcionado."
+    )
+    public Response cancelOrder(
+            @Parameter(
+                    description = "Número de pedido a cancelar",
+                    required = true
+            )
+            @NotNull(message = "El número de pedido no puede ser nulo")
+            @Min(value = 1, message = "El número de pedido debe ser mayor a cero")
+            @PathParam("numberOrder") long numberOrder
+    ) {
+        orderService.cancelOrderStatus(numberOrder);
+        return Response.status(Response.Status.OK).build();
     }
 
     @GET
@@ -245,6 +301,52 @@ public class OrderApi {
     )
     public Response getPendingOrders() {
         return Response.status(Response.Status.OK).entity(orderService.ordersPending()).build();
+    }
+
+    @GET
+    @Path("/ordersCompleted")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Lista de pedidos completados obtenida correctamente",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = Order.class, type = SchemaType.ARRAY)
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontraron pedidos completados",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No hay pedidos completados en este momento."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener pedidos completados",
+            description = "Obtiene la lista de pedidos completados."
+    )
+    public Response getCompleted() {
+        return Response.status(Response.Status.OK).entity(orderService.ordersCompleted()).build();
     }
 
     @GET

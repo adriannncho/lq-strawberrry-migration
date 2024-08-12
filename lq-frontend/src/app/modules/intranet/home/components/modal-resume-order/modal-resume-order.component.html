@@ -2,6 +2,7 @@
 [(nzVisible)]="isVisible"
 nzCentered
 [nzClosable]="true"
+nzWidth="100%"
 (nzOnCancel)="hideModal()">
   <ng-container *nzModalContent>
     <div nz-row *ngIf="loadingCreate">
@@ -38,13 +39,13 @@ nzCentered
           {{ product.nameProduct }}
         </div>
         <div nz-col nzSpan="6" class="centerContent content" style="color: #3F8600;">
-          $ {{ product.value }}
+          $ {{ product.value | number }}
         </div>
         <div nz-col nzSpan="6" class="centerContent content">
-          {{ product.quantity }}
+          {{ product.quantity | number }}
         </div>
         <div nz-col nzSpan="6" class="centerContent content" style="color: #3F8600;">
-          $ {{ product.value * product.quantity }}
+          $ {{ product.value * product.quantity  | number}}
         </div>
       </div>
 
@@ -55,7 +56,7 @@ nzCentered
             SubTotal:
         </div>
         <div nz-col nzSpan="6">
-          $ {{ resumeOrder.subTotal ? resumeOrder.subTotal : 0 }}
+          $ {{ resumeOrder.subTotal || 0 | number }}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
@@ -63,7 +64,7 @@ nzCentered
             Descuento:
         </div>
         <div nz-col nzSpan="6">
-          $ {{ resumeOrder.discont ? resumeOrder.discont : 0 }}
+          $ {{  resumeOrder.discont || 0 | number}}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
@@ -71,7 +72,7 @@ nzCentered
             Total:
         </div>
         <div nz-col nzSpan="6">
-          $ {{  resumeOrder.total ?  resumeOrder.total : 0 }}
+          $ {{ (resumeOrder.total || 0) | number }}
         </div>
       </div>
     </nz-card>
@@ -83,14 +84,17 @@ nzCentered
         <button
         nz-button
         [disabled]="loadingCreate"
-        (click)="resetVariables(false)">
+        nz-popconfirm
+        nzPopconfirmTitle="¿Estas seguro de eliminar el pedido?"
+        nzPopconfirmPlacement="top"
+        (nzOnConfirm)="resetVariables(false)">
           Eliminar
         </button>
       </div>
       <div nz-col>
         <button
         nz-button
-        [disabled]="loadingCreate"
+        [disabled]="!okOrder"
         nzType="primary"
         nz-popconfirm
         nzPopconfirmTitle="¿Estas seguro de crear el pedido?"

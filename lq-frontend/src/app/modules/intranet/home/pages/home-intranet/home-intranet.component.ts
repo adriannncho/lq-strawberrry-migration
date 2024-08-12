@@ -4,7 +4,7 @@ import { Combo } from 'src/app/core/models/combos/combos.interface';
 import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
-import { SizeProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
+import { SizeProducts, StatusProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
 import { TabToppingsComponent } from '../../components/tab-toppings/tab-toppings.component';
 
 @Component({
@@ -24,6 +24,7 @@ export class HomeIntranetComponent {
   productSendTab!: ProductMap;
   idUser!: number;
   customerName: string = '';
+  statusProducts = StatusProducts;
 
   typesProducts = TypeProducts;
   resumeOrder!: Order;
@@ -37,6 +38,9 @@ export class HomeIntranetComponent {
   isCombo: boolean = false;
   isProduct: boolean = false;
   comboSelected!: Combo;
+  okOrder: boolean = false;
+  comboIniciado: boolean = false;
+  comboEnd: boolean = false;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -52,7 +56,7 @@ export class HomeIntranetComponent {
     this.loadingProducts = true;
     this.productsService.getAllProducts().subscribe(res => {
       if(res) {
-        this.products = res;
+        this.products = res.filter(f => f.status === this.statusProducts.ACTIVO);
         this.productsMap = this.createObjProducts(this.products);
         this.loadingProducts = false;
       }
@@ -101,37 +105,78 @@ export class HomeIntranetComponent {
 
   createResumeOrder(detail: DetailOrder[]) {
     let total: number = 0;
+    let valueAditional = 1000;
+    let valueAdd : number = 0;
+    let cont: number = 0;
     detail.forEach(item => {
-      total = total + item.value;
+      total = total + item.value * item.quantity;
+      if(item.detailAdditionals) {
+        item.detailAdditionals.forEach(element => {
+          if(element.isAditional) {
+            if(cont > 0) {
+              cont = cont + 1;
+            }else {
+              cont = 1;
+            }
+            valueAdd = valueAditional * cont;
+          }
+        })
+      }
     });
     this.resumeOrder = {
       idUser: this.idUser,
       detailOrders: detail,
-      total: total,
+      total: total + valueAdd,
+      subTotal: total + valueAdd ,
       discont: 0
     }
+    this.okOrder = true;
   }
 
-  createResumeOrderCombo(detail: DetailOrder[]) {
+  createResumeOrderCombo(detaile: DetailOrder[]) {
+    let cont: number = 0;
+    let valueAdd: number = 0;
+    let valueAditional: number = 1000;
     this.combosActive.forEach(item => {
-      item.detailCombos.forEach(element => {
-        element.products.forEach(subItem => {
-          subItem.isSelect = detail.some(detailItem => subItem.idProduct === detailItem.product.idProduct);
-        });
+      detaile.forEach(detail => {
+        this.changesCantidadProd(detail.idCombo, detaile)
+        if(item.idCombo === detail.idCombo ) {
+          item.detailCombos.forEach(element => {
+            element.products.forEach(subItem => {
+              if(subItem.idProduct === detail.product.idProduct) {
+                subItem.isSelect = true;
+              }
+            });
+          });
+        }
       });
     });
     let total: number = 0;
     let discont: number = 0;
     let subTotal: number = 0;
-    detail.forEach(item => {
-      subTotal = subTotal + item.value;
+    detaile.forEach(item => {
+      if(item.detailAdditionals){
+        item.detailAdditionals.forEach(element => {
+          if(element.isAditional) {
+            if(cont > 0) {
+              cont = cont + 1;
+            }else {
+              cont = 1;
+            }
+          }
+        })
+      }
+      subTotal = subTotal + item.value ;
       discont = subTotal - this.comboSelected.value;
       total = subTotal - discont;
     });
+    valueAdd = valueAditional * cont;
+    subTotal = subTotal + valueAdd;
+    total = total + valueAdd;
 
     this.resumeOrder = {
       idUser: this.idUser,
-      detailOrders: detail,
+      detailOrders: detaile,
       total: total,
       discont: discont,
       subTotal: subTotal
@@ -151,6 +196,12 @@ export class HomeIntranetComponent {
     this.productsService.getCombosActive().subscribe(res => {
       if(res){
         this.combosActive = res;
+        this.combosActive.forEach(item => {
+          item.complete = false;
+            item.catProducts = item.detailCombos.length;
+              item.catProductsAdd = 0;
+              item.complete = false;;
+        })
         this.loadingCombos = false;
       }
     }, error => {
@@ -164,9 +215,10 @@ export class HomeIntranetComponent {
   }
 
   deleteProductOfOrder(index: number) {
-    this.restarCombos(index);
+    if(this.isCombo) {
+      this.restarCombos(index);
+    }
     this.resumeOrder.detailOrders.splice(index, 1);
-    
     if(this.resumeOrder.detailOrders.length <= 0) {
       this.hideModal(false);
       this.resetVariables(false);
@@ -176,21 +228,39 @@ export class HomeIntranetComponent {
   }
 
   calcTotal () {
+    let cont: number = 0;
     this.resumeOrder.detailOrders.forEach(item => {
+      let valueAdd: number = 0;
+      let valueAditional: number = 1000;
       let total: number = 0;
       let discont: number = 0;
       let subTotal: number = 0;
+      if(item.detailAdditionals) {
+        item.detailAdditionals.forEach(element => {
+          if(element.isAditional) {
+            if(cont > 0) {
+              cont = cont + 1;
+            }else {
+              cont = 1;
+            }
+            valueAdd = valueAditional * cont;
+          }
+        })
+      }
       if(this.isCombo) {
         subTotal = subTotal + item.value;
         discont = subTotal - this.comboSelected.value;
         total = subTotal - discont;
-        this.resumeOrder.total = total;
-        this.resumeOrder.subTotal = subTotal;
-        this.resumeOrder.discont = discont;
       }else {
+        subTotal = subTotal + item.value;
         total = total + item.value;
         this.resumeOrder.total = total;
       }
+      subTotal = subTotal + valueAdd ;
+      total = total + valueAdd;
+      this.resumeOrder.total = total;
+      this.resumeOrder.subTotal = subTotal;
+      this.resumeOrder.discont = discont;
     });
   }
 
@@ -204,19 +274,28 @@ export class HomeIntranetComponent {
     this.isCombo = false;
     this.isProduct = false;
     this.topping.productsAdd = blankVariable;
+    this.okOrder = false;
   }
 
   restarCombos(index: number | null) {
     if(index) {
       let idProduct = this.resumeOrder.detailOrders[index].product.idProduct;
       this.combosActive.forEach(item => {
-        item.detailCombos.forEach(element => {
-          element.products.forEach(subItem => {
-            if (subItem.idProduct === idProduct) {
-              subItem.isSelect = false;
-            }
+        if(item.isSelect) {
+          if(item.catProductsAdd && item.catProductsAdd > 0) {
+            item.catProductsAdd = item.catProductsAdd -1;
+            this.comboEnd = false;
+            this.okOrder = false;
+          }
+          item.complete = false;
+          item.detailCombos.forEach(element => {
+            element.products.forEach(subItem => {
+              if (subItem.idProduct === idProduct) {
+                subItem.isSelect = false;
+              }
+            });
           });
-        });
+        }
       });
     }else {
       this.combosActive.forEach(item => {
@@ -227,5 +306,28 @@ export class HomeIntranetComponent {
         });
       });
     }
+  }
+
+  changesCantidadProd(idCombo: number | undefined,detail: DetailOrder[]) {
+    this.combosActive.forEach(item => {
+      if(item.idCombo === idCombo) {
+        if(item.catProductsAdd) {
+          item.catProductsAdd = detail.length
+        }else {
+          item.catProductsAdd = 1
+        }
+        if(item.catProducts === item.catProductsAdd) {
+          this.okOrder = true;
+          item.complete = true;
+          this.comboIniciado = false;
+          this.comboEnd = true;
+        }else {
+          this.okOrder = false;
+          item.complete = false;
+          this.comboIniciado = true;
+        }
+      }
+    })
+
   }
 }

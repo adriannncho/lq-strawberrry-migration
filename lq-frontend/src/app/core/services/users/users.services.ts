@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs'
-import { User, UserMap } from '../../models/users/users.interface';
+import { User, UserMap, DocumentTypeId, Gender, UserStatus, UserType } from '../../models/users/users.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -27,5 +27,21 @@ export class UserService {
 
  desactiveUser(userId : number){
     return this.http.put<UserMap>(`${this.apiUrl}/deleteUser/${userId}`, {});
+ }
+
+ getAllDocumentTypeId(): Observable<DocumentTypeId[]>{
+   return this.http.get<DocumentTypeId[]>(`${this.apiUrl}/typeDocument`)
+ }
+
+ getAllGender(): Observable<Gender[]>{
+   return this.http.get<Gender[]>(`${this.apiUrl}/genderUser`)
+ }
+
+ getAllUserStatus(): Observable<UserStatus[]>{
+   return this.http.get<UserStatus[]>(`${this.apiUrl}/statusUser`)
+ }
+
+ getAllUserType(): Observable<UserType[]>{
+   return this.http.get<UserType[]>(`${this.apiUrl}/role`)
  }
 }

@@ -13,7 +13,6 @@ export class CombosService {
   constructor(
     private http: HttpClient,
   ){}
-
  getAllCombos(): Observable<Combo[]> {
   return this.http.get<Combo[]>(`${this.apiUrl}/combo`);
  }
@@ -30,7 +29,7 @@ export class CombosService {
     return this.http.put<ComboUpdateMap>(`${this.apiUrl}/combo/register`, combo);
  }
 
- desactiveIngredient(comboId: number) {
+ chageStatusCombo(comboId: number) {
     return this.http.put<Combo>(`${this.apiUrl}/ingredients/delete/${comboId}`, {});
    }
 }

@@ -39,6 +39,9 @@ public class ProductDTO {
     @Positive(message = "El campo cantidad de salsas (quantitySalsa) no puede ser igual o menor a cero.")
     private int quantitySalsa;
 
+    @NotNull(message = "El campo status (estado) no puede ser nulo o estar vacío.")
+    private String status;
+
     @NotEmpty(message = "Los campos del detalle del producto no pueden estar vacios.")
     private List<DetailProduct> detailProduct;
 }

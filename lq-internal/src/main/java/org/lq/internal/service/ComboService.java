@@ -194,7 +194,7 @@ public class ComboService {
     }
 
     public void deactivateCombo(Long comboId) throws PVException {
-        LOG.infof("@deactivateCombo SERV > Start service to deactivate combo with ID %d", comboId);
+        LOG.infof("@deactivateCombo SERV > Start service to change status combo with ID %d", comboId);
 
         LOG.infof("@deactivateCombo SERV > Retrieving existing Combo with ID %d", comboId);
         Combo existingCombo = comboRepository.findById(comboId);
@@ -203,12 +203,16 @@ public class ComboService {
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El combo no fue encontrado.");
         }
 
-        LOG.infof("@deactivateCombo SERV > Deactivating Combo with ID %d", comboId);
-        existingCombo.setStatus(String.valueOf(Status.INACTIVO));
+        if (existingCombo.getStatus().equals(Status.ACTIVO.toString())){
+            existingCombo.setStatus(String.valueOf(Status.INACTIVO));
+        } else {
+            existingCombo.setStatus(String.valueOf(Status.ACTIVO));
+        }
 
-        LOG.infof("@deactivateCombo SERV > Persisting deactivated Combo with ID %d", comboId);
+        LOG.infof("@deactivateCombo SERV > Persisting change status Combo with ID %d", comboId);
+
         comboRepository.persist(existingCombo);
 
-        LOG.infof("@deactivateCombo SERV > Combo with ID %d deactivated successfully", comboId);
+        LOG.infof("@deactivateCombo SERV > Combo with ID %d change status successfully", comboId);
     }
 }

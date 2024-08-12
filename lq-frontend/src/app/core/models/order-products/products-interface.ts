@@ -3,6 +3,7 @@ export interface DetailProduct {
   idIngredient: number;
   idProduct: number;
   quantity: number;
+  name: string;
 }
 
 export interface Product {
@@ -14,6 +15,7 @@ export interface Product {
   quantityClasic: number;
   quantityPremium: number;
   quantitySalsa: number;
+  status: string;
   detailProduct: DetailProduct[];
 }
 
@@ -28,6 +30,7 @@ export interface Ingredient {
   ingredientType: IngredientType;
   name: string;
   checked?: boolean
+  isAditional: boolean
 }
 
 export interface ProductMap {
@@ -42,7 +45,8 @@ export interface ProductMap {
   size: number,
   detailProduct: DetailProduct[],
 
-  isCombo?: boolean,  //Solo front
+  isCombo?: boolean,
+  idCombo?: number,  //Solo front
 }
 
 export interface Order {
@@ -62,6 +66,7 @@ export interface DetailOrder {
   product: ProductId;
   detailAdditionals: DetailAdditional[];
   nameProduct: string;                     //Solo uso front
+  idCombo?: number;
 }
 
 export interface ProductId {
@@ -70,9 +75,17 @@ export interface ProductId {
 
 export interface DetailAdditional {
   idIngredient: number;
+  isAditional: boolean
 }
 
 export interface DetailProductMap {
+  idIngredient: number;
+  quantity: number;
+  name: string
+  typeId: number
+}
+
+export interface DetailProductMapSend {
   idIngredient: number;
   quantity: number;
 }
@@ -97,5 +110,38 @@ export interface ProductUpdateMap {
   quantityClasic: number;
   quantityPremium: number;
   quantitySalsa: number;
-  detailProduct: DetailProductMap[];
+  detailProduct: DetailProductMapSend[];
+}
+
+export interface TypeSize {
+  idTipoTamanio: number;
+  name: string;
+  abbreviation: string;
+}
+
+export interface ProductSize {
+  idTamanio: number;
+  size: number;
+  typeSize: TypeSize;
+}
+export interface UpdateProductBody {
+  idProduct: number;
+  size: number;
+  name: string;
+  description: string;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  value: number;
+  detailProduct: DetailProductMapSend[];
+}
+export interface CreatedProductBody {
+  size: number;
+  name: string;
+  description: string;
+  quantityClasic: number;
+  quantityPremium: number;
+  quantitySalsa: number;
+  value: number;
+  detailProduct: DetailProductMapSend[];
 }

@@ -4,6 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+import org.lq.internal.domain.combo.Combo;
+import org.lq.internal.domain.combo.Status;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.product.Product;
 import org.lq.internal.domain.product.ProductDTO;
@@ -83,6 +85,7 @@ public class ProductService {
                 .quantityPremium(productDTO.getQuantityPremium())
                 .quantitySalsa(productDTO.getQuantitySalsa())
                 .quantityClasic(productDTO.getQuantityClasic())
+                .status(Status.ACTIVO.toString())
                 .build();
 
         LOG.infof("@saveProduct SERV > Persisting product with name %s", productDTO.getName());
@@ -121,6 +124,7 @@ public class ProductService {
         existingProduct.setQuantityPremium(productDTO.getQuantityPremium());
         existingProduct.setQuantityClasic(productDTO.getQuantityClasic());
         existingProduct.setQuantitySalsa(productDTO.getQuantitySalsa());
+        existingProduct.setStatus(productDTO.getStatus());
 
         LOG.infof("@updateProduct SERV > Persisting updated product with number %d", productDTO.getIdProduct());
         productRepository.persist(existingProduct);
@@ -158,5 +162,28 @@ public class ProductService {
         }
 
         LOG.infof("@updateProduct SERV > Product with number %d updated successfully", productDTO.getIdProduct());
+    }
+
+    public void deactivateProduct(long numberProduct) throws PVException {
+        LOG.infof("@deactivateProduct SERV > Start service to deactivate product with ID %d", numberProduct);
+
+        LOG.infof("@deactivateProduct SERV > Retrieving existing product with ID %d", numberProduct);
+        Product product = productRepository.findById(numberProduct);
+        if (product == null) {
+            LOG.warnf("@deactivateProduct SERV > No product found with ID %d", numberProduct);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El producto no fue encontrado.");
+        }
+
+        if (product.getStatus().equals(Status.ACTIVO.toString())){
+            product.setStatus(String.valueOf(Status.INACTIVO));
+        } else {
+            product.setStatus(String.valueOf(Status.ACTIVO));
+            LOG.infof("@deactivateProduct SERV > Deactivating product with ID %d", numberProduct);
+        }
+
+        LOG.infof("@deactivateProduct SERV > Persisting product with ID %d", numberProduct);
+        productRepository.persist(product);
+
+        LOG.infof("@deactivateProduct SERV > Product with ID %d change status successfully", numberProduct);
     }
 }
