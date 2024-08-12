@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'combos',
     loadChildren: () => import('./combos/combos.module').then((m) => m.CombosModule)
+  },
+  {
+    path: 'sale',
+    loadChildren: () => import('./sale/sale.module').then((m) => m.SaleModule)
   }
 ];
 
