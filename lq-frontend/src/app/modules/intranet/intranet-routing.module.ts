@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: 'historic-sale',
     loadChildren: () => import('./historicSale/historic-sale.module').then((m) => m.HistoricSaleModule)
+  },
+  {
+    path: 'combos',
+    loadChildren: () => import('./combos/combos.module').then((m) => m.CombosModule)
   }
 ];
 

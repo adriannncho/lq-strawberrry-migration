@@ -81,7 +81,7 @@ export class TableToppingsComponent implements OnInit{
     this.loadingUpdate = true;
     this.ingredientsService.updateTypeIngredient(typeIngredients).subscribe(res => {
       this.loadingUpdate = false;
-      this.notificationService.success('Se ha actualizado el tipo de ingrdiente correctamente', 'Exito')
+      this.notificationService.success('Se ha actualizado el tipo de ingrediente correctamente', 'Exito')
       setTimeout(() => {
         window.location.reload()
       },1000)

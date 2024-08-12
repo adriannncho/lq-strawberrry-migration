@@ -48,6 +48,18 @@
         nzSelected
         routerLinkActive="active"
         [nzMatchRouter]="true"
+        [routerLink]="['/', 'intranet', 'combos']"
+        (click)="hideMenu()"
+        >
+          <span nz-icon nzType="group" nzTheme="outline"></span>
+          <span>Combos</span>
+        </li>
+        <li
+        *ngIf="role === roles._ADMIN_"
+        nz-menu-item
+        nzSelected
+        routerLinkActive="active"
+        [nzMatchRouter]="true"
         [routerLink]="['/', 'intranet', 'users']"
         (click)="hideMenu()"
         >
