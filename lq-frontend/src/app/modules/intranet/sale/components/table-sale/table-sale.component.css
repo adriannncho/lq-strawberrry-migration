@@ -1,16 +1,30 @@
-.titleTable {
+.containerOne {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-content: center;
   align-items: center;
-  text-align: center;
 }
 
-.containerBtnAdd {
-  display: flex; 
-  justify-content: end; 
-  margin-bottom: 10px;
+.cardOrder {
+  width: 100%;
+  border-radius: 8px;
 }
 
-.btnAdd {
+.label {
+  font-size: 18px;
+}
+
+.btnAction {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btns{
   width: 100px;
+  margin: 10px;
+}
+
+.containerInfo {
+  display: flex;
+  flex-direction: column;
 }
