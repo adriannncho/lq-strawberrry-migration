@@ -145,4 +145,5 @@ export interface CreatedProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }
