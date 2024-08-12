@@ -134,6 +134,7 @@ export interface UpdateProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }
 export interface CreatedProductBody {
   size: number;
