@@ -165,7 +165,8 @@ export class ModalEditProductComponent {
       quantityClasic: this.editForm.controls['cantClasic'].value || 0,
       quantityPremium: this.editForm.controls['cantPremium'].value || 0,
       quantitySalsa: this.editForm.controls['cantSauces'].value || 0,
-      detailProduct: body
+      detailProduct: body,
+      status: this.productEdit.status
     };
     this.updateProductEmit(this.productOfUpdate);
   }

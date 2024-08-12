@@ -226,3 +226,5 @@ ayda-gui/package-lock.json
 
 ve-tools/DockerCompose/.env
 *.json
+/lq-frontend/src/environments
+/lq-frontend/src/environments

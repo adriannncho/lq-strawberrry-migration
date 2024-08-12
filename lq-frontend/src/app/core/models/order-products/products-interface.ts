@@ -134,6 +134,7 @@ export interface UpdateProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }
 export interface CreatedProductBody {
   size: number;
@@ -144,4 +145,5 @@ export interface CreatedProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }
