@@ -27,19 +27,12 @@ public class ProductDTO {
     @Positive(message = "El campo value (precio) no puede ser igual o menor a cero.")
     private Long value;
 
-    @NotNull(message = "El campo cantidad de toppings clasicos (quantityClasic) no puede ser nulo o estar vacío.")
-    @Positive(message = "El campo cantidad de toppings clasicos (quantityClasic) no puede ser igual o menor a cero.")
     private int quantityClasic;
 
-    @NotNull(message = "El campo cantidad de toppings premiums (quantityPremium) no puede ser nulo o estar vacío.")
-    @Positive(message = "El campo cantidad de toppings premiums (quantityPremium) no puede ser igual o menor a cero.")
     private int quantityPremium;
 
-    @NotNull(message = "El campo cantidad de salsas (quantitySalsa) no puede ser nulo o estar vacío.")
-    @Positive(message = "El campo cantidad de salsas (quantitySalsa) no puede ser igual o menor a cero.")
     private int quantitySalsa;
 
-    @NotNull(message = "El campo status (estado) no puede ser nulo o estar vacío.")
     private String status;
 
     @NotEmpty(message = "Los campos del detalle del producto no pueden estar vacios.")
