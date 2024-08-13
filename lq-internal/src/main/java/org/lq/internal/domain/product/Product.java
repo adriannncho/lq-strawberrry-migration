@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.lq.internal.domain.detailProduct.DetailProduct;
+import org.lq.internal.domain.size.Size;
 
 import java.io.Serializable;
 import java.util.List;
@@ -49,4 +50,7 @@ public class Product implements Serializable {
 
     @Transient
     private List<DetailProduct> detailProduct;
+
+    @Transient
+    private Size sizeDetail;
 }

@@ -9,9 +9,11 @@ import org.lq.internal.domain.combo.Status;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.product.Product;
 import org.lq.internal.domain.product.ProductDTO;
+import org.lq.internal.domain.size.Size;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.DetailProductRepository;
 import org.lq.internal.repository.ProductRepository;
+import org.lq.internal.repository.SizeRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,9 @@ public class ProductService {
     @Inject
     DetailProductRepository detailProductRepository;
 
+    @Inject
+    SizeRepository sizeRepository;
+
     public List<Product> getProducts() throws PVException {
         LOG.infof("@getProducts SERV > Start service to obtain the products");
 
@@ -43,8 +48,11 @@ public class ProductService {
             LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
             List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
+            Size size = sizeRepository.findById((long) product.getSize());
+
             LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
             product.setDetailProduct(detailProducts);
+            product.setSizeDetail(size);
         }
 
         LOG.infof("@getProducts SERV > Finish service to obtain the products");

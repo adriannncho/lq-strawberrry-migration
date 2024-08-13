@@ -151,6 +151,7 @@ public class IngredientService {
         TypeIngredient ingredientType = TypeIngredient.builder()
                 .name(ingredientTypeDTO.getName())
                 .active(true)
+                .value(ingredientTypeDTO.getValue())
                 .build();
 
         LOG.info("@saveIngredientType SERV > Persisting ingredient type");
@@ -170,6 +171,7 @@ public class IngredientService {
 
         existingIngredientType.setName(ingredientTypeDTO.getName());
         existingIngredientType.setActive(ingredientTypeDTO.getActive());
+        existingIngredientType.setValue(ingredientTypeDTO.getValue());
 
         LOG.infof("@updateIngredientType SERV > Updating ingredient type with ID %d", ingredientTypeDTO.getIngredientTypeId());
         ingredientTypeRepository.persist(existingIngredientType);

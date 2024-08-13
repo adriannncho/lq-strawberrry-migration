@@ -24,4 +24,7 @@ public class TypeIngredient {
 
     @Column(name = "ACTIVO")
     private boolean active;
+
+    @Column(name = "VALOR")
+    private long value;
 }
