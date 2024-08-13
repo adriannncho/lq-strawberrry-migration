@@ -98,9 +98,7 @@ export class TableProductsComponent implements OnInit{
     this.productsService.updateProduct(product).subscribe(res => {
       this.notificationService.success('Productos # ' + product.idProduct + ' actualizado correctamente', 'Exito')
       this.loadingUpdate = false;
-      setTimeout(()=> {
-        window.location.reload()
-      },500)
+      window.location.reload();
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al actualizar el producto, intente mas tarde', 'Error')
@@ -120,9 +118,7 @@ export class TableProductsComponent implements OnInit{
     this.productsService.createProduct(product).subscribe(res => {
       this.notificationService.success('Productos creado correctamente', 'Exito')
       this.loadingUpdate = false;
-      setTimeout(()=> {
-        window.location.reload()
-      },500)
+      window.location.reload();
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al crear el producto, intente mas tarde', 'Error')

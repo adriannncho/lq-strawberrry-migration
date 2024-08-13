@@ -28,11 +28,11 @@ export class ProductsComponent {
   getProducts() {
     this.loadingProducts = true;
     this.productsService.getAllProducts().subscribe(res => {
+      this.loadingProducts = false;
       if(res) {
         this.products = res;
         this.mapProducts();
       }else {
-        this.loadingProducts = false;
         this.notificationService.error('No se encontraron productos', 'Error')
       }
     }, error => {
@@ -82,9 +82,7 @@ export class ProductsComponent {
     this.productsService.changeStatus(idProduct).subscribe(res => {
       this.loadingProducts = false;
       this.notificationService.success('Se ha cambiado el estado del producto #'+ idProduct +' de manera exitosa', 'Exito' );
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000)
+      window.location.reload();
     })
   }
 }

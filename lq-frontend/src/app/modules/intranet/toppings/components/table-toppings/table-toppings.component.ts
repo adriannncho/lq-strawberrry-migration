@@ -59,9 +59,7 @@ export class TableToppingsComponent implements OnInit{
     this.ingredientsService.updateIngredient(ingredient).subscribe(res => {
       this.loadingUpdate = false;
       this.notificationService.success('Se ha actualizado el ingrediente correctamente', 'Exito')
-      setTimeout(() => {
-        window.location.reload()
-      },1000)
+      window.location.reload()
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al actualizar el producto', 'Error');
@@ -82,9 +80,7 @@ export class TableToppingsComponent implements OnInit{
     this.ingredientsService.updateTypeIngredient(typeIngredients).subscribe(res => {
       this.loadingUpdate = false;
       this.notificationService.success('Se ha actualizado el tipo de ingrediente correctamente', 'Exito')
-      setTimeout(() => {
-        window.location.reload()
-      },1000)
+      window.location.reload();
     }, error => {
       this.loadingUpdate = false;
       this.notificationService.error('Ocurrio un error al actualizar el tipo de ingrediente', 'Error');
@@ -105,9 +101,7 @@ export class TableToppingsComponent implements OnInit{
       this.loadingUpdate = false;
       this.notificationService.success('Se ha creado el ingrediente correctamente');
       this.hideModalAddIngredient();
-      setTimeout(() => {
-        window.location.reload()
-      },1500)
+      window.location.reload();
     }, error => {
       this.notificationService.error('Ocurrio un error al crear el ingrediente intente mas tarde')
     })
@@ -128,11 +122,9 @@ export class TableToppingsComponent implements OnInit{
       this.loadingUpdate = false;
       this.notificationService.success('Se ha creado el tipo de ingrediente correctamente');
       this.hideModalAddIngredient();
-      setTimeout(() => {
-        window.location.reload()
-      },1500)
+      window.location.reload();
     }, error => {
-      this.notificationService.error('Ocurrio un error al crear el tipo de ingrediente intente mas tarde')
+      this.notificationService.error('Ocurrio un error al crear el tipo de ingrediente intente mas tarde');
     })
   }
 }
