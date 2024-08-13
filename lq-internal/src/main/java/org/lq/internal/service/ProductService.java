@@ -85,7 +85,7 @@ public class ProductService {
                 .quantityPremium(productDTO.getQuantityPremium())
                 .quantitySalsa(productDTO.getQuantitySalsa())
                 .quantityClasic(productDTO.getQuantityClasic())
-                .status(Status.ACTIVO.toString())
+                .status(String.valueOf(Status.ACTIVO))
                 .build();
 
         LOG.infof("@saveProduct SERV > Persisting product with name %s", productDTO.getName());
