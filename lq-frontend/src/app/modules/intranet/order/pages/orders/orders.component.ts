@@ -34,10 +34,13 @@ export class OrdersComponent implements OnInit {
   getOrderPending() {
     this.loadingOrders = true;
     this.orderService.getAllOrdersPendings().subscribe(res => {
-      this.loadingOrders = false;
       if(res) {
         this.ordersPending = res;
       }
+      this.loadingOrders = false;
+    }, error => {
+      this.notificationService.error('Ocurrio un error al obtener las ordenes pendientes');
+      this.loadingOrders = false;
     })
   }
   
