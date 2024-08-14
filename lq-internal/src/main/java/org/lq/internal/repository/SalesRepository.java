@@ -31,11 +31,11 @@ public class SalesRepository {
 
     private static final String QUERY_GET_SALES_WEEKLY = """
                                                             SELECT
-                                                               ? AS inicio_semana,
-                                                               CURDATE() AS fin_semana,
-                                                               SUM(total) AS total_semanal
+                                                                ? AS inicio_semana,
+                                                                DATE_ADD(?, INTERVAL 6 DAY) AS fin_semana,
+                                                                SUM(total) AS total_semanal
                                                             FROM PEDIDO
-                                                            WHERE fecha_hora BETWEEN ? AND CURDATE()
+                                                            WHERE fecha_hora BETWEEN ? AND DATE_ADD(?, INTERVAL 6 DAY)
                                                             AND estado = 'COMPLETADO'
                                                         """;
 
@@ -105,6 +105,8 @@ public class SalesRepository {
 
             ps.setString(1, startDate);
             ps.setString(2, startDate);
+            ps.setString(3, startDate);
+            ps.setString(4, startDate);
 
             ResultSet resultSet = ps.executeQuery();
 
@@ -124,8 +126,7 @@ public class SalesRepository {
         LOG.infof("@getListSalesWeekly REPO > Termina consulta para obtener ventas semanales desde la fecha %s", startDate);
         return sales;
     }
-
-
+    
     public SalesMonth getListSalesMonthly(String date) throws SQLException {
         LOG.infof("@getListSalesMonthly REPO > Start query to obtain monthly sales for date %s", date);
         SalesMonth sales = null;
