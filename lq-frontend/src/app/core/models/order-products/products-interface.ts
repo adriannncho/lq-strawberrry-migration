@@ -63,7 +63,8 @@ export interface Order {
   idUser: number;
   total: number;
   detailOrders: DetailOrder[];
-  discont: number
+  discont: number;
+  creationDate: string
 
   subTotal?: number;    // Solo front 
   totalOrder?: number;  // Solo front

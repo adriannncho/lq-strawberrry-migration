@@ -3,6 +3,7 @@ import { Order } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { Combo } from 'src/app/core/models/combos/combos.interface';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-modal-resume-order',
@@ -33,11 +34,13 @@ export class ModalResumeOrderComponent {
   }
 
   createOrder(order: Order) {
+    const formattedDateTime = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
     let body: Order = {
       idUser: order.idUser,
       detailOrders: order.detailOrders,
       total: order.total,
-      discont: order.discont ?  order.discont : 0
+      discont: order.discont ?  order.discont : 0,
+      creationDate: formattedDateTime
     }
     this.loadingCreate = true;
     this.productsService.createOrder(body).subscribe(res => {

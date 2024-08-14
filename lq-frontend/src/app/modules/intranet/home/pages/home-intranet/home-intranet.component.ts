@@ -123,7 +123,8 @@ export class HomeIntranetComponent {
       detailOrders: detail,
       total: total + valueAdd,
       subTotal: total + valueAdd ,
-      discont: 0
+      discont: 0,
+      creationDate: ''
     }
     this.okOrder = true;
   }
@@ -174,7 +175,8 @@ export class HomeIntranetComponent {
       detailOrders: detaile,
       total: total,
       discont: discont,
-      subTotal: subTotal
+      subTotal: subTotal,
+      creationDate: ''
     }
   }
 
