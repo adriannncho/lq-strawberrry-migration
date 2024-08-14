@@ -1,0 +1,10 @@
+<div nz-row style="margin: 10px;">
+  <div nz-col nzSpan="24" >
+    <nz-card nzTitle="Ventas totales" [nzLoading]="loadingSales">
+      <nz-statistic
+      [nzValue]="( sale.totalDailyWeek| currency)!"
+      [nzValueStyle]="{ color: '#3F8600' }"
+      ></nz-statistic>
+    </nz-card>
+  </div>
+</div>

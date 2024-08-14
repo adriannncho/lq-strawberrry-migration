@@ -18,19 +18,19 @@ export class SaleService {
   }
 
   getSaleDaily(date: string): Observable<SalesDaily> {
-    return this.http.get<SalesDaily>(`${this.apiUrl}/sales/daily`, {
+    return this.http.get<SalesDaily>(`${this.apiUrl}/totalSalesDaily`, {
       params: { date }
     });
   }
 
   getSaleWeek(date: string): Observable<SalesWeek> {
-    return this.http.get<SalesWeek>(`${this.apiUrl}/sales/weekly`, {
+    return this.http.get<SalesWeek>(`${this.apiUrl}/totalSalesWeek`, {
       params: { date }
     });
   }
 
   getSaleMonth(date: string): Observable<SalesMonth> {
-    return this.http.get<SalesMonth>(`${this.apiUrl}/sales/monthly`, {
+    return this.http.get<SalesMonth>(`${this.apiUrl}/totalSalesMonth`, {
       params: { date }
     });
   }

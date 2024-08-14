@@ -24,3 +24,11 @@ export enum StatusProducts {
     ACTIVO = "ACTIVO",
     INACTIVO = "INACTIVO"
 }
+
+export enum TypeFilterDateSales {
+    _01_VENTA_DIARIA_ = 'DAILY_SALE',
+    _02_VENTA_SEMANAL_ = 'WEEKLY_SALE',
+    _03_VENTA_MENSUAL_ = 'MONTHLY_SALE',
+    _04_RANGOS_ = 'RANKS',
+    _05_TOTAL_ = 'TOTAL_SALES'
+}
