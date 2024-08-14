@@ -40,6 +40,9 @@ public class DetailOrder implements Serializable {
     @Column(name = "PRECIO")
     private Long value;
 
+    @Column(name = "OBSERVACION")
+    private String observation;
+
     @Transient
     private List<DetailAdditional> detailAdditionals;
 }

@@ -110,6 +110,7 @@ public class OrderService {
                     .nameCustomer(detailOrderDTO.getNameCustomer())
                     .quantity(detailOrderDTO.getQuantity())
                     .product(existingProduct)
+                    .observation(detailOrderDTO.getObservation())
                     .build();
 
             LOG.infof("@createOrder SERV > Persisting detail order: %s", detailOrder);

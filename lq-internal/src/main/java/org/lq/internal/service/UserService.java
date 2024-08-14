@@ -58,6 +58,11 @@ public class UserService {
             throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "No se encontró usuario con el número de documento ingresado.");
         }
 
+        if (user.getUserStatusId() != 1){
+            LOG.warnf("@validateLogin SERV > No user found");
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "El usuario con el que intentas acceder esta desactivado.");
+        }
+
         if (!checkPassword(loginDTO.getPassword(), user.getPassword())) {
             LOG.warnf("@validateLogin SERV > Incorrect password");
             throw new PVException(Response.Status.UNAUTHORIZED.getStatusCode(), "Contraseña incorrecta.");
