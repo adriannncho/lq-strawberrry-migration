@@ -3,7 +3,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
-      '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-internal',
+      '-t', 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal',
       '-f', 'lq-internal/src/main/docker/Dockerfile.jvm',
       '.'
     ]
@@ -12,7 +12,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'push',
-      'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-internal'
+      'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal'
     ]
 
   # Esperar unos segundos para asegurar que la imagen esté disponible
@@ -26,15 +26,15 @@ steps:
       'gcloud',
       'run',
       'deploy',
-      'lq-internal',
-      '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-internal:latest',
+      'lq-fresa-internal',
+      '--image', 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal:latest',
       '--platform', 'managed',
-      '--region', 'us-central1',
+      '--region', 'us-west1',
       '--allow-unauthenticated'
     ]
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-internal'
+  - 'us-west1-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/lq-fresa-internal'
 
 options:
   logging: CLOUD_LOGGING_ONLY
