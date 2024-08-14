@@ -26,12 +26,6 @@ export class TabCombosComponent {
   }
 
   mapProduct(product: DetailProduct, combo: Combo) {
-    let sizeMap: string = '';
-    if(product.size === 1) {
-      sizeMap = this.sizes._ID_ONE_;
-    }else if (product.size === 2) {
-      sizeMap = this.sizes._ID_TWO_;
-    }
     this.productsMap = {
       idProduct: product.idProduct,
       name: product.name,
@@ -42,7 +36,7 @@ export class TabCombosComponent {
       quantityToppingsClasic: product.quantityClasic,
       quantityToppingsPremium: product.quantityPremium,
       size: product.size,
-      sizeMap: sizeMap,
+      sizeMap: product.sizeMap,
       isCombo: true,
       idCombo: combo.idCombo
     }

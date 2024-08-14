@@ -1,6 +1,7 @@
 export interface DetailProduct {
   idProduct: number;
   size: number;
+  sizeMap: number;
   name: string;
   description: string;
   value: number;

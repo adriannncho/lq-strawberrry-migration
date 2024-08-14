@@ -17,8 +17,18 @@ export interface Product {
   quantitySalsa: number;
   status: string;
   detailProduct: DetailProduct[];
+  sizeDetail: DetailSize;
 }
 
+export interface DetailSize {
+  idTamanio: number;
+  size: number;
+  typeSize: {
+    idTypeTamanio: number;
+    name: string,
+    abbreviation: string;
+  }
+}
 export interface IngredientType {
   ingredientTypeId: number;
   name: string;
@@ -37,7 +47,7 @@ export interface ProductMap {
   idProduct: number,
   name: string,
   description: string,
-  sizeMap: string,
+  sizeMap: number,
   quantityToppingsPremium: number,
   quantityToppingsClasic: number,
   quantitySauces: number,
@@ -134,6 +144,7 @@ export interface UpdateProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }
 export interface CreatedProductBody {
   size: number;
@@ -144,4 +155,5 @@ export interface CreatedProductBody {
   quantitySalsa: number;
   value: number;
   detailProduct: DetailProductMapSend[];
+  status: string
 }

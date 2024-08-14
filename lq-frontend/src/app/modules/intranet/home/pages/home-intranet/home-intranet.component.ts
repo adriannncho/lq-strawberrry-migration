@@ -55,10 +55,12 @@ export class HomeIntranetComponent {
   getProducts() {
     this.loadingProducts = true;
     this.productsService.getAllProducts().subscribe(res => {
+      this.loadingProducts = false;
       if(res) {
         this.products = res.filter(f => f.status === this.statusProducts.ACTIVO);
         this.productsMap = this.createObjProducts(this.products);
-        this.loadingProducts = false;
+      }else {
+        this.notificationService.error('No se encontraron productos disponibles')
       }
     }, (error) => {
       this.loadingProducts = false;
@@ -69,23 +71,16 @@ export class HomeIntranetComponent {
   createObjProducts(products: Product[]): ProductMap[] {
     let productsForMap: ProductMap[];
     productsForMap = products.map(item => {
-      let size;
-      if(item.size === 1) {
-        size = this.sizes._ID_ONE_;
-      }else if (item.size === 2) {
-        size = this.sizes._ID_TWO_;
-      }
-
       return {
         idProduct: item.idProduct,
         name: item.name,
         description: item.description,
         price: item.value,
-        sizeMap: size ? size : this.sizes._ID_ONE_,
+        sizeMap: item.sizeDetail.size ? item.sizeDetail.size : 0 ,
         quantitySauces: item.quantitySalsa,
         quantityToppingsClasic: item.quantityClasic,
         quantityToppingsPremium: item.quantityPremium,
-        size: item.size,
+        size: item.size ? item.size : 0,
         detailProduct: item.detailProduct
       }
     });
