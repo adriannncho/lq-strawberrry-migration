@@ -27,7 +27,7 @@ public class Order {
     private Long idUser;
 
     @Column(name = "FECHA_HORA")
-    private LocalDateTime creationDate;
+    private String creationDate;
 
     @Column(name = "TOTAL")
     private Long total;
