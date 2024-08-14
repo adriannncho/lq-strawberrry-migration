@@ -31,13 +31,12 @@ public class SalesRepository {
 
     private static final String QUERY_GET_SALES_WEEKLY = """
                                                             SELECT
-                                                                DATE_FORMAT(fecha_hora - INTERVAL WEEKDAY(fecha_hora) DAY, '%Y-%m-%d') AS inicio_semana,
-                                                                DATE_FORMAT(fecha_hora + INTERVAL (6 - WEEKDAY(fecha_hora)) DAY, '%Y-%m-%d') AS fin_semana,
-                                                                SUM(total) AS total_semanal
+                                                               ? AS inicio_semana,
+                                                               CURDATE() AS fin_semana,
+                                                               SUM(total) AS total_semanal
                                                             FROM PEDIDO
-                                                            WHERE YEARWEEK(fecha_hora) = YEARWEEK(?) AND estado = 'COMPLETADO'
-                                                            GROUP BY inicio_semana, fin_semana
-                                                            ORDER BY inicio_semana
+                                                            WHERE fecha_hora BETWEEN ? AND CURDATE()
+                                                            AND estado = 'COMPLETADO'
                                                         """;
 
     private static final String QUERY_GET_SALES_MONTHLY = """
@@ -96,35 +95,36 @@ public class SalesRepository {
         return sales;
     }
 
-    public SalesWeek getListSalesWeekly(String date) throws SQLException {
-        LOG.infof("@getListSalesWeekly REPO > Start query to obtain weekly sales for date %s", date);
-
-        LOG.info("@getListSalesWeekly REPO > Start query execution");
+    public SalesWeek getListSalesWeekly(String startDate) throws SQLException {
+        LOG.infof("@getListSalesWeekly REPO > Inicia consulta para obtener ventas semanales desde la fecha %s", startDate);
 
         SalesWeek sales = null;
 
         try (Connection connection = hacvDataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(QUERY_GET_SALES_WEEKLY)) {
 
-            ps.setString(1, date);
+            ps.setString(1, startDate);
+            ps.setString(2, startDate);
+
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 sales = SalesWeek.builder()
                         .weekInitial(resultSet.getString("inicio_semana"))
                         .weekFinish(resultSet.getString("fin_semana"))
                         .totalDailyWeek(resultSet.getBigDecimal("total_semanal"))
                         .build();
             }
-            LOG.info("@getListSalesWeekly REPO > Finish building the list with the data obtained");
+            LOG.info("@getListSalesWeekly REPO > Finaliza construcción de la lista con los datos obtenidos");
         } catch (SQLException e) {
-            LOG.error("@getListSalesWeekly REPO > Error executing query", e);
+            LOG.error("@getListSalesWeekly REPO > Error ejecutando la consulta", e);
             throw e;
         }
 
-        LOG.infof("@getListSalesWeekly REPO > Ends query to obtain weekly sales for date %s", date);
+        LOG.infof("@getListSalesWeekly REPO > Termina consulta para obtener ventas semanales desde la fecha %s", startDate);
         return sales;
     }
+
 
     public SalesMonth getListSalesMonthly(String date) throws SQLException {
         LOG.infof("@getListSalesMonthly REPO > Start query to obtain monthly sales for date %s", date);
