@@ -298,3 +298,10 @@ a:hover {
   color: var(--color-primary-blue-ash);
   font-size: 16px;
 }
+
+.ant-card-head {
+  color: var(--color-primary-blue);
+  background: var(--color-neutral-gray-warm);
+  font-size: 25px;
+  text-align: center;
+}

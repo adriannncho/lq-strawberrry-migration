@@ -38,14 +38,13 @@ export class SaleComponent {
   }
 
   getDaySales() {
-    this.indexCardName = this.typesCardsSales._01_VENTA_DIARIA_;
     const today = new Date();
     const formattedDate = format(today, 'yyyy-MM-dd');
     this.loadingSale = true;
     this.saleService.getSaleDaily(formattedDate).subscribe(res => {
-      console.log(res)
       if(res) {
-        this.salesDay = this.salesDay;
+        this.salesDay = res;
+        this.indexCardName = this.typesCardsSales._01_VENTA_DIARIA_;
       }
       this.loadingSale = false;
     }, error => {
@@ -55,7 +54,6 @@ export class SaleComponent {
   }
 
   getWeekSales() {
-    this.indexCardName = this.typesCardsSales._02_VENTA_SEMANAL_;
     const today = new Date();
     const oneWeekAgo = new Date(today);
     oneWeekAgo.setDate(today.getDate() - 7);
@@ -64,9 +62,9 @@ export class SaleComponent {
 
     this.loadingSale = true;
     this.saleService.getSaleWeek(formattedOneWeekAgo).subscribe(res => {
-      console.log(res);
       if (res) {
         this.salesWeek = res; // Asigna la respuesta a la propiedad correspondiente
+        this.indexCardName = this.typesCardsSales._02_VENTA_SEMANAL_;
       }
       this.loadingSale = false;
     }, error => {
@@ -76,7 +74,6 @@ export class SaleComponent {
   }
 
   getMonthSales() {
-    this.indexCardName = this.typesCardsSales._03_VENTA_MENSUAL_;
     const today = new Date();
     const oneMonthAgo = new Date(today);
     oneMonthAgo.setMonth(today.getMonth() - 1);
@@ -85,9 +82,9 @@ export class SaleComponent {
 
     this.loadingSale = true;
     this.saleService.getSaleMonth(formattedOneMonthAgo).subscribe(res => {
-      console.log(res);
       if (res) {
         this.salesMoth = res; // Asigna la respuesta a la propiedad correspondiente
+        this.indexCardName = this.typesCardsSales._03_VENTA_MENSUAL_;
       }
       this.loadingSale = false;
     }, error => {
