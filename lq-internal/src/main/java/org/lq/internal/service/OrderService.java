@@ -89,7 +89,7 @@ public class OrderService {
         LOG.infof("@createOrder SERV > Start service to create the order with data: %s", orderDTO);
 
         Order order = Order.builder()
-                .creationDate(LocalDateTime.now())
+                .creationDate(LocalDateTime.parse(orderDTO.getCreationDate()))
                 .total(orderDTO.getTotal())
                 .idUser(orderDTO.getIdUser())
                 .status(OrderStatus.PENDIENTE)
