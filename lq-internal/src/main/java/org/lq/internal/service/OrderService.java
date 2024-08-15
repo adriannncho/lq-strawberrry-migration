@@ -2,6 +2,7 @@ package org.lq.internal.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailOrder.DetailOrder;
@@ -245,6 +246,15 @@ public class OrderService {
         }
 
         Order order = orderOptional.get();
+
+        if (order.getStatus().equals(OrderStatus.PENDIENTE)){
+            order.setStatus(OrderStatus.PROCESO);
+            orderRepository.persist(order);
+        } else if (order.getStatus().equals(OrderStatus.PROCESO)){
+            LOG.warnf("@updateOrderStatus SERV > The order is already in process. %s", orderId);
+            throw new PVException(Response.Status.BAD_REQUEST.getStatusCode(), "El pedido ya se encuentra en proceso.");
+        }
+
         List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
 
         for (DetailOrder detailOrder : detailOrders) {

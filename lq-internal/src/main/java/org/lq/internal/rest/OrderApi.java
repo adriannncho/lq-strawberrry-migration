@@ -349,7 +349,8 @@ public class OrderApi {
         return Response.status(Response.Status.OK).entity(orderService.ordersCompleted()).build();
     }
 
-    @GET
+    @POST
+    @Transactional
     @Path("/ordersPending/{numberOrder}")
     @APIResponses(
             value = {
