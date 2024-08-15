@@ -1,6 +1,11 @@
-<div nz-row>
+<div nz-row >
   <div nz-col nzSpan="24">
-    <div nz-row>
+    <div nz-row *ngIf="loadingOrder">
+      <div nz-col [nzXs]="24" [nzMd]="24" [nzLg]="24" [nzXl]="24" [nzXXl]="24">
+        <app-loading-box [loadingText]="'Cargando'"></app-loading-box> 
+      </div>
+    </div>
+    <div nz-row *ngIf="!loadingOrder">
       <div nz-col nzSpan="24" class="containerOne">
         <span> #{{ order.idOrder }} </span>
         <span>Fecha / Hora {{ order.creationDate | date:'dd/MM/yyyy HH:mm:ss'}} </span>
@@ -11,7 +16,7 @@
             <div nz-row>
               <div nz-col nzSpan="24" >
                 <span class="label" nz-col nzSpan="24">Producto:</span>
-                <span> {{detail.product.name}} </span>
+                <span> {{detail.product.name}} X( {{ detail.quantity }} ) </span>
               </div>
             </div>
           </div>
@@ -37,16 +42,18 @@
               {{topping.name}}{{ isLastElement(topping, detail.product.toppings.sauces) ? '' : ', ' }}
             </span>
           </div>
+          <div nz-col nzSpan="24" >
+            <span class="label" nz-col nzSpan="24">Adicionales:</span>
+            <span *ngFor="let topping of detail.product.toppings.adicionales; let i = index">
+              {{topping.name}}{{ isLastElement(topping, detail.product.toppings.sauces) ? '' : ', ' }}
+            </span>
+          </div>
         </nz-card>
         <nz-divider></nz-divider>
       </ng-container>
       <div nz-row style="width: 100%;">
-        <div nz-col nzSpan="24" style="display: flex; justify-content: end;">
-          <span class="label">Total:</span>
-          <span class="label"> ${{ order.total | number}} </span>
-        </div>
         <div nz-col nzSpan="24" class="btnAction">
-          <button
+         <!--  <button
           nz-button
           class="btns"
           nz-popconfirm
@@ -55,7 +62,7 @@
           (nzOnConfirm)="cancelEmit()"
           >
             <span nz-icon nzType="stop" nzTheme="twotone"></span>
-          </button>
+          </button> -->
           <button
           nz-button
           nzType="primary"
@@ -63,7 +70,7 @@
           nz-popconfirm
           nzPopconfirmTitle="¿Ya has terminado?"
           nzPopconfirmPlacement="top"
-          (nzOnConfirm)="updateOrder(order.idOrder)"
+          (nzOnConfirm)="updateOrderById(order.idOrder)"
           >
           <span nz-icon nzType="check-circle" nzTheme="twotone"></span>
           </button>

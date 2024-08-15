@@ -21,8 +21,12 @@ export class OrderService {
   return this.http.get<OrderResponse[]>(`${this.apiUrl}/ordersCompleted`);
  }
 
- getOrderPending(numberOrder : number): Observable<OrderResponse> {
-    return this.http.get<OrderResponse>(`${this.apiUrl}/ordersPending/${numberOrder}`);
+ getOrderPending(numberOrder : number | string): Observable<OrderResponse> {
+    return this.http.post<OrderResponse>(`${this.apiUrl}/ordersPending/${numberOrder}`, {});
+ }
+
+ getOrderProgres(numberOrder : number | string): Observable<OrderResponse> {
+    return this.http.get<OrderResponse>(`${this.apiUrl}/ordersProgress/${numberOrder}`, {});
  }
 
  updateOrderById(idOrder: number) {

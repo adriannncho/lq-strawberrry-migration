@@ -22,4 +22,8 @@ public class OrderRepository implements PanacheRepository<Order> {
     public Optional<Order> findOrdersPendingNumber(Long orderId) {
         return list("idOrder = ?1 and status = ?2", orderId, OrderStatus.PENDIENTE).stream().findFirst();
     }
+
+    public Optional<Order> findOrdersProcesoNumber(Long orderId) {
+        return list("idOrder = ?1 and status = ?2", orderId, OrderStatus.PROCESO).stream().findFirst();
+    }
 }

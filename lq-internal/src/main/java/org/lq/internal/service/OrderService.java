@@ -2,6 +2,7 @@ package org.lq.internal.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailOrder.DetailOrder;
@@ -245,6 +246,62 @@ public class OrderService {
         }
 
         Order order = orderOptional.get();
+
+        if (order.getStatus().equals(OrderStatus.PENDIENTE)){
+            order.setStatus(OrderStatus.PROCESO);
+            orderRepository.persist(order);
+        } else if (order.getStatus().equals(OrderStatus.PROCESO)){
+            LOG.warnf("@updateOrderStatus SERV > The order is already in process. %s", orderId);
+            throw new PVException(Response.Status.BAD_REQUEST.getStatusCode(), "El pedido ya se encuentra en proceso.");
+        }
+
+        List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
+
+        for (DetailOrder detailOrder : detailOrders) {
+            Product product = detailOrder.getProduct();
+            if (product != null) {
+                LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
+                List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
+
+                for (DetailProduct detailProduct : detailProducts) {
+                    IngredientData ingredient = ingredienDataRepository.findById((long) detailProduct.getIdIngredient());
+                    detailProduct.setIngredient(ingredient);
+                }
+
+                LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
+                product.setDetailProduct(detailProducts);
+            }
+
+            LOG.infof("@getOrdersPending SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+
+            List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+            for (DetailAdditional detailAdditional : detailAdditionals) {
+                IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                detailAdditional.setIngredient(ingredient);
+            }
+            detailOrder.setDetailAdditionals(detailAdditionals);
+
+            LOG.infof("@getOrdersPending SERV > Fetched %d detail additionals for detail order ID %d", detailAdditionals.size(), detailOrder.getIdDetailOrder());
+        }
+
+        order.setDetailOrders(detailOrders);
+        LOG.infof("@getOrdersPending SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+
+        LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
+        return order;
+    }
+
+    public Order ordersProgressNumber(long orderId) {
+
+        Optional<Order> orderOptional = orderRepository.findOrdersProcesoNumber(orderId);
+
+        if (orderOptional.isEmpty()) {
+            LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido en proceso no encontrado");
+        }
+
+        Order order = orderOptional.get();
+
         List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
 
         for (DetailOrder detailOrder : detailOrders) {

@@ -349,7 +349,8 @@ public class OrderApi {
         return Response.status(Response.Status.OK).entity(orderService.ordersCompleted()).build();
     }
 
-    @GET
+    @POST
+    @Transactional
     @Path("/ordersPending/{numberOrder}")
     @APIResponses(
             value = {
@@ -400,5 +401,58 @@ public class OrderApi {
             @PathParam("numberOrder") long numberOrder
     ) {
         return Response.status(Response.Status.OK).entity(orderService.ordersPendingNumber(numberOrder)).build();
+    }
+
+    @GET
+    @Path("/ordersProgress/{numberOrder}")
+    @APIResponses(
+            value = {
+                    @APIResponse(
+                            responseCode = "200",
+                            description = "Obtiene pedido procesado correctamente por número",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = Order.class, type = SchemaType.ARRAY)
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "404",
+                            description = "No se encontraron pedidos procesando",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(
+                                            implementation = ProblemException.class,
+                                            properties = {
+                                                    @SchemaProperty(
+                                                            name = "detail",
+                                                            example = "No hay pedidos que esten en proceso en este momento por ese número."
+                                                    )
+                                            }
+                                    )
+                            )
+                    ),
+                    @APIResponse(
+                            responseCode = "500",
+                            description = "Error interno de servidor",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(implementation = HandlerException.ResponseError.class)
+                            )
+                    )
+            }
+    )
+    @Operation(
+            summary = "Obtener pedidos en proceso por número",
+            description = "Obtiene la lista de pedidos por número que están en proceso."
+    )
+    public Response getProgressOrdersNumber(
+            @Parameter(
+                    description = "Número de pedido a buscar",
+                    required = true )
+            @NotNull(message = "El número de pedido no puede ser nulo")
+            @Min(value = 1, message = "El número de pedido debe ser mayor a cero")
+            @PathParam("numberOrder") long numberOrder
+    ) {
+        return Response.status(Response.Status.OK).entity(orderService.ordersProgressNumber(numberOrder)).build();
     }
 }
