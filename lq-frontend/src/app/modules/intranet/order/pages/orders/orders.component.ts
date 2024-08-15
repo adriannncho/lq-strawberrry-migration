@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderResponse, DetailProduct, DetailOrder, Ingredient, DetailAdditional } from 'src/app/core/models/orders/orders.interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { OrderService } from 'src/app/core/services/orders/orders.service';
@@ -23,7 +24,8 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private orderService : OrderService,
-    private notificationService : NotificationService
+    private notificationService : NotificationService,
+    private router: Router
   ) {}
 
 
@@ -44,69 +46,6 @@ export class OrdersComponent implements OnInit {
     })
   }
   
-  getOrderById(id: number) {
-    this.loadingOrders = true;
-    this.orderService.getOrderPending(id).subscribe(
-      (res: OrderResponse) => {
-        this.loadingOrders = false;
-        if (res) {
-          // Mapeo de la respuesta
-          this.order = this.mapOrderResponse(res);
-          this.renderPageDetail = true;
-        } else {
-          this.notificationService.error('No se encontró el pedido, por favor recargue la página');
-          this.renderPageDetail = false;
-        }
-      },
-      (error) => {
-        this.loadingOrders = false;
-        this.renderPageDetail = false;
-        this.notificationService.error('Ocurrió un error al obtener el pedido');
-      }
-    );
-  }
-
-  // Función para mapear la respuesta
-  mapOrderResponse(response: OrderResponse): OrderResponse {
-    return {
-      ...response,
-      detailOrders: response.detailOrders.map(detailOrder => {
-        const product = detailOrder.product;
-        const additionsGrouped = this.groupAdditionsByType(detailOrder.detailAdditionals);
-
-        return {
-          ...detailOrder, // Incluye todos los campos de DetailOrder
-          product: {
-            ...product,
-            toppings: {
-              classic: additionsGrouped['Toppings Clásicos'],
-              premium: additionsGrouped['Toppings Premium'],
-              sauces: additionsGrouped['Salsas']
-            }
-          }
-        };
-      })
-    };
-  }
-
-  // Función para agrupar los toppings y salsas por tipo
-  groupAdditionsByType(additions: DetailAdditional[]): Record<string, Ingredient[]> {
-    const grouped: Record<string, Ingredient[]> = {
-      'Toppings Clásicos': [],
-      'Toppings Premium': [],
-      'Salsas': []
-    };
-
-    for (const addition of additions) {
-      const typeName = addition.ingredient.ingredientType.name;
-      if (grouped[typeName]) {
-        grouped[typeName].push(addition.ingredient);
-      }
-    }
-
-    return grouped;
-  }
-
   updateOrderById(idOrder: number) {
     this.loadingOrders = true;
     this.orderService.updateOrderById(idOrder).subscribe(res => {
@@ -120,6 +59,16 @@ export class OrdersComponent implements OnInit {
 
   cancelUpdate() {
     this.renderPageDetail = false;
+  }
+
+  viewOrderDetail(id: number) {
+    this.orderService.getOrderPending(id).subscribe(res => {
+      if(res) {
+        this.router.navigate(['/intranet/orders/order', id]); // Redirige a la ruta con el ID del pedido
+      }else {
+        this.notificationService.info('Este producto ya fue tomado');
+      }
+    })
   }
 
 }

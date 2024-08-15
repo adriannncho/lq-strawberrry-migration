@@ -39,6 +39,7 @@ export interface Product {
       classic: Ingredient[];
       premium: Ingredient[];
       sauces: Ingredient[];
+      adicionales: Ingredient[];
   };
 }
 
