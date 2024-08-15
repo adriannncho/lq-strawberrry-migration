@@ -453,6 +453,6 @@ public class OrderApi {
             @Min(value = 1, message = "El número de pedido debe ser mayor a cero")
             @PathParam("numberOrder") long numberOrder
     ) {
-        return Response.status(Response.Status.OK).entity(orderService.ordersPendingNumber(numberOrder)).build();
+        return Response.status(Response.Status.OK).entity(orderService.ordersProgressNumber(numberOrder)).build();
     }
 }
