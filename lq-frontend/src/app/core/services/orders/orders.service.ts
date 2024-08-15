@@ -22,7 +22,7 @@ export class OrderService {
  }
 
  getOrderPending(numberOrder : number): Observable<OrderResponse> {
-    return this.http.get<OrderResponse>(`${this.apiUrl}/ordersPending/${numberOrder}`);
+    return this.http.post<OrderResponse>(`${this.apiUrl}/ordersPending/${numberOrder}`, {});
  }
 
  updateOrderById(idOrder: number) {
