@@ -290,4 +290,51 @@ public class OrderService {
         LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
         return order;
     }
+
+    public Order ordersProgressNumber(long orderId) {
+
+        Optional<Order> orderOptional = orderRepository.findOrdersProcesoNumber(orderId);
+
+        if (orderOptional.isEmpty()) {
+            LOG.warnf("@updateOrderStatus SERV > Order ID %d not found", orderId);
+            throw new PVException(Response.Status.NOT_FOUND.getStatusCode(), "Pedido en proceso no encontrado");
+        }
+
+        Order order = orderOptional.get();
+
+        List<DetailOrder> detailOrders = detailOrderRepository.findByIdOrderWithProduct(order.getIdOrder());
+
+        for (DetailOrder detailOrder : detailOrders) {
+            Product product = detailOrder.getProduct();
+            if (product != null) {
+                LOG.infof("@getProducts SERV > Fetching detail products for product ID %d", product.getIdProduct());
+                List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
+
+                for (DetailProduct detailProduct : detailProducts) {
+                    IngredientData ingredient = ingredienDataRepository.findById((long) detailProduct.getIdIngredient());
+                    detailProduct.setIngredient(ingredient);
+                }
+
+                LOG.infof("@getProducts SERV > Found %d detail products for product ID %d", detailProducts.size(), product.getIdProduct());
+                product.setDetailProduct(detailProducts);
+            }
+
+            LOG.infof("@getOrdersPending SERV > Fetched product details for detail order ID %d", detailOrder.getIdDetailOrder());
+
+            List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+            for (DetailAdditional detailAdditional : detailAdditionals) {
+                IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                detailAdditional.setIngredient(ingredient);
+            }
+            detailOrder.setDetailAdditionals(detailAdditionals);
+
+            LOG.infof("@getOrdersPending SERV > Fetched %d detail additionals for detail order ID %d", detailAdditionals.size(), detailOrder.getIdDetailOrder());
+        }
+
+        order.setDetailOrders(detailOrders);
+        LOG.infof("@getOrdersPending SERV > Found %d detail orders for order ID %d", detailOrders.size(), order.getIdOrder());
+
+        LOG.infof("@getOrdersPending SERV > Finish service to obtain the orders");
+        return order;
+    }
 }
