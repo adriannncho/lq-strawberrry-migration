@@ -9,7 +9,7 @@ import java.util.List;
 @ApplicationScoped
 public class IngredientDataRepository implements PanacheRepository<IngredientData> {
 
-    public List<IngredientData> findActiveIngredientsByTypes(List<String> types) {
-        return list("ingredientType.name IN ?1 AND ingredientType.active = true", types);
+    public List<IngredientData> findActiveIngredients() {
+        return list("active = true");
     }
 }
