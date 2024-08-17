@@ -33,6 +33,7 @@ export interface IngredientType {
   ingredientTypeId: number;
   name: string;
   active: boolean;
+  value: number
 }
 
 export interface Ingredient {
@@ -67,7 +68,9 @@ export interface Order {
   creationDate: string
 
   subTotal?: number;    // Solo front 
-  totalOrder?: number;  // Solo front
+  totalOrder?: number;
+  totalOfProducts?:number
+  valuOfAditional?: number;  // Solo front
 }
 
 export interface DetailOrder {
@@ -86,6 +89,7 @@ export interface ProductId {
 
 export interface DetailAdditional {
   idIngredient: number;
+  value: number;
   isAditional: boolean
 }
 

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/authentication/services/auth.service';
 import { Combo } from 'src/app/core/models/combos/combos.interface';
-import { DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { DetailAdditional, DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { SizeProducts, StatusProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
@@ -99,32 +99,25 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrder(detail: DetailOrder[]) {
-    let total: number = 0;
-    let valueAditional = 1000;
-    let valueAdd : number = 0;
-    let cont: number = 0;
+    let totalOfAditionals: number = 0;
+    this.setTotalOfProducts(detail); // Crea el total de todos los productos
     detail.forEach(item => {
-      total = total + item.value * item.quantity;
       if(item.detailAdditionals) {
-        item.detailAdditionals.forEach(element => {
-          if(element.isAditional) {
-            if(cont > 0) {
-              cont = cont + 1;
-            }else {
-              cont = 1;
-            }
-            valueAdd = valueAditional * cont;
+        item.detailAdditionals.forEach(ele => {
+          if(ele.isAditional) {
+            this.setTotalAditionals(detail)
           }
         })
       }
-    });
+    })
+
     this.resumeOrder = {
+      ...this.resumeOrder,
       idUser: this.idUser,
       detailOrders: detail,
-      total: total + valueAdd,
-      subTotal: total + valueAdd ,
-      discont: 0,
-      creationDate: ''
+      subTotal: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
+      totalOrder: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
+      total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0
     }
     this.okOrder = true;
   }
@@ -326,5 +319,36 @@ export class HomeIntranetComponent {
       }
     })
 
+  }
+
+  setTotalOfProducts(detail: DetailOrder[]) {
+    let totalOfProducts: number = 0;
+    detail.forEach(item => {
+      totalOfProducts += item.value;
+    });
+    this.resumeOrder = {
+      ...this.resumeOrder,
+      totalOfProducts: totalOfProducts
+    }
+  }
+
+  setTotalAditionals(detail: DetailOrder[]){
+    let totalOfToppings: number = 0;
+    detail.forEach(item => {
+      item.detailAdditionals.forEach(ele => {
+        if(ele.isAditional) {
+          if(totalOfToppings > 0) {
+            totalOfToppings += ele.value;
+          }else {
+            totalOfToppings = ele.value
+          }
+        }
+      })
+    })
+
+    this.resumeOrder = {
+      ...this.resumeOrder,
+      valuOfAditional: totalOfToppings
+    }
   }
 }

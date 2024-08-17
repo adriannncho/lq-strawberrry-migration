@@ -63,7 +63,7 @@ export class TabToppingsComponent implements OnInit {
     this.loadingToppings = true;
     this.productsService.getActiveIngredientsAndToppingsP().subscribe(res => {
       if(res) {
-        this.adicionales = res;
+        this.adicionales = res.filter(fil => fil.ingredientType.active === true);
         this.toppingsPremium = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_PREMIUM_);
         this.toppingsClasic = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_CLASIC_);
         this.sauces = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._SAUSES_);
@@ -186,6 +186,7 @@ export class TabToppingsComponent implements OnInit {
     if(this.toppingsPremiumAdd.length > 0) {
       this.toppingsPremiumAdd.forEach(item => {
         toppingsAdd.push({
+          value: item.ingredientType.value,
           idIngredient: item.ingredientId,
           isAditional : false
         });
@@ -194,6 +195,7 @@ export class TabToppingsComponent implements OnInit {
     if(this.toppingsClasicAdd.length > 0) {
       this.toppingsClasicAdd.forEach(item => {
         toppingsAdd.push({
+          value: item.ingredientType.value,
           idIngredient: item.ingredientId,
           isAditional : false
         });
@@ -202,6 +204,7 @@ export class TabToppingsComponent implements OnInit {
     if(this.saucesAdd.length > 0) {
       this.saucesAdd.forEach(item => {
         toppingsAdd.push({
+          value: item.ingredientType.value,
           idIngredient: item.ingredientId,
           isAditional : false
         });
@@ -210,6 +213,7 @@ export class TabToppingsComponent implements OnInit {
     if(this.adicionalesAdd.length > 0) {
       this.adicionalesAdd.forEach(item => {
         toppingsAdd.push({
+          value: item.ingredientType.value,
           idIngredient: item.ingredientId,
           isAditional : true
         });
