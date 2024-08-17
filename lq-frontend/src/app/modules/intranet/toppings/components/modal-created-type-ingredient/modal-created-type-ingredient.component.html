@@ -1,7 +1,6 @@
 <nz-modal
 [nzVisible]="isVisible"
 [nzTitle]="titleModal"
-nzCentered
 nzWidth="600px"
 [nzClosable]="false"
 >
@@ -23,6 +22,14 @@ nzWidth="600px"
               name="name" 
               nzType="text"
               />
+            </nz-form-control>
+          </nz-form-item>
+        </div>        
+        <div nz-col nzSpan="24">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="24" nzFor="name">Precio</nz-form-label>
+            <nz-form-control [nzSpan]="24">
+              <nz-input-number formControlName="value" [nzMin]="100" style="width: 100%;"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
         </div>        

@@ -2,6 +2,7 @@ import { DetailProduct } from "../order-products/products-interface";
 
 export interface IngredientType {
     ingredientTypeId: number;
+    value: number
     name: string;
     active: boolean;
 }
@@ -27,6 +28,7 @@ export interface IngredientMap {
 export interface IngredientTypeMap {
     name: string;
     active: boolean;
+    value: number;
 }
 
 export interface LinkedProduct {
