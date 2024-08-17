@@ -41,6 +41,7 @@ export class HomeIntranetComponent {
   okOrder: boolean = false;
   comboIniciado: boolean = false;
   comboEnd: boolean = false;
+  observation: string = '';
 
   constructor(
     private productsService : ProductsOrderService,
@@ -117,7 +118,8 @@ export class HomeIntranetComponent {
       detailOrders: detail,
       subTotal: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
       totalOrder: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
-      total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0
+      total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0,
+      observation: this.observation
     }
     this.okOrder = true;
   }

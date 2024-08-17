@@ -23,6 +23,7 @@ export class TabToppingsComponent implements OnInit {
   @Output() isComboEmitter = new EventEmitter<boolean>();
   @Output() isProductEmiter = new EventEmitter<boolean>();
   @Output() resumeOrderCombo = new EventEmitter<DetailOrder[]>();
+  @Output() observationEmit = new EventEmitter<string>();
 
   loadingToppings: boolean = false;
   productForm!: FormGroup;
@@ -37,6 +38,7 @@ export class TabToppingsComponent implements OnInit {
   saucesAdd: Ingredient[] = [];
   adicionalesAdd: Ingredient[] = [];
   productsAdd!: DetailOrder[];
+  observation: string = '';
 
   listOfOption: Ingredient[] = []; // Opciones filtradas para el select
 
@@ -176,6 +178,7 @@ export class TabToppingsComponent implements OnInit {
         }
       }
       this.nameCustomer.emit(nameCustomer);
+      this.observationEmit.emit(this.observation);
       this.resumeOrder.emit(this.productsAdd);
       this.cancelOrSaveProduct();
     }

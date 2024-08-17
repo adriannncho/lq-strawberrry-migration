@@ -65,7 +65,8 @@ export interface Order {
   total: number;
   detailOrders: DetailOrder[];
   discont: number;
-  creationDate: string
+  creationDate: string;
+  observation?: string
 
   subTotal?: number;    // Solo front 
   totalOrder?: number;

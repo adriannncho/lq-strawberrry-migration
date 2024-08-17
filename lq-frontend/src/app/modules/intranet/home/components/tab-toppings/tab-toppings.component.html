@@ -108,6 +108,10 @@
   >
     <nz-option *ngFor="let topping of adicionales" [nzLabel]="topping.name" [nzValue]="topping"></nz-option>
   </nz-select>
+  <span class="nameProduct">
+    Observación
+  </span>
+  <textarea nz-input [(ngModel)]="observation" [nzAutosize]="true" placeholder="Agrega una observación de ser necesario"></textarea>
 </nz-card>
 <div nz-row>
   <div class="containerBtnToppings" nz-col nzSpan="24">
