@@ -221,36 +221,19 @@ export class HomeIntranetComponent {
     let cont: number = 0;
     this.resumeOrder.detailOrders.forEach(item => {
       let valueAdd: number = 0;
-      let valueAditional: number = 1000;
+      let valueAditional: number = 0;
       let total: number = 0;
       let discont: number = 0;
       let subTotal: number = 0;
-      if(item.detailAdditionals) {
-        item.detailAdditionals.forEach(element => {
-          if(element.isAditional) {
-            if(cont > 0) {
-              cont = cont + 1;
-            }else {
-              cont = 1;
-            }
-            valueAdd = valueAditional * cont;
-          }
-        })
+      this.setTotalOfProducts(this.resumeOrder.detailOrders)
+      this.setTotalAditionals(this.resumeOrder.detailOrders)
+
+      this.resumeOrder = {
+        ...this.resumeOrder,
+        subTotal: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
+        totalOrder: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
+        total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0
       }
-      if(this.isCombo) {
-        subTotal = subTotal + item.value;
-        discont = subTotal - this.comboSelected.value;
-        total = subTotal - discont;
-      }else {
-        subTotal = subTotal + item.value;
-        total = total + item.value;
-        this.resumeOrder.total = total;
-      }
-      subTotal = subTotal + valueAdd ;
-      total = total + valueAdd;
-      this.resumeOrder.total = total;
-      this.resumeOrder.subTotal = subTotal;
-      this.resumeOrder.discont = discont;
     });
   }
 
