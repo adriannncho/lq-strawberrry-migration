@@ -52,34 +52,34 @@ nzWidth="100%"
       <nz-divider></nz-divider>
 
       <div nz-row nzGutter="16" class="containerResults">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="12">
             Adicionales:
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="12">
           $ {{ resumeOrder.valuOfAditional || 0 | number }}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="12">
             SubTotal:
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="12">
           $ {{ resumeOrder.subTotal || 0 | number }}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="12">
             Descuento:
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="12">
           $ {{  resumeOrder.discont || 0 | number}}
         </div>
       </div>
       <div nz-row nzGutter="16" class="containerResults">
-        <div nz-col nzSpan="8">
+        <div nz-col nzSpan="12">
             Total:
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="12">
           $ {{ (resumeOrder.totalOrder || 0) | number }}
         </div>
       </div>
