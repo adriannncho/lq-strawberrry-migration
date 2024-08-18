@@ -118,8 +118,7 @@ export class HomeIntranetComponent {
       detailOrders: detail,
       subTotal: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
       totalOrder: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts,
-      total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0,
-      observation: this.observation
+      total: this.resumeOrder.valuOfAditional && this.resumeOrder.totalOfProducts ? this.resumeOrder.valuOfAditional + this.resumeOrder.totalOfProducts : this.resumeOrder.totalOfProducts ? this.resumeOrder.totalOfProducts : 0
     }
     this.okOrder = true;
   }
