@@ -51,6 +51,7 @@ export interface DetailOrder {
   nameCustomer: string;
   quantity: number;
   value: number;
+  observation: string
   detailAdditionals: DetailAdditional[];
 }
 

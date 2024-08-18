@@ -231,7 +231,8 @@ export class TabToppingsComponent implements OnInit {
       detailAdditionals:toppingsAdd,
       nameProduct: product.name,
       nameCustomer: this.productForm.controls['customerName'].value.toUpperCase().trim(),
-      idCombo: product.idCombo ? product.idCombo : 0
+      idCombo: product.idCombo ? product.idCombo : 0,
+      observation: this.observation
     } 
     return productAdd
   }

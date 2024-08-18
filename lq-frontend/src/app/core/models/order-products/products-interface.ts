@@ -54,6 +54,7 @@ export interface ProductMap {
   quantitySauces: number,
   price: number,
   size: number,
+  observation?: string
   detailProduct: DetailProduct[],
 
   isCombo?: boolean,
@@ -82,6 +83,7 @@ export interface DetailOrder {
   detailAdditionals: DetailAdditional[];
   nameProduct: string;                     //Solo uso front
   idCombo?: number;
+  observation?: string
 }
 
 export interface ProductId {

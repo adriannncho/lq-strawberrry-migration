@@ -48,6 +48,12 @@
               {{topping.name}}{{ isLastElement(topping, detail.product.toppings.sauces) ? '' : ', ' }}
             </span>
           </div>
+          <div nz-col nzSpan="24" >
+            <span class="label" nz-col nzSpan="24">Observación:</span>
+            <span >
+              {{ detail.observation }}
+            </span>
+          </div>
         </nz-card>
         <nz-divider></nz-divider>
       </ng-container>
