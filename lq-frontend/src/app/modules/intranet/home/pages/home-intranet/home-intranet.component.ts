@@ -308,7 +308,7 @@ export class HomeIntranetComponent {
   setTotalOfProducts(detail: DetailOrder[]) {
     let totalOfProducts: number = 0;
     detail.forEach(item => {
-      totalOfProducts += item.value;
+      totalOfProducts += item.value * item.quantity;
     });
     this.resumeOrder = {
       ...this.resumeOrder,
@@ -322,7 +322,7 @@ export class HomeIntranetComponent {
       item.detailAdditionals.forEach(ele => {
         if(ele.isAditional) {
           if(totalOfToppings > 0) {
-            totalOfToppings += ele.value;
+            totalOfToppings += ele.value ;
           }else {
             totalOfToppings = ele.value
           }
