@@ -40,7 +40,8 @@ export class ModalResumeOrderComponent {
       detailOrders: order.detailOrders,
       total: order.total,
       discont: order.discont ?  order.discont : 0,
-      creationDate: formattedDateTime
+      creationDate: formattedDateTime,
+      observation: order.observation
     }
     this.loadingCreate = true;
     this.productsService.createOrder(body).subscribe(res => {

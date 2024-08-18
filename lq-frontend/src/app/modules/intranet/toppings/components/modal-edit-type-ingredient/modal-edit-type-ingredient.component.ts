@@ -34,7 +34,8 @@ export class ModalEditTypeIngredientComponent implements OnInit {
   ngOnInit(): void {
     this.editIngredient = this.fb.group({
       name: [this.ingredient.name, [Validators.required, Validators.minLength(3)]],
-      status: [this.ingredient.active, [Validators.required]]
+      status: [this.ingredient.active, [Validators.required]],
+      value: [this.ingredient.value, [Validators.required]]
     });
   }
 
@@ -46,7 +47,8 @@ export class ModalEditTypeIngredientComponent implements OnInit {
     let ingredientBody: IngredientType = {
       ingredientTypeId: ingredient.ingredientTypeId,
       name: this.editIngredient.controls['name'].value,
-      active: this.editIngredient.controls['status'].value
+      active: this.editIngredient.controls['status'].value,
+      value: this.editIngredient.controls['value'].value
     }
 
     this.updateIngredientEmit.emit(ingredientBody);

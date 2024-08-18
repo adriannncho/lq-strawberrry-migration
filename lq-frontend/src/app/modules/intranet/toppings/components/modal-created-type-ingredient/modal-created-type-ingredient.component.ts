@@ -34,6 +34,7 @@ export class ModalCreatedTypeIngredientComponent {
   ngOnInit(): void {
     this.editIngredient = this.fb.group({
       name: [ ,[Validators.required, Validators.minLength(3)]],
+      value: [ 100, [Validators.required, Validators.min(100)]],
       status: [ true,[Validators.required]]
     });
   }
@@ -45,6 +46,7 @@ export class ModalCreatedTypeIngredientComponent {
   addTypeIngredient() {
     let ingredientBody: IngredientTypeMap = {
       name: this.editIngredient.controls['name'].value,
+      value: this.editIngredient.controls['value'].value,
       active: this.editIngredient.controls['status'].value
     }
 

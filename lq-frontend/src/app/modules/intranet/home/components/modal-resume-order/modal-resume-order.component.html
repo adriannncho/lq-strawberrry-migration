@@ -53,6 +53,14 @@ nzWidth="100%"
 
       <div nz-row nzGutter="16" class="containerResults">
         <div nz-col nzSpan="8">
+            Adicionales:
+        </div>
+        <div nz-col nzSpan="6">
+          $ {{ resumeOrder.valuOfAditional || 0 | number }}
+        </div>
+      </div>
+      <div nz-row nzGutter="16" class="containerResults">
+        <div nz-col nzSpan="8">
             SubTotal:
         </div>
         <div nz-col nzSpan="6">
@@ -72,7 +80,7 @@ nzWidth="100%"
             Total:
         </div>
         <div nz-col nzSpan="6">
-          $ {{ (resumeOrder.total || 0) | number }}
+          $ {{ (resumeOrder.totalOrder || 0) | number }}
         </div>
       </div>
     </nz-card>
