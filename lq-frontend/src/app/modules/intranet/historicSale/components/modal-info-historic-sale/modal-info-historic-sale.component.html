@@ -39,7 +39,7 @@
                     Ingredientes, toppings y adicionales
                   </div>
                   <div nz-col nzSpan="24" *ngFor="let toping of detail.detailAdditionals">
-                    {{ toping.name }} (x {{ toping.quantity }})
+                    {{ toping.ingredient.ingredientType.name }} {{ toping.ingredient.name }}
                   </div>
                 </div>
               </nz-collapse-panel>

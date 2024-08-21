@@ -23,8 +23,6 @@ export interface DetailAdditional {
   idDetailOrder: number;
   idIngredient: number;
   ingredient: Ingredient;
-  name?: string;
-  quantity?: number
 }
 
 export interface Product {
