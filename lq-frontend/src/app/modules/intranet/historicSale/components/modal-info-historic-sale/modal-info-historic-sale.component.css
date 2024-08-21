@@ -20,3 +20,13 @@ span {
 .value {
   color: var( --color-secondary-green-base);
 }
+
+.headerCollapse {
+  background-color: var(--color-primary-blue-ash);
+  color: var(--color-neutral-white);
+}
+
+.titles {
+  font-size: 17px;
+  color: var(--color-primary-blue-ash);
+}
