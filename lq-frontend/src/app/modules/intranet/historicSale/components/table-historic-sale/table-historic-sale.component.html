@@ -50,6 +50,7 @@
 </div>
 
 <app-modal-info-historic-sale
+*ngIf="isvisibleModal"
 [isVisible]="isvisibleModal"
 [ordersCompleted]="historicSaleModal"
 (hideModalEmitter)="hideModalInfo($event)">

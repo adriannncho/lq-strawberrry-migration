@@ -225,6 +225,10 @@ public class OrderService {
                 }
 
                 List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
+                for (DetailAdditional detailAdditional : detailAdditionals) {
+                    IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                    detailAdditional.setIngredient(ingredient);
+                }
                 detailOrder.setDetailAdditionals(detailAdditionals);
             }
 
