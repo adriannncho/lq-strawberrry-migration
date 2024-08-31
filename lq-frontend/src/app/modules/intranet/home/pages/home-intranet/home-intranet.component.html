@@ -96,6 +96,8 @@
           </ng-template>
           <app-tab-toppings
           *ngIf="renderToppings"
+          [isEditProduct]="isEditProduct"
+          [productOfEdit]="productOfEdit"
           [product]="productSendTab"
           [isCombo]="isCombo"
           [comboIniciado]="comboIniciado"
@@ -120,6 +122,8 @@
   [okOrder]="okOrder"
   (hideModalEmiter)="hideModal($event)"
   (deleteProductEmitter)="deleteProductOfOrder($event)"
+  (editProductEmitter)="editProdut($event)"
+  (productEditEmitter)="setEditProduct($event)"
   (resetVariablesEmit)="resetVariables($event)">
   </app-modal-resume-order>
 </nz-card>
