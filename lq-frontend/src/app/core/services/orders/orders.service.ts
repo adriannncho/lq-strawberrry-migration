@@ -32,4 +32,8 @@ export class OrderService {
  updateOrderById(idOrder: number) {
   return this.http.put<number>(`${this.apiUrl}/order/${idOrder}`, {});
  }
+
+ cancelOrder(idOrder: number) {
+   return this.http.put<number>(`${this.apiUrl}/cancelOrder/${idOrder}`, {});
+ }
 }

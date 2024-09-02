@@ -29,12 +29,24 @@ nzWidth="100%"
       </div>
       <div nz-row nzGutter="16" *ngFor="let product of resumeOrder.detailOrders; let i = index">
         <div nz-col nzSpan="6" class="centerContent content">
-          <div
-          nz-popconfirm
-          nzPopconfirmTitle="¿Estas seguro de eliminar el producto?"
-          nzPopconfirmPlacement="top"
-          (nzOnConfirm)="deleteProduct(i)">
-            <span nz-icon nzType="delete" nzTheme="outline"></span>
+          <div>
+            <span 
+            nz-popconfirm
+            nzPopconfirmTitle="¿Estas seguro de eliminar el producto?"
+            nzPopconfirmPlacement="top"
+            (nzOnConfirm)="deleteProduct(i)"
+            nz-icon 
+            nzType="delete" 
+            nzTheme="outline"
+            ></span>
+            <span 
+            nz-popconfirm
+            nzPopconfirmTitle="¿Estas seguro de editar el producto?"
+            nzPopconfirmPlacement="top"
+            (nzOnConfirm)="editProduct(product.product.idProduct, product, i); "
+            nz-icon 
+            nzType="edit" 
+            nzTheme="outline"></span>
           </div>
           {{ product.nameProduct }}
         </div>

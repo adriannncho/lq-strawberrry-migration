@@ -43,6 +43,9 @@ export class HomeIntranetComponent {
   comboEnd: boolean = false;
   observation: string = '';
 
+  productOfEdit!: DetailOrder;
+  isEditProduct!: boolean;
+
   constructor(
     private productsService : ProductsOrderService,
     private authService : AuthService,
@@ -88,6 +91,24 @@ export class HomeIntranetComponent {
     return productsForMap
   }
 
+  converOfProductMapById(idProduct: number) {
+    this.productsMap.forEach(item => {
+      if (item.idProduct === idProduct) {
+        this.addProduct(item);
+        this.isVisibleModal = false;
+      }
+    })
+  }
+
+  editProdut(idProduct:number) {
+    this.isEditProduct = true;
+    this.converOfProductMapById(idProduct);
+  }
+
+  setEditProduct(product: DetailOrder) {
+    this.productOfEdit = product;
+  }
+
   addProduct(product: ProductMap) {
     this.productSendTab = product;
     this.selectedIndex = 2;
@@ -100,6 +121,7 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrder(detail: DetailOrder[]) {
+    this.renderToppings = false
     let totalOfAditionals: number = 0;
     this.setTotalOfProducts(detail); // Crea el total de todos los productos
     detail.forEach(item => {
