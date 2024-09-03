@@ -21,11 +21,7 @@ public class SalesService {
     }
 
     public SalesDaily getTotalOrdersDaily(String date) throws SQLException {
-        SalesDaily salesDaily = salesRepository.getListSalesDaily(date);
-        if (salesDaily.getTotalDailySales() == null){
-            salesDaily.setTotalDailySales(BigDecimal.valueOf(0));
-        }
-        return salesDaily;
+        return salesRepository.getListSalesDaily(date);
     }
 
     public SalesWeek getTotalOrdersWeek(String date) throws SQLException {
