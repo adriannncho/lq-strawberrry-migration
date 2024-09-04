@@ -14,6 +14,7 @@ import { OrderService } from 'src/app/core/services/orders/orders.service';
     order!: OrderResponse;
     detailOrders!: DetailOrder[];
     @Output() updateEmit = new EventEmitter<number>()
+    @Output() cancelEmitter = new EventEmitter<boolean>()
 
     constructor(
       private orderService: OrderService,
@@ -106,10 +107,7 @@ import { OrderService } from 'src/app/core/services/orders/orders.service';
       });
     }
 
-    cancelEmit(idOrder: number) {
-      this.orderService.cancelOrder(idOrder).subscribe(res => {
-        this.router.navigate(['/intranet/orders'])
-        this.notificationService.info('Se ha cancelado la orden');
-      })
+    cancelEmit() {
+      this.cancelEmitter.emit(true);
     }
   }

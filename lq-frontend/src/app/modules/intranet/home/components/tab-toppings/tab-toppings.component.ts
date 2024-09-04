@@ -15,8 +15,6 @@ export class TabToppingsComponent implements OnInit {
   @Input() product! : ProductMap;
   @Input() isCombo : boolean = false;
   @Input() comboIniciado: boolean = false;
-  @Input() isEditProduct: boolean = true;
-  @Input() productOfEdit!: DetailOrder;
   @Output() selectedIndex = new EventEmitter<number>();
   @Output() blockTabToppings = new EventEmitter<boolean>();
   @Output() resumeOrder = new EventEmitter<DetailOrder[]>();
@@ -51,18 +49,10 @@ export class TabToppingsComponent implements OnInit {
   ) {}
 
    ngOnInit(): void {
-    if(this.isEditProduct) {
-      this.productForm = this.fb.group({
-        quantity: [this.productOfEdit.quantity, [Validators.required, Validators.min(1)]],
-        customerName: [this.productOfEdit.nameCustomer, [Validators.required, Validators.minLength(3)]]
-      });
-      this.observation = this.productOfEdit.observation ? this.productOfEdit.observation : '';
-    }else {
-      this.productForm = this.fb.group({
-        quantity: [1, [Validators.required, Validators.min(1)]],
-        customerName: ['', [Validators.required, Validators.minLength(3)]]
-      });
-    }
+    this.productForm = this.fb.group({
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      customerName: ['', [Validators.required, Validators.minLength(3)]]
+    });
       this.getIngredientsAndToppings();
    }
 
@@ -72,10 +62,6 @@ export class TabToppingsComponent implements OnInit {
    }
 
    getIngredientsAndToppings() {
-    let aditionales: any;
-    let toppingsPremium: any;
-    let toppingsClasic: any;
-    let sauces: any;
     this.loadingToppings = true;
     this.productsService.getActiveIngredientsAndToppingsP().subscribe(res => {
       if(res) {
@@ -83,57 +69,11 @@ export class TabToppingsComponent implements OnInit {
         this.toppingsPremium = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_PREMIUM_);
         this.toppingsClasic = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_CLASIC_);
         this.sauces = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._SAUSES_);
-        if(this.isEditProduct) {
-          aditionales = this.productOfEdit.detailAdditionals.filter(fil => fil.idIngredient === this.typeIngredients._ADICIONALES_);
-          toppingsPremium = this.productOfEdit.detailAdditionals.filter(item => item.idIngredient === this.typeIngredients._TOPPINGS_PREMIUM_);
-          toppingsClasic = this.productOfEdit.detailAdditionals.filter(item => item.idIngredient === this.typeIngredients._TOPPINGS_CLASIC_);
-          sauces = this.productOfEdit.detailAdditionals.filter(item => item.idIngredient === this.typeIngredients._SAUSES_);
-          this.chekearToppings(aditionales , toppingsPremium, toppingsClasic, sauces);
-        }
       }
       this.loadingToppings = false;
     }, error => {
       this.notificationService.error('Ocurrió un error al obtener los toppings.', 'Error')
     })
-   }
-
-   chekearToppings(aditionales: Ingredient[], toppingsPremium:Ingredient[], toppingsClasic:Ingredient[], sauces:Ingredient[]) {
-    this.adicionales.forEach(item => {
-      if(aditionales) {
-        aditionales.forEach(add => {
-          if(item.ingredientId === add.ingredientId) {
-            item.checked = true;
-          }
-        })
-      }
-    })
-    this.toppingsPremium.forEach(item => {
-      if (toppingsPremium) {
-        toppingsPremium.forEach(add => {
-          if(item.ingredientId === add.ingredientId) {
-            item.checked = true;
-          }
-        })
-      }
-    })
-    this.toppingsClasic.forEach(item => {
-      if(toppingsClasic) {
-        toppingsClasic.forEach(add => {
-          if(item.ingredientId === add.ingredientId) {
-            item.checked = true;
-          }
-        })
-      }
-    }) 
-    this.sauces.forEach(item => {
-      if (sauces) {
-        sauces.forEach(add => {
-          if(item.ingredientId === add.ingredientId) {
-            item.checked = true;
-          }
-        })
-      }
-    }) 
    }
 
    onToppingPremiumChange( ingredient: Ingredient ,isChecked: boolean) {
