@@ -121,8 +121,6 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrder(detail: DetailOrder[]) {
-    this.renderToppings = false
-    let totalOfAditionals: number = 0;
     this.setTotalOfProducts(detail); // Crea el total de todos los productos
     detail.forEach(item => {
       if(item.detailAdditionals) {
