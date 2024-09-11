@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/authentication/services/auth.service';
 import { Combo } from 'src/app/core/models/combos/combos.interface';
-import { DetailAdditional, DetailOrder, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
+import { DetailAdditional, DetailOrder, Ingredient, Order, Product, ProductMap } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { SizeProducts, StatusProducts, TypeProducts } from 'src/app/core/utilities/utilities-interfaces';
@@ -45,6 +45,12 @@ export class HomeIntranetComponent {
 
   productOfEdit!: DetailOrder;
   isEditProduct!: boolean;
+
+  toppingsPremiumAdd: Ingredient[] = [];
+  toppingsClasicAdd: Ingredient[] = [];
+  saucesAdd: Ingredient[] = [];
+  adicionalesAdd: Ingredient[] = [];
+  visibleModalEdit: boolean = false;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -91,22 +97,11 @@ export class HomeIntranetComponent {
     return productsForMap
   }
 
-  converOfProductMapById(idProduct: number) {
-    this.productsMap.forEach(item => {
-      if (item.idProduct === idProduct) {
-        this.addProduct(item);
-        this.isVisibleModal = false;
-      }
-    })
-  }
-
-  editProdut(idProduct:number) {
+  editProdut(indexProduct: number) {
     this.isEditProduct = true;
-    this.converOfProductMapById(idProduct);
-  }
-
-  setEditProduct(product: DetailOrder) {
-    this.productOfEdit = product;
+    this.productOfEdit = this.resumeOrder.detailOrders[indexProduct];
+    console.log(this.productOfEdit);
+    this.visibleModalEdit = true;
   }
 
   addProduct(product: ProductMap) {
@@ -121,6 +116,9 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrder(detail: DetailOrder[]) {
+    if (this.isEditProduct) {
+      this.renderToppings = false;
+    }
     this.setTotalOfProducts(detail); // Crea el total de todos los productos
     detail.forEach(item => {
       if(item.detailAdditionals) {
@@ -239,13 +237,7 @@ export class HomeIntranetComponent {
   }
 
   calcTotal () {
-    let cont: number = 0;
     this.resumeOrder.detailOrders.forEach(item => {
-      let valueAdd: number = 0;
-      let valueAditional: number = 0;
-      let total: number = 0;
-      let discont: number = 0;
-      let subTotal: number = 0;
       this.setTotalOfProducts(this.resumeOrder.detailOrders)
       this.setTotalAditionals(this.resumeOrder.detailOrders)
 
@@ -354,5 +346,21 @@ export class HomeIntranetComponent {
       ...this.resumeOrder,
       valuOfAditional: totalOfToppings
     }
+  }
+
+  setToppingsPremium (toping: Ingredient[]) {
+    this.toppingsPremiumAdd = toping;
+  }
+
+  setToppingsClasic(toping: Ingredient[]) {
+    this.toppingsClasicAdd = toping;
+  }
+
+  setSauces (toping: Ingredient[]) {
+    this.saucesAdd = toping;
+  }
+
+  setAdicionales (toping: Ingredient[]) {
+    this.adicionalesAdd = toping;
   }
 }

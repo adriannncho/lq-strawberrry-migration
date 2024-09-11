@@ -23,15 +23,12 @@ export class ModalResumeOrderComponent {
   @Output() productEditEmitter = new EventEmitter<DetailOrder>();
 
   productOfEdit!: DetailOrder;
-
   loadingCreate: boolean = false;
 
   constructor(
     private productsService: ProductsOrderService,
     private notificatinService: NotificationService,
-  ) {
-
-  }
+  ) {}
 
   hideModal() {
     this.hideModalEmiter.emit(false);
@@ -66,13 +63,8 @@ export class ModalResumeOrderComponent {
     this.resetVariablesEmit.emit(isLine)
   }
 
-  editProduct(idProduct: number, product: DetailOrder, index: number) {
-    this.editProductEmitter.emit(idProduct);
-    this.productOfEdit = product;
-    this.productEditEmitter.emit(this.productOfEdit);
-
-    setTimeout(() => {
-      this.deleteProduct(index)
-    },2000)
+  editProduct(product: DetailOrder, index:number) {
+    this.editProductEmitter.emit(index);
+    this.productEditEmitter.emit(product);
   }
 }

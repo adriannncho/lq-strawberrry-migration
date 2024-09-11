@@ -1,0 +1,14 @@
+<nz-modal
+[(nzVisible)]="isVisebleModal"
+nzCentered
+[nzClosable]="true"
+nzWidth="100%"
+(nzOnCancel)="hideModal()">
+  <ng-container *nzModalContent>
+    <h1> {{ productOfEdit.nameCustomer }} </h1>
+  </ng-container>
+  
+  <ng-container *nzModalFooter>
+    
+  </ng-container>
+</nz-modal>

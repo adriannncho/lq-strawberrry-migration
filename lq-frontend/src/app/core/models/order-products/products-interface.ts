@@ -92,6 +92,7 @@ export interface ProductId {
 
 export interface DetailAdditional {
   idIngredient: number;
+  idTypeIngredient: IngredientType;
   value: number;
   isAditional: boolean
 }
