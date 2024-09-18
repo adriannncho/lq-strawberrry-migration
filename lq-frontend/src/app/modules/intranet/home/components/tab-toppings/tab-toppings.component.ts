@@ -242,9 +242,9 @@ export class TabToppingsComponent implements OnInit {
       this.toppingsPremiumAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
+          ingredientId: item.ingredientId,
           isAditional : false,
-          idTypeIngredient: item.ingredientType
+          ingredientType: item.ingredientType
         });
       });
     }
@@ -252,9 +252,9 @@ export class TabToppingsComponent implements OnInit {
       this.toppingsClasicAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
+          ingredientId: item.ingredientId,
           isAditional : false,
-          idTypeIngredient: item.ingredientType
+          ingredientType: item.ingredientType
         });
       });   
     }
@@ -262,9 +262,9 @@ export class TabToppingsComponent implements OnInit {
       this.saucesAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
+          ingredientId: item.ingredientId,
           isAditional : false,
-          idTypeIngredient: item.ingredientType
+          ingredientType: item.ingredientType
         });
       });
     }
@@ -272,9 +272,9 @@ export class TabToppingsComponent implements OnInit {
       this.adicionalesAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
+          ingredientId: item.ingredientId,
           isAditional : true,
-          idTypeIngredient: item.ingredientType
+          ingredientType: item.ingredientType
         });
       });
     }

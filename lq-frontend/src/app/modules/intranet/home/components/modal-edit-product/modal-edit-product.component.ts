@@ -40,10 +40,10 @@ export class ModalEditProductComponent implements OnInit{
       nameCustomer: [this.productOfEdit.nameCustomer, [Validators.required]],
       idCombo: [this.productOfEdit.idCombo],
       observation: [this.productOfEdit.observation],
-      premiums: [this.toppingsPremiumSelected.map(item => item.ingredientId )],
-      clasic: [this.toppingsClasicSelected.map(item => item.ingredientId )],
-      sauces: [this.saucesSelected.map(item => item.ingredientId )],
-      adicionales: [this.adicionalesSelected.map(item => item.ingredientId )],
+      premiums: [this.toppingsPremiumSelected],
+      clasic: [this.toppingsClasicSelected],
+      sauces: [this.saucesSelected],
+      adicionales: [this.adicionalesSelected],
     });
   }
 
@@ -52,12 +52,13 @@ export class ModalEditProductComponent implements OnInit{
   }
 
   distribuirToppingsDelProducto (adicionales: DetailAdditional[]) {
+    console.log(adicionales)
     adicionales.forEach(item => {
-      if (item.idTypeIngredient.ingredientTypeId === this.typeIngredients._TOPPINGS_PREMIUM_ && !item.isAditional) {
+      if (item.ingredientType?.ingredientTypeId === this.typeIngredients._TOPPINGS_PREMIUM_ && !item.isAditional) {
         this.toppingsPremiumSelected.push(this.convertirTypoIngrediente(item));
-      }else if (item.idTypeIngredient.ingredientTypeId === this.typeIngredients._TOPPINGS_CLASIC_ && !item.isAditional) {
+      }else if (item.ingredientType?.ingredientTypeId === this.typeIngredients._TOPPINGS_CLASIC_ && !item.isAditional) {
         this.toppingsClasicSelected.push(this.convertirTypoIngrediente(item));
-      }else if (item.idTypeIngredient.ingredientTypeId === this.typeIngredients._SAUSES_ && !item.isAditional) {
+      }else if (item.ingredientType?.ingredientTypeId === this.typeIngredients._SAUSES_ && !item.isAditional) {
         this.saucesSelected.push(this.convertirTypoIngrediente(item));
       }else if (item.isAditional) {
         this.adicionalesSelected.push(this.convertirTypoIngrediente(item));
@@ -68,23 +69,29 @@ export class ModalEditProductComponent implements OnInit{
   convertirTypoIngrediente(item: DetailAdditional): Ingredient {
     let ingredient: Ingredient;
     ingredient = {
-      ingredientId: item.idIngredient,
-      ingredientType: item.idTypeIngredient,
+      ingredientId: item.ingredientId,
+      ingredientType: item.ingredientType,
       isAditional: item.isAditional,
-      name: item.idTypeIngredient.name,
+      name: item.ingredientType.name,
       checked: true
     }
     return ingredient;
   }
 
   saveChanges() {
-    const aditional: DetailAdditional[] = [
-      this.productForm.controls['premiums'].value,
-      this.productForm.controls['clasic'].value,
-      this.productForm.controls['sauces'].value,
-      this.productForm.controls['adicionales'].value
+    if (this.productForm.controls['adicionales'].value) {
+      let detail: DetailAdditional[] = this.productForm.controls['adicionales'].value;
+      detail.forEach(item => {
+        item.value === item.ingredientType.value
+      })
+    }
+    let aditional: DetailAdditional[] = [
+      ...this.productForm.controls['premiums'].value,
+      ...this.productForm.controls['clasic'].value,
+      ...this.productForm.controls['sauces'].value,
+      ...this.productForm.controls['adicionales'].value
     ]
-
+    console.log(aditional)
     const product: DetailOrder = {
       ...this.productOfEdit,
       nameCustomer: this.productForm.controls['nameCustomer'].value,
@@ -93,6 +100,16 @@ export class ModalEditProductComponent implements OnInit{
       detailAdditionals: aditional,
     }
     this.saveChangesEmi.emit(product);
+  }
+
+  compareToppings(topping1: Ingredient, topping2: Ingredient): boolean {
+    return topping1 && topping2 ? topping1.ingredientId === topping2.ingredientId : topping1 === topping2;
+  }
+
+  chageAditional(event: Ingredient[]) {
+      event.forEach(item => {
+        item.isAditional = true;
+      })
   }
 
 }

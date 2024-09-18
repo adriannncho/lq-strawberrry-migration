@@ -47,8 +47,9 @@ nzWidth="95%"
                 nzPlaceHolder="Buscar toppings"
                 formControlName="premiums"
                 [nzShowArrow]="false"
+                [compareWith]="compareToppings"
               >
-                <nz-option *ngFor="let topping of toppingsPremiumAdd" [nzLabel]="topping.name" [nzValue]="topping.ingredientId"></nz-option>
+                <nz-option *ngFor="let topping of toppingsPremiumAdd" [nzLabel]="topping.name" [nzValue]="topping"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -67,8 +68,9 @@ nzWidth="95%"
                 nzPlaceHolder="Buscar toppings"
                 formControlName="clasic"
                 [nzShowArrow]="false"
+                [compareWith]="compareToppings"
               >
-                <nz-option *ngFor="let topping of toppingsClasicAdd" [nzLabel]="topping.name" [nzValue]="topping.ingredientId"></nz-option>
+                <nz-option *ngFor="let topping of toppingsClasicAdd" [nzLabel]="topping.name" [nzValue]="topping"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -87,8 +89,9 @@ nzWidth="95%"
                 nzPlaceHolder="Buscar toppings"
                 formControlName="sauces"
                 [nzShowArrow]="false"
+                [compareWith]="compareToppings"
               >
-                <nz-option *ngFor="let topping of saucesAdd" [nzLabel]="topping.name" [nzValue]="topping.ingredientId"></nz-option>
+                <nz-option *ngFor="let topping of saucesAdd" [nzLabel]="topping.name" [nzValue]="topping"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -106,8 +109,10 @@ nzWidth="95%"
                 nzPlaceHolder="Buscar toppings"
                 formControlName="adicionales"
                 [nzShowArrow]="false"
+                [compareWith]="compareToppings"
+                (ngModelChange)="chageAditional($event)"
               >
-                <nz-option *ngFor="let topping of adicionalesAdd" [nzLabel]="topping.name" [nzValue]="topping.ingredientId"></nz-option>
+                <nz-option *ngFor="let topping of adicionalesAdd" [nzLabel]="topping.name" [nzValue]="topping"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>

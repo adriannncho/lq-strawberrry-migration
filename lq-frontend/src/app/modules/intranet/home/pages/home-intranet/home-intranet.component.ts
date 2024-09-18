@@ -121,9 +121,6 @@ export class HomeIntranetComponent {
   }
 
   createResumeOrder(detail: DetailOrder[]) {
-    if (this.isEditProduct) {
-      this.renderToppings = false;
-    }
     this.setTotalOfProducts(detail); // Crea el total de todos los productos
     detail.forEach(item => {
       if(item.detailAdditionals) {
@@ -337,12 +334,14 @@ export class HomeIntranetComponent {
     let totalOfToppings: number = 0;
     detail.forEach(item => {
       item.detailAdditionals.forEach(ele => {
-        if(ele.isAditional) {
+        if(ele.isAditional && ele.ingredientType.value) {
           if(totalOfToppings > 0) {
-            totalOfToppings += ele.value ;
+            totalOfToppings += ele.ingredientType.value ;
           }else {
-            totalOfToppings = ele.value
+            totalOfToppings = ele.ingredientType.value
           }
+        }else if (ele.isAditional && ele.ingredientType.value) {
+
         }
       })
     })
