@@ -12,11 +12,12 @@ export class ModalEditProductComponent implements OnInit{
 
   @Input() isVisebleModal: boolean = false;
   @Input() productOfEdit!: DetailOrder;
-  @Input() toppingsPremiumAdd: Ingredient[] = [];
-  @Input() toppingsClasicAdd: Ingredient[] = []
-  @Input() saucesAdd: Ingredient[] = [];
-  @Input() adicionalesAdd: Ingredient[] = [];
+  @Input() toppingsPremiumAdd!: Ingredient[];
+  @Input() toppingsClasicAdd!: Ingredient[]
+  @Input() saucesAdd!: Ingredient[];
+  @Input() adicionalesAdd!: Ingredient[];
   @Output() hidenModalEmitter = new EventEmitter<boolean>();
+  @Output() saveChangesEmi = new EventEmitter<DetailOrder>();
 
   productForm!: FormGroup;
   toppingsPremiumSelected: Ingredient[] = [];
@@ -27,17 +28,16 @@ export class ModalEditProductComponent implements OnInit{
 
   constructor(private fb: FormBuilder) { }
 
-  ngOnInit(): void {
-    console.log(this.productOfEdit);
+  ngOnInit(): void { 
     this.distribuirToppingsDelProducto(this.productOfEdit.detailAdditionals)
     this.productForm = this.fb.group({
       product: this.fb.group({
         idProduct: [this.productOfEdit.product.idProduct, Validators.required]
       }),
-      value: [this.productOfEdit.value, Validators.required],
-      quantity: [this.productOfEdit.quantity, Validators.required], 
-      nameProduct: [this.productOfEdit.nameProduct, Validators.required],
-      nameCustomer: [this.productOfEdit.nameCustomer, Validators.required],
+      value: [this.productOfEdit.value, [Validators.required]],
+      quantity: [this.productOfEdit.quantity,[ Validators.required, Validators.min(1)]], 
+      nameProduct: [this.productOfEdit.nameProduct, [Validators.required, Validators.minLength(3)]],
+      nameCustomer: [this.productOfEdit.nameCustomer, [Validators.required]],
       idCombo: [this.productOfEdit.idCombo],
       observation: [this.productOfEdit.observation],
       premiums: [this.toppingsPremiumSelected.map(item => item.ingredientId )],
@@ -45,7 +45,6 @@ export class ModalEditProductComponent implements OnInit{
       sauces: [this.saucesSelected.map(item => item.ingredientId )],
       adicionales: [this.adicionalesSelected.map(item => item.ingredientId )],
     });
-    console.log(this.productForm)
   }
 
   hideModal() {
@@ -76,6 +75,24 @@ export class ModalEditProductComponent implements OnInit{
       checked: true
     }
     return ingredient;
+  }
+
+  saveChanges() {
+    const aditional: DetailAdditional[] = [
+      this.productForm.controls['premiums'].value,
+      this.productForm.controls['clasic'].value,
+      this.productForm.controls['sauces'].value,
+      this.productForm.controls['adicionales'].value
+    ]
+
+    const product: DetailOrder = {
+      ...this.productOfEdit,
+      nameCustomer: this.productForm.controls['nameCustomer'].value,
+      quantity: this.productForm.controls['quantity'].value,
+      observation: this.productForm.controls['observation'].value,
+      detailAdditionals: aditional,
+    }
+    this.saveChangesEmi.emit(product);
   }
 
 }

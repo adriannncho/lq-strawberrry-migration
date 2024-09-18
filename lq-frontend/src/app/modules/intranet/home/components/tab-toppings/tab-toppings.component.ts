@@ -82,10 +82,10 @@ export class TabToppingsComponent implements OnInit {
    }
 
    sendToppingsAndIngredientes() {
-      this.toppingsPremiumAddEmit.emit(this.toppingsPremiumAdd);
-      this.toppingsClasicAddEmit.emit(this.toppingsClasicAdd);
-      this.saucesAddEmit.emit(this.saucesAdd);
-      this.adicionalesAddEmit.emit(this.adicionalesAdd);
+      this.toppingsPremiumAddEmit.emit(this.toppingsPremium);
+      this.toppingsClasicAddEmit.emit(this.toppingsClasic);
+      this.saucesAddEmit.emit(this.sauces);
+      this.adicionalesAddEmit.emit(this.adicionales);
    }
 
    chekearToppings(aditionales: Ingredient[], toppingsPremium:Ingredient[], toppingsClasic:Ingredient[], sauces:Ingredient[]) {
@@ -185,6 +185,7 @@ export class TabToppingsComponent implements OnInit {
     this.toppingsClasicAdd = [];
     this.saucesAdd = [];
     this.adicionalesAdd = [];
+    this.observation = '';
     this.noSelectToppings();
   }
 
@@ -287,7 +288,10 @@ export class TabToppingsComponent implements OnInit {
       nameProduct: product.name,
       nameCustomer: this.productForm.controls['customerName'].value.toUpperCase().trim(),
       idCombo: product.idCombo ? product.idCombo : 0,
-      observation: this.observation
+      observation: this.observation,
+      quantitySauces: product.quantitySauces,
+      quantityToppingsClasic: product.quantityToppingsClasic,
+      quantityToppingsPremium: product.quantityToppingsPremium
     } 
     return productAdd
   }

@@ -51,6 +51,7 @@ export class HomeIntranetComponent {
   saucesAdd: Ingredient[] = [];
   adicionalesAdd: Ingredient[] = [];
   visibleModalEdit: boolean = false;
+  indexProductEdit: number = 0;
 
   constructor(
     private productsService : ProductsOrderService,
@@ -100,8 +101,12 @@ export class HomeIntranetComponent {
   editProdut(indexProduct: number) {
     this.isEditProduct = true;
     this.productOfEdit = this.resumeOrder.detailOrders[indexProduct];
-    console.log(this.productOfEdit);
+    this.indexProductEdit = indexProduct;
     this.visibleModalEdit = true;
+  }
+
+  hideModalEdit() {
+    this.visibleModalEdit = false;
   }
 
   addProduct(product: ProductMap) {
@@ -362,5 +367,11 @@ export class HomeIntranetComponent {
 
   setAdicionales (toping: Ingredient[]) {
     this.adicionalesAdd = toping;
+  }
+
+  saveChangesEdit(product: DetailOrder) {
+    this.resumeOrder.detailOrders[this.indexProductEdit] = product;
+    this.createResumeOrder(this.resumeOrder.detailOrders);
+    this.visibleModalEdit = false;
   }
 }
