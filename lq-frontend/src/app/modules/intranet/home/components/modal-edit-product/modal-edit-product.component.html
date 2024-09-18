@@ -2,12 +2,12 @@
 [(nzVisible)]="isVisebleModal"
 nzCentered
 [nzClosable]="false"
-nzWidth="100%"
+nzWidth="95%"
 (nzOnCancel)="hideModal()">
   <ng-container *nzModalContent>
     <form [formGroup]="productForm">
       <div nz-row nzGutter="16">
-        <div nz-col >
+        <div nz-col nzSpan=18 >
           <nz-form-item>
             <nz-form-label nzSpan="24" nzRequired>
               Nombre del cliente
@@ -143,7 +143,7 @@ nzWidth="100%"
         nzType="primary"
         nz-popconfirm
         (click)="saveChanges()">
-          Crear pedido
+          Guardar
         </button>
       </div>
     </div>
