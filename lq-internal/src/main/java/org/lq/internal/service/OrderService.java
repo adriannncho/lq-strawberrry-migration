@@ -2,13 +2,11 @@ package org.lq.internal.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.lq.internal.domain.detailOrder.DetailOrder;
 import org.lq.internal.domain.detailProduct.DetailProduct;
 import org.lq.internal.domain.ingredient.DetailAdditional;
-import org.lq.internal.domain.ingredient.Ingredient;
 import org.lq.internal.domain.ingredient.IngredientData;
 import org.lq.internal.domain.order.Order;
 import org.lq.internal.domain.order.OrderDTO;
@@ -17,12 +15,9 @@ import org.lq.internal.domain.product.Product;
 import org.lq.internal.helper.exception.PVException;
 import org.lq.internal.repository.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.spi.ToolProvider.findFirst;
 
 @ApplicationScoped
 public class OrderService {
@@ -45,7 +40,7 @@ public class OrderService {
     DetailProductRepository detailProductRepository;
 
     @Inject
-    IngredientDataRepository ingredienDataRepository;
+    IngredientDataRepository ingredientDataRepository;
 
     public List<Order> getOrders() {
         List<Order> orderList = orderRepository.listAll();
@@ -122,13 +117,14 @@ public class OrderService {
                 for (DetailAdditional detailAdditionalDTO : detailOrderDTO.getDetailAdditionals()) {
                     DetailAdditional detailAdditional = DetailAdditional.builder()
                             .idDetailOrder(detailOrder.getIdDetailOrder())
-                            .idIngredient(detailAdditionalDTO.getIdIngredient())
+                            .ingredientId(detailAdditionalDTO.getIngredientId())
                             .build();
 
                     LOG.infof("@createOrder SERV > Persisting detail additional: %s", detailAdditional);
                     detailAdditionalRepository.persist(detailAdditional);
                 }
             }
+
         }
 
         LOG.infof("@createOrder SERV > End service to create the order");
@@ -226,7 +222,7 @@ public class OrderService {
 
                 List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
                 for (DetailAdditional detailAdditional : detailAdditionals) {
-                    IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                    IngredientData ingredient = ingredientDataRepository.findById((long) detailAdditional.getIngredientId());
                     detailAdditional.setIngredient(ingredient);
                 }
                 detailOrder.setDetailAdditionals(detailAdditionals);
@@ -268,7 +264,7 @@ public class OrderService {
                 List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
                 for (DetailProduct detailProduct : detailProducts) {
-                    IngredientData ingredient = ingredienDataRepository.findById((long) detailProduct.getIdIngredient());
+                    IngredientData ingredient = ingredientDataRepository.findById((long) detailProduct.getIdIngredient());
                     detailProduct.setIngredient(ingredient);
                 }
 
@@ -280,7 +276,7 @@ public class OrderService {
 
             List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
             for (DetailAdditional detailAdditional : detailAdditionals) {
-                IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                IngredientData ingredient = ingredientDataRepository.findById((long) detailAdditional.getIngredientId());
                 detailAdditional.setIngredient(ingredient);
             }
             detailOrder.setDetailAdditionals(detailAdditionals);
@@ -315,7 +311,7 @@ public class OrderService {
                 List<DetailProduct> detailProducts = detailProductRepository.list("idProduct", product.getIdProduct());
 
                 for (DetailProduct detailProduct : detailProducts) {
-                    IngredientData ingredient = ingredienDataRepository.findById((long) detailProduct.getIdIngredient());
+                    IngredientData ingredient = ingredientDataRepository.findById((long) detailProduct.getIdIngredient());
                     detailProduct.setIngredient(ingredient);
                 }
 
@@ -327,7 +323,7 @@ public class OrderService {
 
             List<DetailAdditional> detailAdditionals = detailAdditionalRepository.find("idDetailOrder", detailOrder.getIdDetailOrder()).list();
             for (DetailAdditional detailAdditional : detailAdditionals) {
-                IngredientData ingredient = ingredienDataRepository.findById((long) detailAdditional.getIdIngredient());
+                IngredientData ingredient = ingredientDataRepository.findById((long) detailAdditional.getIngredientId());
                 detailAdditional.setIngredient(ingredient);
             }
             detailOrder.setDetailAdditionals(detailAdditionals);
