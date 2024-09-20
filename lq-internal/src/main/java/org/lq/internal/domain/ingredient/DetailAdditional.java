@@ -25,7 +25,7 @@ public class DetailAdditional implements Serializable {
     private int idDetailOrder;
 
     @Column(name = "ID_INGREDIENTE", length = 36)
-    private int idIngredient;
+    private int ingredientId;
 
     @Transient
     private IngredientData ingredient;

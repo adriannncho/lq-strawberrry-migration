@@ -24,6 +24,10 @@ export class TabToppingsComponent implements OnInit {
   @Output() isProductEmiter = new EventEmitter<boolean>();
   @Output() resumeOrderCombo = new EventEmitter<DetailOrder[]>();
   @Output() observationEmit = new EventEmitter<string>();
+  @Output() toppingsPremiumAddEmit = new EventEmitter<Ingredient[]>();
+  @Output() toppingsClasicAddEmit = new EventEmitter<Ingredient[]>();
+  @Output() saucesAddEmit = new EventEmitter<Ingredient[]>();
+  @Output() adicionalesAddEmit = new EventEmitter<Ingredient[]>();
 
   loadingToppings: boolean = false;
   productForm!: FormGroup;
@@ -53,7 +57,7 @@ export class TabToppingsComponent implements OnInit {
       quantity: [1, [Validators.required, Validators.min(1)]],
       customerName: ['', [Validators.required, Validators.minLength(3)]]
     });
-      this.getIngredientsAndToppings();
+    this.getIngredientsAndToppings();
    }
 
    isTouchedInput(namecontrol: string) {
@@ -70,10 +74,57 @@ export class TabToppingsComponent implements OnInit {
         this.toppingsClasic = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._TOPPINGS_CLASIC_);
         this.sauces = res.filter(item => item.ingredientType.ingredientTypeId === this.typeIngredients._SAUSES_);
       }
+      this.sendToppingsAndIngredientes();
       this.loadingToppings = false;
     }, error => {
       this.notificationService.error('Ocurrió un error al obtener los toppings.', 'Error')
     })
+   }
+
+   sendToppingsAndIngredientes() {
+      this.toppingsPremiumAddEmit.emit(this.toppingsPremium);
+      this.toppingsClasicAddEmit.emit(this.toppingsClasic);
+      this.saucesAddEmit.emit(this.sauces);
+      this.adicionalesAddEmit.emit(this.adicionales);
+   }
+
+   chekearToppings(aditionales: Ingredient[], toppingsPremium:Ingredient[], toppingsClasic:Ingredient[], sauces:Ingredient[]) {
+    this.adicionales.forEach(item => {
+      if(aditionales) {
+        aditionales.forEach(add => {
+          if(item.ingredientId === add.ingredientId) {
+            item.checked = true;
+          }
+        })
+      }
+    })
+    this.toppingsPremium.forEach(item => {
+      if (toppingsPremium) {
+        toppingsPremium.forEach(add => {
+          if(item.ingredientId === add.ingredientId) {
+            item.checked = true;
+          }
+        })
+      }
+    })
+    this.toppingsClasic.forEach(item => {
+      if(toppingsClasic) {
+        toppingsClasic.forEach(add => {
+          if(item.ingredientId === add.ingredientId) {
+            item.checked = true;
+          }
+        })
+      }
+    }) 
+    this.sauces.forEach(item => {
+      if (sauces) {
+        sauces.forEach(add => {
+          if(item.ingredientId === add.ingredientId) {
+            item.checked = true;
+          }
+        })
+      }
+    }) 
    }
 
    onToppingPremiumChange( ingredient: Ingredient ,isChecked: boolean) {
@@ -134,6 +185,7 @@ export class TabToppingsComponent implements OnInit {
     this.toppingsClasicAdd = [];
     this.saucesAdd = [];
     this.adicionalesAdd = [];
+    this.observation = '';
     this.noSelectToppings();
   }
 
@@ -190,8 +242,9 @@ export class TabToppingsComponent implements OnInit {
       this.toppingsPremiumAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
-          isAditional : false
+          ingredientId: item.ingredientId,
+          isAditional : false,
+          ingredientType: item.ingredientType
         });
       });
     }
@@ -199,8 +252,9 @@ export class TabToppingsComponent implements OnInit {
       this.toppingsClasicAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
-          isAditional : false
+          ingredientId: item.ingredientId,
+          isAditional : false,
+          ingredientType: item.ingredientType
         });
       });   
     }
@@ -208,8 +262,9 @@ export class TabToppingsComponent implements OnInit {
       this.saucesAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
-          isAditional : false
+          ingredientId: item.ingredientId,
+          isAditional : false,
+          ingredientType: item.ingredientType
         });
       });
     }
@@ -217,8 +272,9 @@ export class TabToppingsComponent implements OnInit {
       this.adicionalesAdd.forEach(item => {
         toppingsAdd.push({
           value: item.ingredientType.value,
-          idIngredient: item.ingredientId,
-          isAditional : true
+          ingredientId: item.ingredientId,
+          isAditional : true,
+          ingredientType: item.ingredientType
         });
       });
     }
@@ -232,7 +288,10 @@ export class TabToppingsComponent implements OnInit {
       nameProduct: product.name,
       nameCustomer: this.productForm.controls['customerName'].value.toUpperCase().trim(),
       idCombo: product.idCombo ? product.idCombo : 0,
-      observation: this.observation
+      observation: this.observation,
+      quantitySauces: product.quantitySauces,
+      quantityToppingsClasic: product.quantityToppingsClasic,
+      quantityToppingsPremium: product.quantityToppingsPremium
     } 
     return productAdd
   }

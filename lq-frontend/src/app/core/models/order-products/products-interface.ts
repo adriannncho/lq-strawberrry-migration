@@ -84,6 +84,9 @@ export interface DetailOrder {
   nameProduct: string;                     //Solo uso front
   idCombo?: number;
   observation?: string
+  quantityToppingsPremium: number,
+  quantityToppingsClasic: number,
+  quantitySauces: number,
 }
 
 export interface ProductId {
@@ -91,7 +94,8 @@ export interface ProductId {
 }
 
 export interface DetailAdditional {
-  idIngredient: number;
+  ingredientId: number;
+  ingredientType: IngredientType;
   value: number;
   isAditional: boolean
 }

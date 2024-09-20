@@ -61,7 +61,7 @@
   </div>
 </nz-card>
 <!-- TPOPINGS CLÁSICOS -->
-<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings" *ngIf="product.quantityToppingsClasic > 0">
+<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings" *ngIf="product.quantityToppingsClasic > 0 ">
   <span class="nameProduct">
     Toppings clásicos ({{ product.quantityToppingsClasic }})
   </span>
@@ -77,7 +77,7 @@
   </div>
 </nz-card>
 <!-- SALSAS -->
-<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings" *ngIf="product.quantitySauces > 0">
+<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings" *ngIf="product.quantitySauces > 0 ">
   <span class="nameProduct">
     Salsas ({{ product.quantitySauces }})
   </span>
@@ -93,7 +93,7 @@
   </div>
 </nz-card>
 <!-- ADICIONALES -->
-<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings">
+<nz-card style="margin-bottom:10px ;" [nzLoading]="loadingToppings" *ngIf="product ">
   <span class="nameProduct">
     Adicionales
   </span>
@@ -113,7 +113,7 @@
   </span>
   <textarea nz-input [(ngModel)]="observation" [nzAutosize]="true" placeholder="Agrega una observación de ser necesario"></textarea>
 </nz-card>
-<div nz-row>
+<div nz-row  *ngIf="product ">
   <div class="containerBtnToppings" nz-col nzSpan="24">
     <button
     nz-button

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Order } from 'src/app/core/models/order-products/products-interface';
+import { DetailOrder, Order } from 'src/app/core/models/order-products/products-interface';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ProductsOrderService } from 'src/app/core/services/products-order/products-order.service';
 import { Combo } from 'src/app/core/models/combos/combos.interface';
@@ -19,15 +19,16 @@ export class ModalResumeOrderComponent {
   @Output() hideModalEmiter = new EventEmitter<boolean>();
   @Output() deleteProductEmitter = new EventEmitter<number>();
   @Output() resetVariablesEmit = new EventEmitter<boolean>();
+  @Output() editProductEmitter = new EventEmitter<number>();
+  @Output() productEditEmitter = new EventEmitter<DetailOrder>();
 
+  productOfEdit!: DetailOrder;
   loadingCreate: boolean = false;
 
   constructor(
     private productsService: ProductsOrderService,
     private notificatinService: NotificationService,
-  ) {
-
-  }
+  ) {}
 
   hideModal() {
     this.hideModalEmiter.emit(false);
@@ -60,5 +61,10 @@ export class ModalResumeOrderComponent {
 
   resetVariables(isLine: boolean) {
     this.resetVariablesEmit.emit(isLine)
+  }
+
+  editProduct(product: DetailOrder, index:number) {
+    this.editProductEmitter.emit(index);
+    this.productEditEmitter.emit(product);
   }
 }
