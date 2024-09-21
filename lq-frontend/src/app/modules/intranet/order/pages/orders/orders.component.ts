@@ -38,6 +38,8 @@ export class OrdersComponent implements OnInit {
     this.orderService.getAllOrdersPendings().subscribe(res => {
       if(res) {
         this.ordersPending = res;
+      }else {
+        this.notificationService.info('No se encontraron ordenes pendientes')
       }
       this.loadingOrders = false;
     }, error => {
