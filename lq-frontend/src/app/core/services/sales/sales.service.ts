@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs'
 import { SalesDaily, SalesMonth, SalesWeek } from '../../models/sales/sales.interface';
@@ -36,11 +36,9 @@ export class SaleService {
   }
 
   getSalesByRange(startDate: string, endDate: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/sales/range`, {
-      params: {
-        startDate,
-        endDate
-      }
-    });
+    const params = new HttpParams()
+      .set('startDate', startDate)
+      .set('endDate', endDate);
+    return this.http.get<number>(`${this.apiUrl}/totalSalesByRange`,{ params });
   }
 }
