@@ -5,11 +5,14 @@
         <div nz-col nzSpan="24" class="containerDate">
           <span> {{ sale.month | date }} </span>
         </div>
-        <div nz-col nzSpan="24">
+        <div nz-col nzSpan="24" *ngIf="sale.totalDailyMonth">
           <nz-statistic
           [nzValue]="( sale.totalDailyMonth | currency)!"
           [nzValueStyle]="{ color: '#3F8600' }"
           ></nz-statistic>
+        </div>
+        <div nz-col nzSpan="24" *ngIf="!sale.totalDailyMonth">
+          <span>No se encontrarón ventas</span>
         </div>
       </div>
     </nz-card>
