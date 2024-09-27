@@ -96,8 +96,6 @@
           </ng-template>
           <app-tab-toppings
           *ngIf="renderToppings"
-          [isEditProduct]="isEditProduct"
-          [productOfEdit]="productOfEdit"
           [product]="productSendTab"
           [isCombo]="isCombo"
           [comboIniciado]="comboIniciado"
@@ -109,7 +107,11 @@
           (changeCombo)="changeType($event)"
           (isComboEmitter)="isCombo = $event"
           (isProductEmiter)="isProduct = $event"
-          (observationEmit)="observation = $event">
+          (observationEmit)="observation = $event"
+          (toppingsPremiumAddEmit)="setToppingsPremium($event)"
+          (toppingsClasicAddEmit)="setToppingsClasic($event)"
+          (saucesAddEmit)="setSauces($event)"
+          (adicionalesAddEmit)="setAdicionales($event)">
           </app-tab-toppings>
         </nz-tab>
       </nz-tabset>
@@ -123,7 +125,18 @@
   (hideModalEmiter)="hideModal($event)"
   (deleteProductEmitter)="deleteProductOfOrder($event)"
   (editProductEmitter)="editProdut($event)"
-  (productEditEmitter)="setEditProduct($event)"
   (resetVariablesEmit)="resetVariables($event)">
   </app-modal-resume-order>
 </nz-card>
+
+<app-modal-edit-product
+*ngIf="visibleModalEdit"
+[isVisebleModal]="visibleModalEdit"
+[productOfEdit]="productOfEdit"
+[toppingsPremiumAdd]="toppingsPremiumAdd"
+[toppingsClasicAdd]="toppingsClasicAdd"
+[saucesAdd]="saucesAdd"
+[adicionalesAdd]="adicionalesAdd"
+(hidenModalEmitter)="hideModalEdit()"
+(saveChangesEmi)="saveChangesEdit($event)">
+</app-modal-edit-product>
