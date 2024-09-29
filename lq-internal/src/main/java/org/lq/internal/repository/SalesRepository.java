@@ -156,11 +156,14 @@ public class SalesRepository {
     }
 
     public BigDecimal getSalesByDateRange(String startDate, String endDate) throws SQLException {
+        String startDateTime = startDate + " 00:00:00";
+        String endDateTime = endDate + " 23:59:59";
+
         try (Connection connection = hacvDataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement(QUERY_GET_SALES_BY_DATE_RANGE)) {
 
-            ps.setString(1, startDate);
-            ps.setString(2, endDate);
+            ps.setString(1, startDateTime);
+            ps.setString(2, endDateTime);
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
