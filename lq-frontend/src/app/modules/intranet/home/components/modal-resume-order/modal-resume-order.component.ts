@@ -73,19 +73,30 @@ export class ModalResumeOrderComponent {
       const blob = new Blob([res], { type: 'application/pdf' });
       const fileURL = window.URL.createObjectURL(blob);
   
-      // Crear un iframe temporalmente
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none'; // Ocultamos el iframe
-      iframe.src = fileURL; // Asignamos el PDF al iframe
-      document.body.appendChild(iframe); // Añadir el iframe al DOM
+      // Detectamos si estamos en un dispositivo móvil
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
-      // Esperamos a que el PDF se cargue en el iframe y luego llamamos a print
-      iframe.onload = () => {
-        iframe.contentWindow?.focus(); // Damos el foco al contenido del iframe
-        iframe.contentWindow?.print(); // Ejecutamos la impresión
-      };
+      if (isMobile) {
+        // Mostramos el PDF en pantalla para dispositivos móviles
+        const pdfWindow = window.open(fileURL, '_blank'); // Abre el PDF en la misma pestaña para móviles
+        if (pdfWindow) {
+          pdfWindow.focus();
+          alert('Por favor usa la opción de imprimir del navegador para imprimir el ticket.');
+        }
+      } else {
+        // Para dispositivos de escritorio seguimos con el iframe y la impresión automática
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none'; // Ocultamos el iframe
+        iframe.src = fileURL; // Asignamos el PDF al iframe
+        document.body.appendChild(iframe); // Añadir el iframe al DOM
   
-      this.resetVariables(false); // Ejecutamos el método adicional que mencionas
+        iframe.onload = () => {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+        };
+      }
+  
+      this.resetVariables(false);
     });
   }
   
