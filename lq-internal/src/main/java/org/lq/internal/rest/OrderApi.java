@@ -141,8 +141,7 @@ public class OrderApi {
             )
             @Valid OrderDTO orderDTO
     ) {
-        orderService.createOrder(orderDTO);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(orderService.createOrder(orderDTO)).build();
     }
 
     @PUT
