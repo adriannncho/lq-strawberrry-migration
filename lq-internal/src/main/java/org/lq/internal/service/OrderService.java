@@ -81,7 +81,7 @@ public class OrderService {
         return orderList;
     }
 
-    public void createOrder(OrderDTO orderDTO) {
+    public int createOrder(OrderDTO orderDTO) {
         LOG.infof("@createOrder SERV > Start service to create the order with data: %s", orderDTO);
 
         Order order = Order.builder()
@@ -128,6 +128,7 @@ public class OrderService {
         }
 
         LOG.infof("@createOrder SERV > End service to create the order");
+        return order.getIdOrder();
     }
 
 
