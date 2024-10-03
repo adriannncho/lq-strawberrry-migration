@@ -111,6 +111,13 @@ public class TicketService {
             addStoreInformationLabel(table, "Salsas: ", fontBlackTitles);
             addStoreInformationLabel(table, salsas.isEmpty() ? "N/A" : salsas, fondAttributes);
 
+            String iceCream = detailOrder.getDetailAdditionals().stream()
+                    .filter(additional -> "HELADOS".equals(additional.getIngredient().getIngredientType().getName()))
+                    .map(additional -> additional.getIngredient().getName())
+                    .collect(Collectors.joining(", "));
+            addStoreInformationLabel(table, "Helados: ", fontBlackTitles);
+            addStoreInformationLabel(table, iceCream.isEmpty() ? "N/A" : iceCream, fondAttributes);
+
             String adicionales = detailOrder.getDetailAdditionals().stream()
                     .filter(additional -> "Adicionales".equals(additional.getIngredient().getIngredientType().getName()))
                     .map(additional -> additional.getIngredient().getName())
