@@ -78,11 +78,10 @@ export class ModalResumeOrderComponent {
   
       if (isMobile) {
         // Mostramos el PDF en pantalla para dispositivos móviles
-        const pdfWindow = window.open(fileURL, '_blank'); // Abre el PDF en la misma pestaña para móviles
+        const pdfWindow = window.open(fileURL); // Abre el PDF en la misma pestaña para móviles
         if (pdfWindow) {
           pdfWindow.focus();
           this.resetVariables(false);
-          alert('Por favor usa la opción de imprimir del navegador para imprimir el ticket.');
         }
       } else {
         // Para dispositivos de escritorio seguimos con el iframe y la impresión automática
