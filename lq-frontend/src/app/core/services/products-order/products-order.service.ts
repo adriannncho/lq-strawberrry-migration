@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { environment } from '../../../../environments/environment.local'
 import { Observable } from 'rxjs'
 import { Ingredient, Order, Product } from '../../models/order-products/products-interface';
@@ -24,7 +24,7 @@ export class ProductsOrderService {
  }
 
  createOrder(order: Order) {
-  return this.http.post<Order>(`${this.apiUrl}/order`, order);
+  return this.http.post<number>(`${this.apiUrl}/order`, order);
  }
 
  getCombosActive(): Observable<Combo[]> {
@@ -34,4 +34,9 @@ export class ProductsOrderService {
  changeStatus(idProduct: number) {
   return this.http.put<number>(`${this.apiUrl}/product/delete/${idProduct}`, {});
  }
+
+ getTicketOrder(ticketId: number): Observable<Blob> {
+  const params = new HttpParams().set('ticket', ticketId.toString());
+  return this.http.get(`${this.apiUrl}/pdf/ticketOrder`, { params, responseType: 'blob' });
+}
 }
