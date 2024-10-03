@@ -81,6 +81,7 @@ export class ModalResumeOrderComponent {
         const pdfWindow = window.open(fileURL, '_blank'); // Abre el PDF en la misma pestaña para móviles
         if (pdfWindow) {
           pdfWindow.focus();
+          this.resetVariables(false);
           alert('Por favor usa la opción de imprimir del navegador para imprimir el ticket.');
         }
       } else {
@@ -89,14 +90,12 @@ export class ModalResumeOrderComponent {
         iframe.style.display = 'none'; // Ocultamos el iframe
         iframe.src = fileURL; // Asignamos el PDF al iframe
         document.body.appendChild(iframe); // Añadir el iframe al DOM
-  
+        this.resetVariables(false);
         iframe.onload = () => {
           iframe.contentWindow?.focus();
           iframe.contentWindow?.print();
         };
       }
-  
-      this.resetVariables(false);
     });
   }
   
