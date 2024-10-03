@@ -64,7 +64,8 @@ import { OrderService } from 'src/app/core/services/orders/orders.service';
                 classic: additionsGrouped['Toppings Clásicos'],
                 premium: additionsGrouped['Toppings Premium'],
                 sauces: additionsGrouped['Salsas'],
-                adicionales: additionsGrouped['Adicionales']
+                adicionales: additionsGrouped['Adicionales'],
+                iceCream: additionsGrouped['HELADOS']
               }
             }
           };
@@ -77,7 +78,8 @@ import { OrderService } from 'src/app/core/services/orders/orders.service';
         'Toppings Clásicos': [],
         'Toppings Premium': [],
         'Salsas': [],
-        'Adicionales': []
+        'Adicionales': [],
+        'HELADOS': []
       };
   
       for (const addition of additions) {
