@@ -43,6 +43,12 @@
             </span>
           </div>
           <div nz-col nzSpan="24" >
+            <span class="label" nz-col nzSpan="24">Helados:</span>
+            <span *ngFor="let topping of detail.product.toppings?.iceCream; let i = index">
+              {{topping.name}}{{ isLastElement(topping, detail.product.toppings.iceCream) ? '' : ', ' }}
+            </span>
+          </div>
+          <div nz-col nzSpan="24" >
             <span class="label" nz-col nzSpan="24">Adicionales:</span>
             <span *ngFor="let topping of detail.product.toppings.adicionales; let i = index">
               {{topping.name}}{{ isLastElement(topping, detail.product.toppings.sauces) ? '' : ', ' }}
