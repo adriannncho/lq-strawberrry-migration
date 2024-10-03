@@ -72,12 +72,11 @@ export class ModalResumeOrderComponent {
     this.productsService.getTicketOrder(idOrder).subscribe(res => {
       const blob = new Blob([res], { type: 'application/pdf' });
       const fileURL = window.URL.createObjectURL(blob);
-  
+      this.resetVariables(false);
       // Detectamos si estamos en un dispositivo móvil
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
       if (isMobile) {
-        this.resetVariables(false);
         // Mostramos el PDF en pantalla para dispositivos móviles
         const pdfWindow = window.open(fileURL); // Abre el PDF en la misma pestaña para móviles
         if (pdfWindow) {
