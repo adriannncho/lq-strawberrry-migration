@@ -72,7 +72,7 @@ export class ModalResumeOrderComponent {
     this.productsService.getTicketOrder(idOrder).subscribe(res => {
       const blob = new Blob([res], { type: 'application/pdf' });
       const fileURL = window.URL.createObjectURL(blob);
-      this.resetVariables(false);
+      location.reload();
       // Detectamos si estamos en un dispositivo móvil
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
